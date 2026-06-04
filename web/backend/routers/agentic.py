@@ -529,6 +529,24 @@ def run_agents(data: dict = Body(...)):
         "agents_run":    len(results),
     }
 
+# Alias endpoints for compatibility
+@router.post("/report")
+def run_report(data: dict = Body(...)):
+    """Alias for /run endpoint - generates multi-agent report."""
+    return run_agents(data)
+
+@router.get("/status")
+def get_status():
+    """Health check for agentic AI system."""
+    return {
+        "status": "online",
+        "service": "Agentic AI Hub",
+        "agents": 6,
+        "available_agents": ["stock", "market", "smartmoney", "news", "risk", "analytics"],
+        "model": "Groq Llama 3.3 70B",
+        "timestamp": datetime.now().isoformat()
+    }
+
 
 def _sanitize_dict(obj):
     """Recursively replace NaN/Inf with 0 in any dict/list."""

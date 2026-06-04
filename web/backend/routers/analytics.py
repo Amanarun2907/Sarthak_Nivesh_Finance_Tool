@@ -154,3 +154,14 @@ def market_breadth():
         "strength":  round(ratio * 100, 1),
         "sentiment": "Bullish" if ratio > 0.6 else "Bearish" if ratio < 0.4 else "Neutral",
     }
+
+# Alias endpoints for frontend compatibility
+@router.get("/breadth_gauge")
+def breadth_gauge():
+    """Alias for market_breadth endpoint."""
+    return market_breadth()
+
+@router.get("/volume_intelligence")
+def volume_intelligence():
+    """Alias for volume_analysis endpoint."""
+    return volume_analysis()

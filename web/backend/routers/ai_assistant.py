@@ -121,6 +121,74 @@ def chat(data: dict = Body(...)):
     return {"answer": answer or "Groq API key not configured. Add GROQ_API_KEY to .env",
             "timestamp": datetime.now().isoformat()}
 
+@router.get("/quick_actions")
+def quick_actions():
+    """Return quick action suggestions based on current market conditions."""
+    nifty_chg, nifty_val = _nifty()
+    fii_dii = _fii_dii()
+    
+    actions = []
+    
+    # Market-based suggestions
+    if nifty_chg and nifty_chg < -1.5:
+        actions.append({
+            "title": "Market Correction Opportunity",
+            "description": "NIFTY down significantly. Consider quality stocks at discount.",
+            "action": "Review Watchlist",
+            "priority": "high"
+        })
+    elif nifty_chg and nifty_chg > 1.5:
+        actions.append({
+            "title": "Strong Market Rally",
+            "description": "Consider booking partial profits in momentum stocks.",
+            "action": "Review Portfolio",
+            "priority": "medium"
+        })
+    
+    # FII/DII based suggestions
+    if fii_dii.get("fii_net") and fii_dii["fii_net"] > 1000:
+        actions.append({
+            "title": "Strong FII Inflows",
+            "description": f"FII buying ₹{fii_dii['fii_net']:+,.0f}Cr. Positive for large caps.",
+            "action": "Check Large Cap Stocks",
+            "priority": "high"
+        })
+    elif fii_dii.get("fii_net") and fii_dii["fii_net"] < -1000:
+        actions.append({
+            "title": "FII Selling Pressure",
+            "description": f"FII selling ₹{fii_dii['fii_net']:+,.0f}Cr. Stay cautious.",
+            "action": "Review Stop Losses",
+            "priority": "high"
+        })
+    
+    # Default actions
+    if not actions:
+        actions.extend([
+            {
+                "title": "Check Your Portfolio",
+                "description": "Review today's performance and rebalance if needed.",
+                "action": "View Portfolio",
+                "priority": "medium"
+            },
+            {
+                "title": "Explore IPO Opportunities",
+                "description": "Analyze upcoming IPOs with multi-agent AI.",
+                "action": "IPO Analysis",
+                "priority": "low"
+            }
+        ])
+    
+    return {
+        "actions": actions[:4],  # Max 4 actions
+        "market_summary": {
+            "nifty_change": nifty_chg,
+            "nifty_value": nifty_val,
+            "fii_net": fii_dii.get("fii_net"),
+            "dii_net": fii_dii.get("dii_net")
+        },
+        "timestamp": datetime.now().isoformat()
+    }
+
 @router.post("/explain_loss")
 def explain_loss(data: dict = Body(...)):
     language = data.get("language","English")

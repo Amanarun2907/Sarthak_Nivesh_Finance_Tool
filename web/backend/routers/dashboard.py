@@ -156,3 +156,73 @@ def get_breadth():
         "ad_ratio":  round(advancing / max(declining, 1), 2),
         "strength":  round(advancing / total * 100, 1),
     }
+
+@router.get("/overview")
+def get_overview():
+    """Combined overview endpoint for dashboard."""
+    nifty  = _index("^NSEI")
+    sensex = _index("^BSESN")
+    
+    # Get top gainers and losers
+    gainers, losers = [], []
+    for sym, name in list(INDIAN_STOCKS.items())[:10]:
+        try:
+            t     = yf.Ticker(sym)
+            price = _live_price(t)
+            prev  = _prev_close(t)
+            if price is None or prev is None or prev == 0:
+                continue
+            chg = _safe((price - prev) / prev * 100)
+            item = {
+                "symbol":     sym.replace(".NS", ""),
+                "name":       name,
+                "price":      round(price, 2),
+                "change_pct": round(chg, 2),
+            }
+            if chg > 0:
+                gainers.append(item)
+            else:
+                losers.append(item)
+        except Exception:
+            continue
+    
+    gainers = sorted(gainers, key=lambda x: x["change_pct"], reverse=True)[:3]
+    losers  = sorted(losers,  key=lambda x: x["change_pct"])[:3]
+    
+    # Market breadth
+    advancing = declining = unchanged = 0
+    for sym in INDIAN_STOCKS:
+        try:
+            t     = yf.Ticker(sym)
+            price = _live_price(t)
+            prev  = _prev_close(t)
+            if price is None or prev is None or prev == 0:
+                continue
+            chg = (price - prev) / prev * 100
+            if chg > 0.05:    advancing += 1
+            elif chg < -0.05: declining += 1
+            else:              unchanged += 1
+        except Exception:
+            continue
+    
+    total = advancing + declining + unchanged or 1
+    
+    return {
+        "indices": {
+            "nifty":  nifty  or {"value": 0, "change_pct": 0, "change_pts": 0},
+            "sensex": sensex or {"value": 0, "change_pct": 0, "change_pts": 0},
+        },
+        "movers": {
+            "gainers": gainers,
+            "losers": losers,
+        },
+        "breadth": {
+            "advancing": advancing,
+            "declining": declining,
+            "unchanged": unchanged,
+            "total": total,
+            "ad_ratio": round(advancing / max(declining, 1), 2),
+            "strength": round(advancing / total * 100, 1),
+        },
+        "timestamp": datetime.now().isoformat(),
+    }

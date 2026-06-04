@@ -72,4 +72,9 @@ export const agenticAI = {
   run: (query, agents) => api.post('/api/agentic/run', { query, agents }, { timeout: 180000 }),
 };
 
+export const ipoMultiAgent = {
+  status:  ()     => api.get('/api/ipo_multiagent/status'),
+  analyze: (data) => api.post('/api/ipo_multiagent/analyze', data, { timeout: 300000 }),
+};
+
 export default api;
