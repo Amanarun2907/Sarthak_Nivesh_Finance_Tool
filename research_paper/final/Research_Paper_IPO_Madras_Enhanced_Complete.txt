@@ -147,119 +147,119 @@ D. Mathematical Formulations and Scoring Functions
 
 We now present the mathematical formulations that formalize our multi-agent framework and agent scoring logic. These formulations provide a rigorous foundation for the system while remaining interpretable through explicit functional forms rather than complex non-linear transformations.
 
-Let I represent the set of all IPOs under evaluation, where I = {i1, i2, ..., i?} and n denotes the total number of IPOs in our analysis set. For each individual IPO denoted by i? where j ranges from 1 to n, we define several fundamental quantities that serve as inputs to our agent scoring functions.
+Let I represent the set of all IPOs under evaluation, where I = {i1, i2, ..., i_j} and n denotes the total number of IPOs in our analysis set. For each individual IPO denoted by i_j where j ranges from 1 to n, we define several fundamental quantities that serve as inputs to our agent scoring functions.
 
-The issue price denoted P????? represents the per-share price at which the IPO is offered to investors during the subscription period. This price is determined through a book-building process where institutional investors submit bids, and the final price is set by the issuing company and underwriters based on observed demand. The listing price denoted P???? represents the price at which the stock opens for trading on the stock exchange on listing day, typically occurring three to five business days after subscription closing. The difference between listing price and issue price, appropriately normalized, gives the listing gain which serves as an important signal of initial market reception.
+The issue price denoted P_issue represents the per-share price at which the IPO is offered to investors during the subscription period. This price is determined through a book-building process where institutional investors submit bids, and the final price is set by the issuing company and underwriters based on observed demand. The listing price denoted P_listing represents the price at which the stock opens for trading on the stock exchange on listing day, typically occurring three to five business days after subscription closing. The difference between listing price and issue price, appropriately normalized, gives the listing gain which serves as an important signal of initial market reception.
 
-We define the price at time t post-listing as P?, measured in the same currency units as issue and listing prices. This notation allows us to express returns over various holding periods. Specifically, we track prices at thirty days, sixty days, and ninety days post-listing, denoted P30, P60, and P90 respectively. These multi-horizon prices enable evaluation of both short-term momentum and medium-term performance trajectories.
+We define the price at time t post-listing as P_t, measured in the same currency units as issue and listing prices. This notation allows us to express returns over various holding periods. Specifically, we track prices at thirty days, sixty days, and ninety days post-listing, denoted P30, P60, and P90 respectively. These multi-horizon prices enable evaluation of both short-term momentum and medium-term performance trajectories.
 
-Subscription multiples, which indicate the level of oversubscription in each investor category, are denoted S?????? for retail individual investors, S??? for Qualified Institutional Buyers, and S??? for Non-Institutional Investors. A subscription multiple of X means that investors in that category bid for X times the number of shares allocated to them, indicating demand strength. For example, S?????? equal to 10 means retail investors collectively bid for ten times the shares available in their quota.
+Subscription multiples, which indicate the level of oversubscription in each investor category, are denoted S_retail for retail individual investors, S_ipo for Qualified Institutional Buyers, and S_ipo for Non-Institutional Investors. A subscription multiple of X means that investors in that category bid for X times the number of shares allocated to them, indicating demand strength. For example, S_retail equal to 10 means retail investors collectively bid for ten times the shares available in their quota.
 
-Market condition is quantified through V?????? representing the performance of the NIFTY 50 index, India's benchmark equity index comprising the fifty largest and most liquid stocks. We typically measure V?????? as the percentage change in NIFTY 50 over a seven-day rolling window centered on the IPO listing date. This captures whether the IPO is listing into a bullish market environment characterized by rising prices and positive investor sentiment, or a bearish environment with falling prices and risk aversion.
+Market condition is quantified through V_NIFTY representing the performance of the NIFTY 50 index, India's benchmark equity index comprising the fifty largest and most liquid stocks. We typically measure V_NIFTY as the percentage change in NIFTY 50 over a seven-day rolling window centered on the IPO listing date. This captures whether the IPO is listing into a bullish market environment characterized by rising prices and positive investor sentiment, or a bearish environment with falling prices and risk aversion.
 
-The set of news articles about IPO i? is denoted N???, where N??? = {a1, a2, ..., a?} and m represents the number of relevant articles identified during our monitoring period. Each article a? contains textual content including headline and body text that conveys information and sentiment about the IPO.
+The set of news articles about IPO i_j is denoted N_pos, where N_pos = {a1, a2, ..., a_k} and m represents the number of relevant articles identified during our monitoring period. Each article a_k contains textual content including headline and body text that conveys information and sentiment about the IPO.
 
 With these fundamental quantities defined, we now present the core mathematical formulations that operationalize our framework.
 
 Equation 1: Listing Gain
 
-The listing gain represents the first-day return that investors would realize if they received allocation at the issue price and sold at the listing day closing price. Mathematically, listing gain G???? is defined as:
+The listing gain represents the first-day return that investors would realize if they received allocation at the issue price and sold at the listing day closing price. Mathematically, listing gain G_listing is defined as:
 
-G???? = ((P???? - P?????) / P?????) � 100
+G_listing = ((P_listing - P_issue) / P_issue) x 100
 
-This formula computes the percentage return, with positive values indicating that the stock listed at a premium to its issue price, a favorable signal of market demand. Negative listing gains, while less common in the Indian market, indicate that the IPO was overpriced or faced weak demand, potentially due to adverse market conditions or company-specific concerns. For example, if an IPO has an issue price P????? of 100 rupees and lists at P???? of 125 rupees, the listing gain equals ((125 - 100) / 100) � 100 = 25 percent, indicating strong initial reception.
+This formula computes the percentage return, with positive values indicating that the stock listed at a premium to its issue price, a favorable signal of market demand. Negative listing gains, while less common in the Indian market, indicate that the IPO was overpriced or faced weak demand, potentially due to adverse market conditions or company-specific concerns. For example, if an IPO has an issue price P_issue of 100 rupees and lists at P_listing of 125 rupees, the listing gain equals ((125 - 100) / 100) x 100 = 25 percent, indicating strong initial reception.
 
 Equation 2, 3, 4: Multi-Horizon Returns
 
 To evaluate IPO performance beyond just listing day, we compute returns over multiple holding periods, specifically at thirty, sixty, and ninety days post-issue. The thirty-day return R30 is calculated as:
 
-R30 = ((P30 - P?????) / P?????) � 100
+R30 = ((P30 - P_issue) / P_issue) x 100
 
 Similarly, the sixty-day return R60 follows:
 
-R60 = ((P60 - P?????) / P?????) � 100
+R60 = ((P60 - P_issue) / P_issue) x 100
 
 And the ninety-day return R90 is given by:
 
-R90 = ((P90 - P?????) / P?????) � 100
+R90 = ((P90 - P_issue) / P_issue) x 100
 
 These multi-horizon returns allow us to assess whether IPOs that show strong initial performance continue to deliver returns over longer periods, or whether initial enthusiasm fades leading to price corrections. In our validation framework, we primarily focus on the ninety-day return R90 as our target variable for prediction, as this horizon is long enough to move beyond listing day volatility but short enough to be relevant for retail investors making allocation decisions.
 
 Equation 5: Agent Score Generation
 
-Each specialized agent k, where k ranges over our six agents (Price Movement, Macroeconomic, Sentiment, Risk, IPO Intelligence, Orchestrator), produces a confidence score for IPO i? denoted S?(i?). This score lies in the range from zero to one hundred, expressed mathematically as:
+Each specialized agent k, where k ranges over our six agents (Price Movement, Macroeconomic, Sentiment, Risk, IPO Intelligence, Orchestrator), produces a confidence score for IPO i_j denoted S_k(i_j). This score lies in the range from zero to one hundred, expressed mathematically as:
 
-S?(i?) ? [0, 100] for all k and j
+S_k(i_j)  in  [0, 100] for all k and j
 
 A score of fifty represents a neutral assessment, scores above fifty indicate positive sentiment (the agent views the IPO favorably), and scores below fifty indicate negative sentiment (the agent recommends caution or avoidance). Each agent implements a specialized scoring function that maps its input data to this normalized score range through domain-specific logic detailed in subsequent subsections.
 
 Equation 6: Orchestrator Weighted Aggregation
 
-The Master Orchestrator Agent synthesizes individual agent scores through weighted aggregation. The orchestrator score S??c?(i?) for IPO i? is computed as:
+The Master Orchestrator Agent synthesizes individual agent scores through weighted aggregation. The orchestrator score S_orch(i_j) for IPO i_j is computed as:
 
-S??c?(i?) = S? w? � S?(i?)
+S_orch(i_j) = S_k w_k x S_k(i_j)
 
-where the summation runs over all six agents, w? represents the weight assigned to agent k reflecting its relative importance in the overall decision, and the weights satisfy the normalization constraint:
+where the summation runs over all six agents, w_k represents the weight assigned to agent k reflecting its relative importance in the overall decision, and the weights satisfy the normalization constraint:
 
-S? w? = 1
+S_k w_k = 1
 
 This constraint ensures that the orchestrator score remains in the same zero to one hundred range as individual agent scores. In our implementation, weights are assigned based on empirical validation on training data and domain expertise about the relative importance of different factors in IPO performance. Specifically, we assign:
 
-w???c? = 0.20 for the Price Movement Agent
-w??c?? = 0.15 for the Macroeconomic Agent
-w???? = 0.20 for the Sentiment Agent
-w???? = 0.20 for the Risk Agent
-w??? = 0.25 for the IPO Intelligence Agent
+w_price = 0.20 for the Price Movement Agent
+w_macro = 0.15 for the Macroeconomic Agent
+w_risk = 0.20 for the Sentiment Agent
+w_risk = 0.20 for the Risk Agent
+w_ipo = 0.25 for the IPO Intelligence Agent
 
 The IPO Intelligence Agent receives the highest weight at twenty-five percent because it incorporates IPO-specific signals like QIB participation that prior research has identified as strongly predictive. Price Movement and Sentiment agents each receive twenty percent weight reflecting the importance of technical momentum and market sentiment. The Risk Agent also receives twenty percent weight as risk management is critical for retail investors. The Macroeconomic Agent receives fifteen percent weight as it provides important context but is somewhat less specific to individual IPO outcomes.
 
 Equation 7: Investment Signal Generation
 
-The continuous orchestrator score S??c?(i?) is translated into a discrete categorical investment signal through threshold-based classification. The investment signal Signal(i?) is defined as:
+The continuous orchestrator score S_orch(i_j) is translated into a discrete categorical investment signal through threshold-based classification. The investment signal Signal(i_j) is defined as:
 
-Signal(i?) = STRONG_BUY if S??c? = 80
-Signal(i?) = BUY if 65 = S??c? < 80
-Signal(i?) = HOLD if 45 = S??c? < 65
-Signal(i?) = SELL if 30 = S??c? < 45
-Signal(i?) = STRONG_SELL if S??c? < 30
+Signal(i_j) = STRONG_BUY if S_orch >= 80
+Signal(i_j) = BUY if 65 <= S_orch < 80
+Signal(i_j) = HOLD if 45 <= S_orch < 65
+Signal(i_j) = SELL if 30 <= S_orch < 45
+Signal(i_j) = STRONG_SELL if S_orch < 30
 
 These thresholds are calibrated based on historical performance analysis. STRONG_BUY signals at scores of eighty or above indicate very high confidence and historically have corresponded to IPOs with excellent returns. BUY signals at scores between sixty-five and eighty indicate positive but slightly less confident assessments, suggesting good risk-reward tradeoffs. HOLD signals between forty-five and sixty-five recommend waiting to see how the IPO performs before committing capital, appropriate when signals are mixed. SELL and STRONG_SELL signals below forty-five indicate that the framework views the IPO as likely overpriced or facing significant risks, recommending investors avoid participation or exit existing positions.
 
 Equations 8-12: Sentiment Analysis Ensemble
 
-For each news article a within the set N??? of articles mentioning the IPO, we compute sentiment scores using three complementary methodologies and then aggregate them through weighted combination.
+For each news article a within the set N_pos of articles mentioning the IPO, we compute sentiment scores using three complementary methodologies and then aggregate them through weighted combination.
 
-First, the VADER Valence Aware Dictionary and sEntiment Reasoner produces a compound sentiment score VADER? defined as:
+First, the VADER Valence Aware Dictionary and sEntiment Reasoner produces a compound sentiment score VADER_score defined as:
 
-VADER? = VADER_compound(a)
+VADER_score = VADER_compound(a)
 
 This compound score ranges from negative one (most negative sentiment) through zero (neutral) to positive one (most positive sentiment). VADER is particularly effective at handling social media style text with emoticons, capitalization for emphasis, and informal language.
 
-Second, TextBlob sentiment analysis computes a polarity score TextBlob? given by:
+Second, TextBlob sentiment analysis computes a polarity score TextBlob_score given by:
 
-TextBlob? = TextBlob_polarity(a)
+TextBlob_score = TextBlob_polarity(a)
 
 The TextBlob polarity also ranges from negative one to positive one and is computed through pattern-based sentiment analysis that considers adjective-noun combinations and negation contexts.
 
-Third, we employ keyword-based sentiment analysis using predefined financial lexicons containing positive keywords (profit, growth, strong, excellent, outperform) and negative keywords (loss, weak, decline, overvalued, concern). For article a, we count positive keywords N??? and negative keywords N????, then compute:
+Third, we employ keyword-based sentiment analysis using predefined financial lexicons containing positive keywords (profit, growth, strong, excellent, outperform) and negative keywords (loss, weak, decline, overvalued, concern). For article a, we count positive keywords N_pos and negative keywords N_neg, then compute:
 
-Keyword? = (N??? - N????) / (N??? + N???? + 1)
+Keyword_score = (N_pos - N_neg) / (N_pos + N_neg + 1)
 
 The denominator includes plus one to avoid division by zero when no keywords are present. This keyword score also ranges approximately from negative one to positive one.
 
 We combine these three sentiment measures for article a through weighted averaging, yielding a composite sentiment score:
 
-S????(a) = 0.4 � VADER? + 0.3 � TextBlob? + 0.3 � Keyword?
+S_sent(a) = 0.4 x VADER_score + 0.3 x TextBlob_score + 0.3 x Keyword_score
 
 VADER receives the highest weight at forty percent due to its superior performance in financial contexts. TextBlob and keyword approaches each receive thirty percent weight, providing diversity in the ensemble.
 
 Finally, we aggregate sentiment across all articles about the IPO to produce an overall IPO sentiment score. First, we compute the mean sentiment across articles:
 
-mean_sentiment = mean({S????(a) | a ? N???})
+mean_sentiment = mean({S_sent(a) | a in N_pos})
 
 Then we scale and shift this mean to the zero to one hundred range used by agents:
 
-S????(i?) = 50 + 50 � mean_sentiment
+S_sent(i_j) = 50 + 50 x mean_sentiment
 
 This formula maps the mean sentiment range of negative one to positive one into the agent score range of zero to one hundred, with neutral mean sentiment of zero mapping to an agent score of fifty.
 
@@ -271,7 +271,7 @@ Price Movement Agent Methodology
 
 The Price Movement Agent analyzes technical aspects of the IPO including historical pricing patterns where available, listing day performance, and subscription dynamics. The agent's core scoring function takes the form:
 
-S???c?(i?) = f(G????, S??????, trend_indicators)
+S_price(i_j) = f(G_listing, S_retail, trend_indicators)
 
 where f represents a composite function encoding multiple pricing signals. The agent begins with a baseline neutral score of fifty, then applies adjustments based on observed signals.
 
@@ -287,11 +287,11 @@ The Macroeconomic Agent evaluates broader market conditions and sectoral trends 
 
 The agent computes market momentum through the change in NIFTY 50 index over the seven-day window surrounding listing date:
 
-?Nifty = ((Nifty? - Nifty??7) / Nifty??7) � 100
+Delta_Nifty = ((Nifty_t - Nifty_t in 7) / Nifty_t in 7) x 100
 
 This percentage change captures market direction during the critical period. The agent then maps market performance to score adjustments through function g:
 
-S??c??(i?) = 50 + g(?Nifty)
+S_orch in (i_j) = 50 + g(Delta_Nifty)
 
 The function g implements piecewise logic where strong positive market performance exceeding three percent adds fifteen points, representing very favorable market conditions. Moderate positive performance between one and three percent adds seven to twelve points. Flat markets between negative one and positive one percent maintain neutral scoring. Moderate market declines between negative three and negative one percent subtract seven to twelve points. Severe market declines exceeding negative three percent subtract fifteen points, as such bearish conditions typically depress new listings substantially.
 
@@ -311,9 +311,9 @@ Risk Agent Methodology
 
 The Risk Agent quantifies various dimensions of investment risk including price volatility, fundamental risks, and market microstructure risks. The agent's scoring function takes the form:
 
-S????(i?) = h(s???c?, S???, G????, fundamentals)
+S_sent(i_j) = h(sigma_price, S_ipo, G_listing, fundamentals)
 
-where s???c? represents implied volatility inferred from listing day price movements and grey market data when available. Higher volatility increases risk, leading to lower risk agent scores.
+where sigma_price represents implied volatility inferred from listing day price movements and grey market data when available. Higher volatility increases risk, leading to lower risk agent scores.
 
 The agent considers QIB subscription as a signal of institutional confidence in risk-adjusted return prospects. Very high QIB subscription above fifty times indicates that sophisticated investors who conduct extensive due diligence view the risk-reward as attractive, supporting higher risk scores. Low QIB subscription below five times raises concerns about institutional appetite.
 
@@ -325,7 +325,7 @@ IPO Intelligence Agent Methodology
 
 The IPO Intelligence Agent integrates signals most specific to the IPO domain that may not fit cleanly into other agent categories. This agent's scoring function combines multiple IPO-specific factors:
 
-S???(i?) = 0.40 � f_QIB(S???) + 0.30 � f_listing(G????) + 0.30 � f_subscription(S??????)
+S_ipo(i_j) = 0.40 x f_QIB(S_ipo) + 0.30 x f_listing(G_listing) + 0.30 x f_subscription(S_retail)
 
 The QIB participation function f_QIB maps institutional subscription to scores, heavily rewarding QIB multiples above thirty times with scores of eighty to ninety, as such participation indicates strong institutional confidence. QIB subscription below two times receives scores below thirty, flagging potential quality concerns.
 
@@ -382,7 +382,7 @@ For investment explanation generation, the orchestrator constructs prompts follo
 
 The user message component of the prompt then provides structured information formatted as: "IPO Details: Company Name: [name], Issue Price: [price] rupees, Listing Price: [price] rupees, Listing Gain: [percentage]%. Agent Scores (scale 0-100, 50 is neutral): Price Movement Agent: [score], analysis suggests [brief note]. Macroeconomic Agent: [score], market conditions are [brief note]. Sentiment Agent: [score], news sentiment is [brief note]. Risk Agent: [score], risk assessment is [brief note]. IPO Intelligence Agent: [score], IPO signals are [brief note]. Orchestrator Score: [score], Investment Signal: [BUY/SELL/HOLD]."
 
-The prompt concludes with specific instructions for the desired output format: "Based on this analysis, provide a concise investment recommendation addressing: 1) Should retail investors apply for this IPO or invest at current levels? Give a clear YES or NO with brief reasoning. 2) Recommended holding period: listing day sale, short-term hold (1-3 months), or long-term hold (6+ months). 3) Exit strategy: specific price targets or conditions that would trigger a sell decision. 4) Key risks: the three most important risk factors that could lead to losses. Keep total response under 250 words for readability."
+The prompt concludes with specific instructions for the desired output format: "Based on this analysis, provide a concise investment recommendation addressing: 1) Should retail investors apply for this IPO or invest at current levels in  Give a clear YES or NO with brief reasoning. 2) Recommended holding period: listing day sale, short-term hold (1-3 months), or long-term hold (6+ months). 3) Exit strategy: specific price targets or conditions that would trigger a sell decision. 4) Key risks: the three most important risk factors that could lead to losses. Keep total response under 250 words for readability."
 
 The model's generated response undergoes post-processing to ensure consistency and safety. The system parses the response to verify it contains all requested components, checks that the recommendation aligns directionally with the orchestrator score (for example, the text should not recommend buying if the orchestrator signal is SELL), and filters any inappropriate content through rule-based checks and toxicity detection models. If the response fails validation, the system either retries with a modified prompt or falls back to a template-based explanation generated from agent scores without using the large language model.
 
@@ -793,17 +793,17 @@ Comprehensive evaluation of our framework requires examining performance through
 
 Accuracy metrics quantify how often the framework's categorical recommendations align with actual outcomes. Signal accuracy measures the percentage of cases where BUY signals correspond to IPOs with positive ninety-day returns and SELL signals correspond to negative returns. Mathematically, for the set of IPOs receiving BUY or STRONG_BUY signals, accuracy equals the number with positive R₉₀ divided by the total number of such signals. Similarly, for SELL and STRONG_SELL signals, accuracy equals the count with negative R₉₀ divided by total sell signals. We report these separately as buy accuracy and sell accuracy, as well as overall accuracy across all signals.
 
-Precision and recall metrics borrowed from machine learning classification provide additional nuance. Precision answers the question: when the system says BUY, what fraction of those recommendations actually yielded profits? Formally, precision equals true positives (BUY signals with positive returns) divided by total positive predictions (all BUY signals). High precision indicates that investors can trust BUY recommendations as unlikely to lose money. Recall addresses: of all the IPOs that actually performed well, what fraction did the system identify with BUY signals? Formally, recall equals true positives divided by total actual positives (all IPOs with positive returns regardless of signal). High recall ensures the system doesn't miss many profitable opportunities.
+Precision and recall metrics borrowed from machine learning classification provide additional nuance. Precision answers the question: when the system says BUY, what fraction of those recommendations actually yielded profits in  Formally, precision equals true positives (BUY signals with positive returns) divided by total positive predictions (all BUY signals). High precision indicates that investors can trust BUY recommendations as unlikely to lose money. Recall addresses: of all the IPOs that actually performed well, what fraction did the system identify with BUY signals in  Formally, recall equals true positives divided by total actual positives (all IPOs with positive returns regardless of signal). High recall ensures the system doesn't miss many profitable opportunities.
 
 Correlation metrics assess whether the framework's numerical confidence scores exhibit monotonic relationships with actual returns, even if categorical signals don't perfectly align. Pearson correlation coefficient measures linear association between orchestrator scores and ninety-day returns, computed as:
 
-ρ = Cov(Sₒᵣcₕ, R₉₀) / (σₛₒᵣcₕ × σᵣ₉₀)
+ρ = Cov(Sₒᵣcₕ, R₉₀) / (σₛₒᵣcₕ x σᵣ₉₀)
 
 where Cov denotes covariance and σ represents standard deviation. Values near plus one indicate strong positive linear relationship, meaning higher orchestrator scores consistently predict higher returns. Spearman rank correlation, a non-parametric alternative, assesses monotonic but not necessarily linear relationships by correlating rank orders rather than raw values. This handles outliers better than Pearson correlation. Statistical significance is assessed through p-values testing the null hypothesis of zero correlation, with p less than zero point zero five conventionally indicating statistical significance at the ninety-five percent confidence level.
 
 Portfolio performance metrics evaluate the financial outcomes of following the framework's recommendations. Total return measures the overall percentage gain or loss from initial to final portfolio value, computed as:
 
-Total Return = ((Final Portfolio Value - Initial Capital) / Initial Capital) × 100
+Total Return = ((Final Portfolio Value - Initial Capital) / Initial Capital) x 100
 
 This aggregates performance across all IPO investments over the backtesting period. Annualized return normalizes this to a per-year basis for easier comparison with benchmark returns from other investments, calculated by:
 
@@ -1054,7 +1054,7 @@ REFERENCES
 
 [2] J. R. Ritter, "The Long-Run Performance of Initial Public Offerings," Journal of Finance, vol. 46, no. 1, pp. 3-27, 1991.
 
-[3] T. Loughran and J. R. Ritter, "Why Has IPO Underpricing Changed Over Time?" Financial Management, vol. 33, no. 3, pp. 5-37, 2004.
+[3] T. Loughran and J. R. Ritter, "Why Has IPO Underpricing Changed Over Time in " Financial Management, vol. 33, no. 3, pp. 5-37, 2004.
 
 [4] M. Wooldridge and N. R. Jennings, "Intelligent Agents: Theory and Practice," Knowledge Engineering Review, vol. 10, no. 2, pp. 115-152, 1995.
 

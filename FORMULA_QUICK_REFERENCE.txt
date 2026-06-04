@@ -1,0 +1,182 @@
+================================================================================
+QUICK REFERENCE: Mathematical Formulas in Research Paper
+================================================================================
+All formulas are now written in CLEAR, READABLE plain text!
+
+================================================================================
+MAIN FORMULAS
+================================================================================
+
+1. LISTING GAIN (First-day return)
+   --------------------------------
+   G_listing = ((P_listing - P_issue) / P_issue) x 100
+   
+   Where:
+   - G_listing = Listing gain percentage
+   - P_listing = Price when stock lists on exchange
+   - P_issue = Price during IPO subscription
+   
+   Example: If P_issue = 100 and P_listing = 125
+   G_listing = ((125 - 100) / 100) x 100 = 25%
+
+
+2. MULTI-HORIZON RETURNS (30, 60, 90 days)
+   ----------------------------------------
+   R30 = ((P30 - P_issue) / P_issue) x 100
+   R60 = ((P60 - P_issue) / P_issue) x 100
+   R90 = ((P90 - P_issue) / P_issue) x 100
+   
+   Where:
+   - P30, P60, P90 = Stock prices at 30, 60, 90 days after issue
+   - These measure longer-term performance
+
+
+3. SENTIMENT ANALYSIS
+   -------------------
+   Keyword_score = (N_pos - N_neg) / (N_pos + N_neg + 1)
+   
+   Where:
+   - N_pos = Count of positive keywords (profit, growth, strong)
+   - N_neg = Count of negative keywords (loss, weak, decline)
+   
+   Combined Sentiment:
+   S_sent(a) = 0.4 x VADER_score + 0.3 x TextBlob_score + 0.3 x Keyword_score
+
+
+4. ORCHESTRATOR SCORE (Combines all agents)
+   -----------------------------------------
+   S_orch(i_j) = sum of (w_k x S_k(i_j)) for all agents k
+   
+   Where:
+   - S_orch = Final orchestrator score (0-100)
+   - w_k = Weight for agent k
+   - S_k = Score from agent k
+   
+   Agent Weights:
+   - w_price = 0.20 (Price Movement Agent)
+   - w_macro = 0.15 (Macroeconomic Agent)
+   - w_sentiment = 0.20 (Sentiment Agent)
+   - w_risk = 0.20 (Risk Agent)
+   - w_ipo = 0.25 (IPO Intelligence Agent)
+
+
+5. INVESTMENT SIGNALS (Buy/Sell recommendations)
+   ----------------------------------------------
+   Signal(i_j) = STRONG_BUY if S_orch >= 80
+   Signal(i_j) = BUY if 65 <= S_orch < 80
+   Signal(i_j) = HOLD if 45 <= S_orch < 65
+   Signal(i_j) = SELL if 30 <= S_orch < 45
+   Signal(i_j) = STRONG_SELL if S_orch < 30
+
+
+6. MARKET MOMENTUM
+   ----------------
+   Delta_Nifty = ((Nifty_t - Nifty_t_minus_7) / Nifty_t_minus_7) x 100
+   
+   Where:
+   - Nifty_t = Current NIFTY 50 index value
+   - Nifty_t_minus_7 = NIFTY value 7 days ago
+   - Measures market trend during IPO period
+
+
+================================================================================
+VARIABLE NOTATION GUIDE
+================================================================================
+
+PRICES:
+  P_issue     = Issue price (IPO subscription price)
+  P_listing   = Listing price (first day trading price)
+  P_t         = Price at time t
+  P30, P60, P90 = Prices at 30, 60, 90 days
+
+RETURNS:
+  G_listing   = Listing gain (first-day return %)
+  R30, R60, R90 = Returns at 30, 60, 90 days (%)
+
+SUBSCRIPTIONS:
+  S_retail    = Retail investor subscription multiple
+  S_QIB       = Qualified Institutional Buyer subscription
+  S_NII       = Non-Institutional Investor subscription
+
+AGENT SCORES:
+  S_k(i_j)    = Score from agent k for IPO i_j (range: 0-100)
+  S_price     = Price Movement Agent score
+  S_macro     = Macroeconomic Agent score
+  S_sent      = Sentiment Agent score
+  S_risk      = Risk Agent score
+  S_ipo       = IPO Intelligence Agent score
+  S_orch      = Orchestrator final score
+
+WEIGHTS:
+  w_k         = Weight for agent k (sum of all weights = 1)
+
+SENTIMENT:
+  N_pos       = Count of positive keywords
+  N_neg       = Count of negative keywords
+  VADER_score = VADER sentiment tool score
+  TextBlob_score = TextBlob sentiment tool score
+  Keyword_score = Keyword-based sentiment score
+
+MARKET:
+  V_NIFTY     = NIFTY 50 index value
+  Delta_Nifty = Change in NIFTY index (%)
+
+
+================================================================================
+OPERATORS
+================================================================================
+
+  x     = Multiplication
+  /     = Division
+  +     = Addition
+  -     = Subtraction
+  >=    = Greater than or equal to
+  <=    = Less than or equal to
+  <     = Less than
+  >     = Greater than
+  =     = Equals
+  sum   = Summation over all elements
+  in    = Set membership (element belongs to set)
+
+
+================================================================================
+EXAMPLE CALCULATION
+================================================================================
+
+IPO Example: XYZ Company
+
+Given Data:
+- P_issue = 100 rupees
+- P_listing = 125 rupees
+- S_retail = 10x (10 times oversubscribed)
+- S_QIB = 35x (35 times oversubscribed)
+- Agent Scores: Price=75, Macro=70, Sentiment=80, Risk=65, IPO=85
+
+Step 1: Calculate Listing Gain
+G_listing = ((125 - 100) / 100) x 100 = 25%
+
+Step 2: Calculate Orchestrator Score
+S_orch = (0.20 x 75) + (0.15 x 70) + (0.20 x 80) + (0.20 x 65) + (0.25 x 85)
+S_orch = 15 + 10.5 + 16 + 13 + 21.25 = 75.75
+
+Step 3: Determine Investment Signal
+Since 65 <= 75.75 < 80, Signal = BUY
+
+Interpretation: This is a GOOD IPO investment opportunity!
+
+
+================================================================================
+NOTES
+================================================================================
+
+• All scores range from 0 to 100 (50 = neutral)
+• Higher scores = More positive recommendation
+• Weights sum to 1.0 (100% total)
+• All notation is plain text - no special characters needed
+• Formulas can be read in any text editor
+
+================================================================================
+File: Research_Paper_IPO_Madras_Enhanced_Complete.txt
+Status: ALL FORMULAS FIXED AND READABLE ✓
+Date: June 5, 2026
+================================================================================
