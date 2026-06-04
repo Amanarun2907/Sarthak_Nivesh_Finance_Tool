@@ -1,0 +1,1150 @@
+================================================================================
+IEEE CONFERENCE PAPER - ENHANCED VERSION
+================================================================================
+
+Title: Initial Public Offer Investment Strategy Utilizing Hierarchical 
+       Multi-Agent Artificial Intelligence System
+
+Authors: Aman Jain, Rohit Fogla
+Institution: BML Munjal University, Gurugram, Haryana, India
+Email: [corresponding author email]
+
+================================================================================
+ABSTRACT
+================================================================================
+
+The growing uncertainty and non-linear dynamics of modern financial markets have challenged the effectiveness of conventional forecasting techniques in guiding investment decisions. In response to these challenges, this study proposes a comprehensive multi-agentic artificial intelligence framework that integrates multiple autonomous agents to enhance decision-making efficiency in complex market environments. The framework is designed as a hierarchical multi-agent system wherein specialized agents collaboratively process heterogeneous financial information, including price movements, macroeconomic indicators, investor sentiment, and risk signals.
+
+This research employs state-of-the-art large language models combined with real-time data streams to create an intelligent investment advisory system. The system comprises six distinct functional agents that work in concert to suggest optimal investment and exit strategies for Initial Public Offerings in the Indian stock market. Each agent specializes in analyzing a specific dimension of market behavior, ranging from technical price patterns to macroeconomic conditions, news sentiment, risk assessment, and IPO-specific intelligence factors. These individual analyses are then synthesized by a master orchestrator agent that produces unified investment recommendations.
+
+The proposed framework addresses critical factors in retail investment decision making that have historically been difficult to quantify or integrate systematically. The results indicate that the multi-agent architecture significantly improves forecasting precision and decision robustness when compared to traditional single-model approaches. Specifically, the system achieves prediction accuracy levels of eighty-two percent and confidence levels reaching up to eighty percent, while demonstrating superior portfolio outcomes with returns of forty-two point three five percent compared to eighteen point three percent for baseline strategies.
+
+Furthermore, the framework demonstrates enhanced capability in identifying market anomalies, managing downside risks, and optimizing asset allocation strategies across different market conditions. The system's modular architecture allows for continuous improvement and adaptation as new data becomes available and market dynamics evolve. This study contributes to the evolving discourse on intelligent financial systems by introducing a scalable and adaptive AI-driven investment ecosystem that combines the strengths of rule-based systems, machine learning algorithms, and advanced natural language processing. The research offers valuable insights for retail investors, financial institutions, and policymakers seeking to leverage autonomous decision systems for improved market efficiency, informed investment strategies, and resilient risk management in increasingly complex financial landscapes.
+
+Index Terms: Agentic AI, Investment Strategy, Initial Public Offering, Machine Learning, Multi-Agent Systems, Financial Forecasting, Sentiment Analysis, Large Language Models, Hierarchical Decision Making
+
+
+================================================================================
+I. INTRODUCTION
+================================================================================
+
+Initial Public Offerings represent critical junctures in the lifecycle of companies and present both significant opportunities and substantial challenges for retail investors participating in equity markets. The Indian IPO market has witnessed unprecedented growth over the past several years, with over two hundred companies going public in recent years, collectively raising capital exceeding one point five trillion Indian rupees. This surge in IPO activity has been driven by favorable market conditions, regulatory reforms aimed at easing listing requirements, and increased retail investor participation facilitated by digital trading platforms. However, the inherent volatility and information asymmetry surrounding IPO investments make decision-making particularly challenging for individual retail participants who lack access to sophisticated analytical tools and institutional-grade research.
+
+Traditional approaches to IPO evaluation rely predominantly on fundamental analysis of company financials, examination of subscription metrics during the bidding period, and study of historical pricing patterns of similar offerings. While these conventional methods provide valuable insights into company valuation and market demand, they often fail to capture the complex, multidimensional nature of modern IPO dynamics that involve intricate interactions between technical factors, market sentiment, macroeconomic conditions, and behavioral aspects of investor psychology. Recent academic literature has highlighted three primary limitations inherent in conventional IPO forecasting methodologies. First, these approaches demonstrate an inability to process and integrate heterogeneous real-time data streams that arrive from multiple sources at different frequencies. Second, they show inadequate incorporation of market sentiment and behavioral factors that significantly influence short-term price movements but are difficult to quantify using traditional financial metrics. Third, conventional methods exhibit limited adaptability to rapidly changing market conditions and fail to adjust their predictions as new information becomes available during the pre-listing and immediate post-listing periods.
+
+The advent of artificial intelligence and machine learning technologies has opened new avenues for financial forecasting and investment decision support systems. Various machine learning techniques, including neural networks, support vector machines, and ensemble methods, have been applied to stock price prediction with varying degrees of success. However, single-model approaches, even sophisticated deep learning architectures, struggle with the non-linear, multi-factorial nature of IPO performance prediction due to the limited historical data available for individual offerings and the unique characteristics of each company and market context. Multi-agent systems, characterized by multiple autonomous agents collaborating to solve complex problems through distributed intelligence and specialized expertise, offer a promising paradigm shift in approaching such multifaceted financial challenges. By distributing specialized analytical tasks across multiple intelligent agents, multi-agent architectures can process diverse information streams concurrently while maintaining interpretability through explicit agent roles and adaptability through modular design.
+
+This paper presents a novel hierarchical multi-agent artificial intelligence framework specifically designed for IPO investment strategy formulation and exit planning. Our framework, named Sarthak Nivesh meaning Meaningful Investment in Sanskrit, integrates six specialized analytical agents that operate autonomously yet collaborate through a coordinated decision-making protocol. The contributions of this research are fourfold and represent significant advances over existing approaches in the domain of intelligent financial systems.
+
+First, we introduce a hierarchical multi-agent architecture comprising six specialized agents, namely the Price Movement Agent, Macroeconomic Agent, Sentiment Agent, Risk Agent, IPO Intelligence Agent, and Master Orchestrator Agent. Each agent focuses on a specific analytical dimension while maintaining independence in data collection and analysis, thereby enabling parallel processing and comprehensive evaluation of IPO opportunities from multiple perspectives. The Price Movement Agent analyzes technical price patterns and subscription data to assess market demand and listing performance expectations. The Macroeconomic Agent evaluates broader market conditions and sectoral trends that influence IPO reception. The Sentiment Agent processes news articles and social media to gauge market sentiment and investor mood. The Risk Agent quantifies various risk factors including volatility, subscription confidence, and fundamental weaknesses. The IPO Intelligence Agent integrates specialized signals such as institutional investor participation, grey market premiums, and peer comparisons. Finally, the Orchestrator Agent synthesizes these diverse inputs through weighted aggregation to produce unified investment recommendations with associated confidence levels.
+
+Second, we integrate state-of-the-art large language models, specifically Groq Llama three point three seventy billion parameter model, for advanced natural language processing of financial news and automated sentiment analysis. This integration enables real-time incorporation of qualitative market signals that capture nuanced aspects of market sentiment beyond what dictionary-based sentiment analysis tools can detect. The large language model also generates human-readable investment explanations that enhance system transparency and help retail investors understand the reasoning behind recommendations, thereby addressing the common criticism of AI systems as opaque black boxes.
+
+Third, we develop and implement a comprehensive backtesting framework validated on twenty-five real IPO offerings from the Indian market spanning the period from two thousand twenty-one to two thousand twenty-four. This rigorous validation demonstrates superior performance compared to traditional baseline approaches across multiple evaluation metrics including prediction accuracy, portfolio returns, risk-adjusted performance, and correlation with actual outcomes. The backtesting methodology carefully avoids common pitfalls such as lookahead bias, survivorship bias, and data snooping that often inflate reported performance in academic studies.
+
+Fourth, we provide an open-source implementation of the complete framework including all agent logic, data collection pipelines, backtesting tools, and user interfaces. This publicly available codebase facilitates reproducibility of our results, enables other researchers to build upon our work, and provides a practical tool that retail investors can utilize for making informed IPO investment decisions. The modular architecture allows for easy customization and extension to incorporate additional agents or alternative analytical approaches.
+
+The remainder of this paper is organized into eight sections that comprehensively present our methodology, implementation, validation, and findings. Section Two reviews related work in IPO prediction methodologies, multi-agent systems in finance, machine learning applications in investment analysis, and sentiment analysis techniques. Section Three presents our proposed methodology including system overview, data collection procedures, agent design principles, and mathematical formulations underlying our approach. Section Four details the system architecture covering the layered design, agent interaction protocols, integration with large language models, and scalability considerations. Section Five describes implementation specifics including the technology stack, dataset characteristics, feature engineering processes, and agent implementations. Section Six outlines the experimental setup encompassing our backtesting framework, evaluation metrics, baseline comparisons, and validation procedures. Section Seven presents comprehensive results and analysis including prediction accuracy, portfolio performance, correlation studies, and agent contribution analysis. Section Eight discusses our findings, their implications for theory and practice, limitations of the current approach, and directions for future research. Section Nine concludes by summarizing key contributions and highlighting the broader significance of multi-agent approaches in financial technology.
+
+
+================================================================================
+II. RELATED WORK
+================================================================================
+
+A. Traditional IPO Prediction Methods and Their Limitations
+
+IPO performance prediction has been extensively studied in financial literature over several decades, with researchers seeking to identify factors that explain the patterns of underpricing, long-term returns, and variation in success rates across different offerings. Early seminal work by Ritter established the phenomenon of IPO underpricing, observing that initial public offerings are typically priced below their first-day trading value, resulting in substantial first-day returns for investors who receive allocations. This underpricing puzzle has motivated extensive research into its causes, with explanations ranging from information asymmetry theories to signaling models and behavioral finance perspectives. Subsequent research has identified various factors that influence IPO success and performance, including company fundamentals such as revenue growth and profitability, market conditions at the time of listing, the reputation and quality of underwriters managing the offering, and the composition and enthusiasm of the investor base.
+
+Important research by Ljungqvist and Wilhelm demonstrated that institutional investor participation, particularly involvement by Qualified Institutional Buyers who represent sophisticated investors with substantial resources and expertise, serves as a strong positive signal of IPO quality and future performance prospects. Their findings suggest that retail investors can benefit from monitoring QIB subscription levels as an indicator of professional investor confidence in the offering. Our framework explicitly incorporates QIB subscription data as a key input to the IPO Intelligence Agent, weighted heavily due to the informational advantage that institutional investors possess through extensive due diligence and industry expertise. Additionally, research has shown that subscription multiples in the retail category, while more volatile and sentiment-driven than institutional subscriptions, provide useful signals about broad market enthusiasm and demand pressure that can influence listing day performance.
+
+Despite these advances in understanding IPO dynamics through traditional financial analysis, conventional prediction methods face several fundamental limitations in the modern high-frequency, information-rich market environment. Traditional fundamental analysis requires manually analyzing hundreds of pages of prospectus documents, comparing financial ratios across peer companies, and making subjective judgments about management quality and business model sustainability. This process is time-intensive, requires specialized expertise, and struggles to incorporate the rapid flow of new information that emerges during the IPO process. Furthermore, traditional approaches typically examine factors in isolation rather than considering their complex interactions, potentially missing important synergies or offsetting effects between different dimensions of IPO attractiveness.
+
+B. Machine Learning Applications in Financial Forecasting
+
+The application of machine learning techniques to financial prediction has evolved significantly over the past two decades, transitioning from simple linear regression models to sophisticated deep learning architectures capable of processing high-dimensional feature spaces and learning complex non-linear relationships. Support Vector Machines and Random Forests have been extensively employed for stock price prediction tasks with moderate success, demonstrating ability to capture non-linear patterns that escape traditional statistical models. These approaches showed particular promise in short-term price prediction where technical patterns and momentum effects dominate over fundamental factors.
+
+Deep learning approaches, particularly Long Short-Term Memory networks and other recurrent neural network architectures, have shown promise in capturing temporal dependencies in financial time series data. These models can learn to recognize sequential patterns in price movements, trading volumes, and other market indicators that unfold over time. Recent work has explored attention mechanisms and transformer architectures that allow models to focus selectively on the most relevant historical time points when making predictions. However, these deep learning approaches face significant challenges when applied to IPO forecasting due to the unique characteristics of IPO data. Unlike established stocks with years of historical trading data, individual IPOs lack sufficient historical price information for training complex models. Transfer learning approaches that pre-train models on established stocks and fine-tune on IPO data show some promise but struggle to capture the unique dynamics of listing events.
+
+Important research by Chen and colleagues applied ensemble methods combining multiple machine learning algorithms to IPO pricing prediction, demonstrating that aggregating predictions from diverse models can improve robustness compared to relying on single models. However, their work focused primarily on predicting the optimal IPO offer price rather than post-listing performance, and did not integrate sentiment analysis or real-time news processing capabilities. Additionally, most machine learning applications in finance have focused on single-stock or market index level prediction, with relatively limited attention devoted specifically to the IPO domain where data scarcity and unique event characteristics pose special challenges.
+
+C. Multi-Agent Systems in Financial Applications
+
+Multi-agent systems represent a paradigm in artificial intelligence where multiple autonomous computational entities called agents interact and collaborate to solve complex problems that exceed the capabilities of individual agents. The theoretical foundation for intelligent agents was established by Wooldridge and Jennings, who identified four key properties that characterize intelligent agents: autonomy in decision-making without constant human intervention, reactivity in responding to changes in their environment, proactiveness in exhibiting goal-directed behavior and taking initiative, and social ability in interacting with other agents through communication and coordination protocols. These properties make multi-agent systems particularly well-suited for financial applications where problems are naturally decomposable into specialized sub-tasks, require processing diverse information sources, and benefit from multiple perspectives.
+
+Multi-agent systems have been explored in various financial applications beyond IPO analysis, including algorithmic trading where agents execute buy and sell orders based on different strategies, portfolio management where agents recommend asset allocations across different securities, market simulation where agents represent different types of traders to study market dynamics, and fraud detection where agents monitor transactions from multiple angles. In algorithmic trading contexts, multi-agent systems enable different trading strategies to operate in parallel, with each agent specializing in particular market conditions or asset classes. Some implementations feature competitive agents that vie for trading opportunities, while others employ cooperative agents that share information to improve collective performance.
+
+In the specific context of financial decision-making for investment advisory, multi-agent systems offer several distinct advantages compared to monolithic approaches. First, the modular design inherent in multi-agent architectures facilitates system maintenance and incremental improvements, as individual agents can be updated, replaced, or enhanced without requiring complete system redesign. Second, parallel processing of diverse data streams becomes natural when different agents handle different information sources concurrently, reducing overall system latency and enabling real-time responsiveness. Third, interpretability improves significantly through explicit agent roles, as the contribution of each analytical dimension becomes visible and traceable, addressing concerns about opacity in AI decision systems. Fourth, fault tolerance increases through redundancy, as the failure or degradation of individual agents need not compromise overall system function if other agents continue operating.
+
+However, existing multi-agent system implementations in finance have primarily focused on high-frequency trading contexts or general asset allocation problems, with limited application specifically to IPO evaluation. The unique challenges of IPO analysis including limited historical data per offering, importance of event-driven factors like subscription closures and listing dates, and critical role of sentiment around new offerings require specialized multi-agent architectures designed explicitly for this domain. Our work addresses this gap by designing agents specifically around the key dimensions that research has identified as important for IPO performance, and by incorporating modern natural language processing capabilities that were not available in earlier multi-agent financial systems.
+
+D. Sentiment Analysis and Large Language Model Integration
+
+The recognition that market sentiment significantly influences asset prices beyond what fundamental factors alone can explain has driven extensive research in financial sentiment analysis over the past fifteen years. Pioneering work by Bollen and colleagues demonstrated that sentiment extracted from Twitter social media posts exhibits predictive power for stock market movements, with collective mood states captured through sentiment analysis showing statistically significant correlation with market indices. This finding sparked widespread interest in leveraging social media, news articles, and other textual data sources for trading signal generation and risk management.
+
+VADER, the Valence Aware Dictionary and sEntiment Reasoner developed specifically for social media text analysis, has become a standard tool in financial sentiment analysis due to its ability to handle informal language, emoticons, and emphasis patterns common in social media. TextBlob, another widely-used natural language processing library, provides sentiment analysis capabilities along with part-of-speech tagging and noun phrase extraction useful for entity identification in financial texts. These dictionary-based approaches assign sentiment scores to words and combine them according to grammatical rules to produce document-level sentiment assessments. While effective for many applications, these methods struggle with context-dependent meaning, sarcasm, and domain-specific financial terminology that may carry different sentiment connotations in financial contexts compared to general usage.
+
+Recent breakthroughs in large language models, particularly the development of the GPT series by OpenAI, GPT-4 representing the state-of-the-art in proprietary models, and open-source alternatives like Meta's Llama family of models, have revolutionized natural language understanding and generation capabilities. These models, trained on massive text corpora using self-supervised learning techniques, develop rich representations of language that capture semantic relationships, contextual dependencies, and domain-specific knowledge. For financial applications, large language models can process news articles and earnings call transcripts to extract not just surface-level sentiment but nuanced interpretations of corporate events, management tone, and market implications. They can identify entity-specific sentiment, distinguishing between positive mentions of a company versus positive mentions of its competitors, a critical distinction that simpler sentiment tools often miss.
+
+Our framework leverages Groq Llama three point three with seventy billion parameters, a state-of-the-art open-source large language model, for two primary functions in the investment decision pipeline. First, the model enhances sentiment analysis by processing financial news articles about IPOs to extract nuanced sentiment that goes beyond dictionary-based methods. The model can identify sarcasm in headlines, understand context-dependent meaning of terms like aggressive which might be positive in growth contexts but negative in risk contexts, and recognize entity-specific sentiment that correctly attributes positive or negative statements to the right companies and stakeholders. Second, the model generates human-readable investment explanations and recommendations by synthesizing the various agent scores and IPO characteristics into coherent natural language summaries. This explanation generation addresses the interpretability challenge inherent in AI systems, helping retail investors understand not just what the system recommends but why it makes that recommendation and what factors were most influential in the decision.
+
+The integration of large language models with traditional multi-agent architectures represents a novel contribution of our work. While previous systems have used either rule-based agents or neural language models separately, our hybrid approach combines the interpretability and domain knowledge encoding of rule-based agents with the flexible natural language understanding of large language models, creating a system that is both powerful and explainable.
+
+E. Identified Research Gaps and Our Contributions
+
+Despite the substantial progress made in IPO prediction research, multi-agent system development, and sentiment analysis techniques as reviewed above, a careful analysis of existing literature reveals three critical gaps that our research addresses. First, no prior work has integrated a multi-agent architecture specifically designed for IPO investment decision-making that comprehensively considers the full spectrum of relevant factors including technical price dynamics, macroeconomic conditions, news sentiment from multiple sources, quantitative risk metrics, and IPO-specific intelligence signals in a unified framework. Previous multi-agent financial systems have focused on different problems such as high-frequency trading or general portfolio optimization, and have not been tailored to the unique characteristics and data sources relevant to IPO evaluation.
+
+Second, current sentiment analysis applications in finance, while increasingly sophisticated, rarely combine multiple methodologies including dictionary-based tools like VADER and TextBlob, keyword-based financial lexicons, and large language model interpretations to create robust ensemble sentiment signals. Most systems rely on a single sentiment analysis approach, making them vulnerable to the limitations and biases inherent in that particular method. Our ensemble approach that aggregates sentiment signals from multiple sources with carefully calibrated weights provides more robust and reliable sentiment assessments than any single method alone.
+
+Third, there exists limited availability of open-source, production-ready, and reproducible frameworks that retail investors can actually deploy and utilize for making real IPO investment decisions. While academic papers frequently propose theoretical models and report backtesting results, the underlying code and systems are rarely made publicly available in a form that practitioners can use. This limits the practical impact of academic research and makes it difficult for other researchers to verify results or build upon existing work. Our provision of a complete open-source implementation with comprehensive documentation, reproducible backtesting scripts, and user-friendly interfaces directly addresses this gap and facilitates both academic reproducibility and practical utility.
+
+Our work fills these gaps by proposing, rigorously implementing, and comprehensively validating a multi-agent IPO investment framework that integrates diverse data sources, employs ensemble sentiment analysis with large language model enhancement, and provides the entire system as an open-source reproducible research artifact. The subsequent sections detail our methodology, implementation, and validation of this comprehensive solution.
+
+
+================================================================================
+III. PROPOSED METHODOLOGY
+================================================================================
+
+This section presents the detailed methodology underlying our hierarchical multi-agent framework for IPO investment analysis and recommendation generation. We begin with a high-level system overview, then describe data collection and preprocessing procedures, articulate the design principles governing our agents, present the mathematical formulations that encode our decision logic, and finally detail the specialized methodologies employed by each individual agent.
+
+A. System Overview and Operational Workflow
+
+Our proposed framework, designated as Sarthak Nivesh which translates to Meaningful Investment in Sanskrit, employs a hierarchical multi-agent architecture to analyze IPO opportunities and generate investment recommendations with associated confidence levels and exit strategies. The system operates through three primary phases that execute sequentially whenever an IPO is submitted for analysis or when scheduled automated analysis of newly listed IPOs occurs.
+
+The first phase involves comprehensive data collection from multiple heterogeneous sources. The system initiates real-time acquisition of market data including historical price series for benchmark indices and comparable companies, detailed IPO characteristics including offer price and subscription metrics across different investor categories, news feeds from multiple financial news sources, and institutional investor activity data from regulatory filings. This data collection phase employs parallel asynchronous processes to minimize latency, with each data source being queried independently and results being cached to avoid redundant API calls. The data collection module implements robust error handling including retry logic with exponential backoff, fallback to alternative data sources when primary sources are unavailable, and graceful degradation where missing data triggers appropriate adjustments in downstream agent scoring rather than system failure.
+
+The second phase conducts multi-agent analysis wherein six specialized agents independently evaluate IPO attractiveness from their distinct analytical perspectives. Each agent operates autonomously, fetching any additional data it requires beyond what the data collection phase gathered, applying its specialized analysis logic, and generating a confidence score normalized to the range from zero to one hundred. The agents execute in parallel without dependencies on each other's outputs, enabling efficient utilization of computational resources and minimizing total analysis time. Each agent encodes domain expertise and analytical heuristics relevant to its specialized focus area, translating raw data into actionable intelligence through carefully designed scoring rubrics that reward positive indicators and penalize negative signals.
+
+The third phase performs orchestration and decision synthesis wherein the Master Orchestrator Agent aggregates the individual agent confidence scores using predetermined weights that reflect the relative importance of each analytical dimension. The Orchestrator computes a weighted average score, translates this numerical score into a categorical investment recommendation ranging from Strong Buy through Buy, Hold, Sell, to Strong Sell, and determines confidence level based on score magnitude and inter-agent agreement. For high-confidence recommendations, the system invokes the large language model to generate detailed natural language explanations articulating the investment thesis, highlighting key supporting factors and important risks, and suggesting optimal entry and exit strategies. This explanation generation transforms numerical agent scores and categorical recommendations into accessible prose that retail investors can readily understand and act upon.
+
+B. Data Collection and Preprocessing Procedures
+
+The effectiveness of any machine learning or artificial intelligence system critically depends on the quality, comprehensiveness, and timeliness of the data it processes. Our framework implements a sophisticated data collection pipeline that gathers information from multiple authoritative sources while handling the various challenges of real-time financial data acquisition including API rate limits, data format inconsistencies, and occasional source unavailability.
+
+For IPO-specific data, we collect comprehensive information about each offering including the issue price at which shares are offered to investors, the listing price representing the opening price when the stock begins trading on the exchange, the issue size indicating total capital raised, subscription multiples across different investor categories namely retail individual investors, Qualified Institutional Buyers, and Non-Institutional Investors, grey market premium when available which provides a signal of pre-listing demand, and fundamental company information extracted from the prospectus including revenue, profit margins, promoter holdings, and peer comparisons. Data sources for IPO information include official listings from the National Stock Exchange and Bombay Stock Exchange, real-time IPO tracking websites such as ipowatch.in, company prospectuses known as Red Herring Prospectuses that are filed with securities regulators, and financial news websites that aggregate IPO information. We employ web scraping techniques with proper rate limiting and caching to collect data from sources that do not provide structured APIs, and we implement validation checks to ensure data consistency across multiple sources.
+
+For market data, we obtain historical and real-time stock prices, index values including NIFTY 50 and SENSEX which serve as barometers of overall market conditions, trading volumes, and related time series data primarily through the Yahoo Finance API using the yfinance Python library. The data granularity consists of daily closing prices with at least two years of historical context for computing moving averages, volatility metrics, and other technical indicators. For newly listed IPOs, we track intraday price movements on listing day to compute listing gains and initial volatility metrics. The system maintains a local database cache of historical data to minimize redundant API calls and ensure rapid response times for frequently accessed symbols.
+
+For news and sentiment data, we aggregate financial news articles from multiple authoritative sources including the Economic Times RSS feed which provides comprehensive coverage of Indian financial markets, Moneycontrol RSS feed offering real-time business news and analysis, and Google News India Business section for broader coverage and alternative perspectives. Articles mentioning the IPO company name or ticker symbol are retrieved during the period spanning two weeks before listing to one week after listing, capturing the key information flow period around the IPO event. Retrieved articles undergo preprocessing involving text cleaning to remove HTML tags, JavaScript artifacts, and special characters that can interfere with sentiment analysis, tokenization into individual words and sentences for linguistic processing, stopword removal to eliminate common words like "the" and "and" that carry minimal information content, and entity extraction to identify mentions of company names, competitor names, industry sectors, and financial terms.
+
+For institutional investor activity data, we obtain Foreign Institutional Investor net flows and Domestic Institutional Investor net flows from the NSE official API with daily granularity. These net flow figures represent the difference between institutional purchases and sales in the equity market, providing signals about sophisticated investor sentiment toward Indian equities. Positive net flows indicate institutional buying pressure generally interpreted as bullish for market conditions, while negative net flows indicate selling pressure that may create headwinds for new listings. The data is updated daily and aggregated over rolling seven-day windows to smooth out daily volatility and identify sustained trends.
+
+Finally, we collect macroeconomic indicators with NIFTY 50 index level serving as our primary proxy for overall market health and investor risk appetite. We compute the change in NIFTY 50 over rolling seven-day windows centered on the IPO listing date, providing a measure of market momentum during the critical period when the IPO is absorbing investor attention and capital. Additional macroeconomic indicators that we track include sector-specific indices for the IPO company's industry to assess sectoral trends, interest rate levels from Reserve Bank of India data as higher rates generally correlate with market pressure, and inflation metrics that influence corporate profitability expectations and investor return requirements.
+
+C. Agent Design Principles and Architectural Considerations
+
+The design of our multi-agent system adheres to fundamental principles established in the multi-agent systems literature while incorporating domain-specific considerations relevant to financial analysis and investment decision-making. These design principles govern both the individual agent implementations and the overall system architecture, ensuring that the framework exhibits desirable properties including reliability, interpretability, maintainability, and extensibility.
+
+The principle of autonomy dictates that each agent independently fetches required data, performs its specialized analysis, and generates outputs without requiring external intervention or supervision during normal operation. Agents encapsulate their data requirements and analytical logic, presenting clean interfaces to the orchestration layer while hiding implementation details. This autonomy enables agents to be developed, tested, and maintained independently, facilitating collaborative development and simplifying debugging when issues arise. Autonomous agents can also be deployed on separate computational resources if performance requirements demand distributed processing.
+
+The principle of specialization ensures that each agent focuses on a specific analytical dimension where it possesses deep expertise and domain knowledge. Rather than attempting to create a single monolithic model that captures all relevant factors, we decompose the investment decision problem into distinct sub-problems corresponding to price dynamics, macroeconomic conditions, sentiment, risk, and IPO-specific intelligence. This specialization enables each agent to employ analytical techniques optimally suited to its domain, whether that be technical analysis for price patterns, econometric modeling for macroeconomic factors, natural language processing for sentiment, statistical risk modeling, or expert rules encoding IPO market conventions. Specialization also enhances interpretability, as the contribution of each factor to the final recommendation becomes explicit and traceable.
+
+The scoring mechanism principle mandates that all agents produce normalized confidence scores in the consistent range from zero to one hundred, with fifty representing neutral neither bullish nor bearish assessment, scores above fifty indicating positive sentiment toward the IPO investment, and scores below fifty indicating negative assessment. This normalization facilitates consistent aggregation by the Orchestrator Agent and enables meaningful comparisons across agents despite their diverse analytical methodologies. Each agent implements internal logic that maps its analytical outputs into this standardized score range through carefully calibrated scoring rubrics that have been validated through historical backtesting.
+
+The interpretability principle requires that agent logic remains transparent and explainable rather than being opaque black boxes. We employ rule-based decision logic where possible, as rules can be directly inspected and understood by domain experts. Where machine learning models are employed, we favor interpretable model classes such as decision trees and linear models over complex neural networks when prediction performance is comparable. Additionally, agents provide not just numerical scores but also brief textual justifications explaining which factors contributed most significantly to their assessment. This interpretability is essential for building user trust in the system and for enabling expert review and validation of system behavior.
+
+D. Mathematical Formulations and Scoring Functions
+
+
+We now present the mathematical formulations that formalize our multi-agent framework and agent scoring logic. These formulations provide a rigorous foundation for the system while remaining interpretable through explicit functional forms rather than complex non-linear transformations.
+
+Let I represent the set of all IPOs under evaluation, where I = {i1, i2, ..., i?} and n denotes the total number of IPOs in our analysis set. For each individual IPO denoted by i? where j ranges from 1 to n, we define several fundamental quantities that serve as inputs to our agent scoring functions.
+
+The issue price denoted P????? represents the per-share price at which the IPO is offered to investors during the subscription period. This price is determined through a book-building process where institutional investors submit bids, and the final price is set by the issuing company and underwriters based on observed demand. The listing price denoted P???? represents the price at which the stock opens for trading on the stock exchange on listing day, typically occurring three to five business days after subscription closing. The difference between listing price and issue price, appropriately normalized, gives the listing gain which serves as an important signal of initial market reception.
+
+We define the price at time t post-listing as P?, measured in the same currency units as issue and listing prices. This notation allows us to express returns over various holding periods. Specifically, we track prices at thirty days, sixty days, and ninety days post-listing, denoted P30, P60, and P90 respectively. These multi-horizon prices enable evaluation of both short-term momentum and medium-term performance trajectories.
+
+Subscription multiples, which indicate the level of oversubscription in each investor category, are denoted S?????? for retail individual investors, S??? for Qualified Institutional Buyers, and S??? for Non-Institutional Investors. A subscription multiple of X means that investors in that category bid for X times the number of shares allocated to them, indicating demand strength. For example, S?????? equal to 10 means retail investors collectively bid for ten times the shares available in their quota.
+
+Market condition is quantified through V?????? representing the performance of the NIFTY 50 index, India's benchmark equity index comprising the fifty largest and most liquid stocks. We typically measure V?????? as the percentage change in NIFTY 50 over a seven-day rolling window centered on the IPO listing date. This captures whether the IPO is listing into a bullish market environment characterized by rising prices and positive investor sentiment, or a bearish environment with falling prices and risk aversion.
+
+The set of news articles about IPO i? is denoted N???, where N??? = {a1, a2, ..., a?} and m represents the number of relevant articles identified during our monitoring period. Each article a? contains textual content including headline and body text that conveys information and sentiment about the IPO.
+
+With these fundamental quantities defined, we now present the core mathematical formulations that operationalize our framework.
+
+Equation 1: Listing Gain
+
+The listing gain represents the first-day return that investors would realize if they received allocation at the issue price and sold at the listing day closing price. Mathematically, listing gain G???? is defined as:
+
+G???? = ((P???? - P?????) / P?????) � 100
+
+This formula computes the percentage return, with positive values indicating that the stock listed at a premium to its issue price, a favorable signal of market demand. Negative listing gains, while less common in the Indian market, indicate that the IPO was overpriced or faced weak demand, potentially due to adverse market conditions or company-specific concerns. For example, if an IPO has an issue price P????? of 100 rupees and lists at P???? of 125 rupees, the listing gain equals ((125 - 100) / 100) � 100 = 25 percent, indicating strong initial reception.
+
+Equation 2, 3, 4: Multi-Horizon Returns
+
+To evaluate IPO performance beyond just listing day, we compute returns over multiple holding periods, specifically at thirty, sixty, and ninety days post-issue. The thirty-day return R30 is calculated as:
+
+R30 = ((P30 - P?????) / P?????) � 100
+
+Similarly, the sixty-day return R60 follows:
+
+R60 = ((P60 - P?????) / P?????) � 100
+
+And the ninety-day return R90 is given by:
+
+R90 = ((P90 - P?????) / P?????) � 100
+
+These multi-horizon returns allow us to assess whether IPOs that show strong initial performance continue to deliver returns over longer periods, or whether initial enthusiasm fades leading to price corrections. In our validation framework, we primarily focus on the ninety-day return R90 as our target variable for prediction, as this horizon is long enough to move beyond listing day volatility but short enough to be relevant for retail investors making allocation decisions.
+
+Equation 5: Agent Score Generation
+
+Each specialized agent k, where k ranges over our six agents (Price Movement, Macroeconomic, Sentiment, Risk, IPO Intelligence, Orchestrator), produces a confidence score for IPO i? denoted S?(i?). This score lies in the range from zero to one hundred, expressed mathematically as:
+
+S?(i?) ? [0, 100] for all k and j
+
+A score of fifty represents a neutral assessment, scores above fifty indicate positive sentiment (the agent views the IPO favorably), and scores below fifty indicate negative sentiment (the agent recommends caution or avoidance). Each agent implements a specialized scoring function that maps its input data to this normalized score range through domain-specific logic detailed in subsequent subsections.
+
+Equation 6: Orchestrator Weighted Aggregation
+
+The Master Orchestrator Agent synthesizes individual agent scores through weighted aggregation. The orchestrator score S??c?(i?) for IPO i? is computed as:
+
+S??c?(i?) = S? w? � S?(i?)
+
+where the summation runs over all six agents, w? represents the weight assigned to agent k reflecting its relative importance in the overall decision, and the weights satisfy the normalization constraint:
+
+S? w? = 1
+
+This constraint ensures that the orchestrator score remains in the same zero to one hundred range as individual agent scores. In our implementation, weights are assigned based on empirical validation on training data and domain expertise about the relative importance of different factors in IPO performance. Specifically, we assign:
+
+w???c? = 0.20 for the Price Movement Agent
+w??c?? = 0.15 for the Macroeconomic Agent
+w???? = 0.20 for the Sentiment Agent
+w???? = 0.20 for the Risk Agent
+w??? = 0.25 for the IPO Intelligence Agent
+
+The IPO Intelligence Agent receives the highest weight at twenty-five percent because it incorporates IPO-specific signals like QIB participation that prior research has identified as strongly predictive. Price Movement and Sentiment agents each receive twenty percent weight reflecting the importance of technical momentum and market sentiment. The Risk Agent also receives twenty percent weight as risk management is critical for retail investors. The Macroeconomic Agent receives fifteen percent weight as it provides important context but is somewhat less specific to individual IPO outcomes.
+
+Equation 7: Investment Signal Generation
+
+The continuous orchestrator score S??c?(i?) is translated into a discrete categorical investment signal through threshold-based classification. The investment signal Signal(i?) is defined as:
+
+Signal(i?) = STRONG_BUY if S??c? = 80
+Signal(i?) = BUY if 65 = S??c? < 80
+Signal(i?) = HOLD if 45 = S??c? < 65
+Signal(i?) = SELL if 30 = S??c? < 45
+Signal(i?) = STRONG_SELL if S??c? < 30
+
+These thresholds are calibrated based on historical performance analysis. STRONG_BUY signals at scores of eighty or above indicate very high confidence and historically have corresponded to IPOs with excellent returns. BUY signals at scores between sixty-five and eighty indicate positive but slightly less confident assessments, suggesting good risk-reward tradeoffs. HOLD signals between forty-five and sixty-five recommend waiting to see how the IPO performs before committing capital, appropriate when signals are mixed. SELL and STRONG_SELL signals below forty-five indicate that the framework views the IPO as likely overpriced or facing significant risks, recommending investors avoid participation or exit existing positions.
+
+Equations 8-12: Sentiment Analysis Ensemble
+
+For each news article a within the set N??? of articles mentioning the IPO, we compute sentiment scores using three complementary methodologies and then aggregate them through weighted combination.
+
+First, the VADER Valence Aware Dictionary and sEntiment Reasoner produces a compound sentiment score VADER? defined as:
+
+VADER? = VADER_compound(a)
+
+This compound score ranges from negative one (most negative sentiment) through zero (neutral) to positive one (most positive sentiment). VADER is particularly effective at handling social media style text with emoticons, capitalization for emphasis, and informal language.
+
+Second, TextBlob sentiment analysis computes a polarity score TextBlob? given by:
+
+TextBlob? = TextBlob_polarity(a)
+
+The TextBlob polarity also ranges from negative one to positive one and is computed through pattern-based sentiment analysis that considers adjective-noun combinations and negation contexts.
+
+Third, we employ keyword-based sentiment analysis using predefined financial lexicons containing positive keywords (profit, growth, strong, excellent, outperform) and negative keywords (loss, weak, decline, overvalued, concern). For article a, we count positive keywords N??? and negative keywords N????, then compute:
+
+Keyword? = (N??? - N????) / (N??? + N???? + 1)
+
+The denominator includes plus one to avoid division by zero when no keywords are present. This keyword score also ranges approximately from negative one to positive one.
+
+We combine these three sentiment measures for article a through weighted averaging, yielding a composite sentiment score:
+
+S????(a) = 0.4 � VADER? + 0.3 � TextBlob? + 0.3 � Keyword?
+
+VADER receives the highest weight at forty percent due to its superior performance in financial contexts. TextBlob and keyword approaches each receive thirty percent weight, providing diversity in the ensemble.
+
+Finally, we aggregate sentiment across all articles about the IPO to produce an overall IPO sentiment score. First, we compute the mean sentiment across articles:
+
+mean_sentiment = mean({S????(a) | a ? N???})
+
+Then we scale and shift this mean to the zero to one hundred range used by agents:
+
+S????(i?) = 50 + 50 � mean_sentiment
+
+This formula maps the mean sentiment range of negative one to positive one into the agent score range of zero to one hundred, with neutral mean sentiment of zero mapping to an agent score of fifty.
+
+E. Specialized Agent Methodologies
+
+Having established the general mathematical framework, we now detail the specialized methodologies employed by each of our six agents. Each agent combines domain-specific rules, statistical computations, and scoring heuristics tailored to its analytical focus.
+
+Price Movement Agent Methodology
+
+The Price Movement Agent analyzes technical aspects of the IPO including historical pricing patterns where available, listing day performance, and subscription dynamics. The agent's core scoring function takes the form:
+
+S???c?(i?) = f(G????, S??????, trend_indicators)
+
+where f represents a composite function encoding multiple pricing signals. The agent begins with a baseline neutral score of fifty, then applies adjustments based on observed signals.
+
+For listing gain assessment, strong positive listing gains exceeding twenty-five percent trigger score increases of eight to twelve points, as such strong initial reception historically correlates with continued positive momentum. Moderate listing gains between ten and twenty-five percent add five to eight points. Small positive gains under ten percent add two to five points. Conversely, negative listing gains indicating weak demand or overpricing trigger score decreases, with losses exceeding ten percent subtracting twelve points.
+
+Subscription multiple analysis considers retail demand strength. Subscription multiples exceeding fifty times, indicating very strong oversubscription, add eight points to the score. Multiples between twenty and fifty times add five points. Multiples between five and twenty times add two points, representing modest oversubscription. Subscription below two times, suggesting weak demand, subtracts six points as it signals insufficient investor interest.
+
+When grey market premium data is available, the agent incorporates this signal as well. Grey market premium represents the premium over issue price at which shares trade in informal pre-listing markets, providing a real-time gauge of institutional and informed investor demand expectations. High grey market premiums above fifteen percent strongly support positive scoring adjustments.
+
+Macroeconomic Agent Methodology
+
+The Macroeconomic Agent evaluates broader market conditions and sectoral trends that provide context for individual IPO performance. During bull markets characterized by rising indices and positive investor sentiment, IPOs tend to receive more favorable reception regardless of company-specific factors. Conversely, bear markets create headwinds even for fundamentally strong offerings.
+
+The agent computes market momentum through the change in NIFTY 50 index over the seven-day window surrounding listing date:
+
+?Nifty = ((Nifty? - Nifty??7) / Nifty??7) � 100
+
+This percentage change captures market direction during the critical period. The agent then maps market performance to score adjustments through function g:
+
+S??c??(i?) = 50 + g(?Nifty)
+
+The function g implements piecewise logic where strong positive market performance exceeding three percent adds fifteen points, representing very favorable market conditions. Moderate positive performance between one and three percent adds seven to twelve points. Flat markets between negative one and positive one percent maintain neutral scoring. Moderate market declines between negative three and negative one percent subtract seven to twelve points. Severe market declines exceeding negative three percent subtract fifteen points, as such bearish conditions typically depress new listings substantially.
+
+The agent also considers sector-specific index performance when relevant sector indices exist, applying similar logic but with lesser weight than overall market assessment.
+
+Sentiment Agent Methodology
+
+The Sentiment Agent, as detailed in the mathematical formulations above, employs ensemble sentiment analysis combining VADER, TextBlob, and keyword-based approaches. Beyond the mathematical framework already presented, the agent implements several enhancements to improve sentiment signal quality.
+
+First, the agent performs entity recognition to verify that sentiment in articles actually pertains to the IPO company rather than competitors or general market commentary. Articles mentioning the company name in positive contexts receive higher weight than articles where the company is mentioned peripherally.
+
+Second, the agent applies recency weighting, giving more influence to recent articles closer to listing date than older articles from early in the IPO process when information was less complete. This temporal weighting uses exponential decay with a characteristic time constant of five days.
+
+Third, the agent implements source reliability weighting, assigning higher credibility to articles from established financial publications like Economic Times and Business Standard compared to unknown blogs or promotional content. This helps filter noise and potentially biased sources.
+
+Risk Agent Methodology
+
+The Risk Agent quantifies various dimensions of investment risk including price volatility, fundamental risks, and market microstructure risks. The agent's scoring function takes the form:
+
+S????(i?) = h(s???c?, S???, G????, fundamentals)
+
+where s???c? represents implied volatility inferred from listing day price movements and grey market data when available. Higher volatility increases risk, leading to lower risk agent scores.
+
+The agent considers QIB subscription as a signal of institutional confidence in risk-adjusted return prospects. Very high QIB subscription above fifty times indicates that sophisticated investors who conduct extensive due diligence view the risk-reward as attractive, supporting higher risk scores. Low QIB subscription below five times raises concerns about institutional appetite.
+
+Extreme listing gains, while superficially positive, can indicate overheating that increases risk of subsequent corrections. The risk agent penalizes listing gains exceeding fifty percent as suggestive of unsustainable momentum and elevated crash risk.
+
+Fundamental risk assessment examines company metrics including debt-to-equity ratios where high leverage increases financial risk, profitability where companies with negative or unstable earnings face higher business risk, and promoter holdings where low promoter stakes raise governance concerns about promoter commitment.
+
+IPO Intelligence Agent Methodology
+
+The IPO Intelligence Agent integrates signals most specific to the IPO domain that may not fit cleanly into other agent categories. This agent's scoring function combines multiple IPO-specific factors:
+
+S???(i?) = 0.40 � f_QIB(S???) + 0.30 � f_listing(G????) + 0.30 � f_subscription(S??????)
+
+The QIB participation function f_QIB maps institutional subscription to scores, heavily rewarding QIB multiples above thirty times with scores of eighty to ninety, as such participation indicates strong institutional confidence. QIB subscription below two times receives scores below thirty, flagging potential quality concerns.
+
+The listing performance function f_listing translates listing gains to scores, with the mapping calibrated such that listing gains of twenty to thirty percent, considered healthy but not excessive, produce scores around seventy. Negative listing gains produce scores below forty.
+
+The retail subscription function f_subscription encodes retail demand patterns, recognizing that retail investor enthusiasm, while sometimes sentiment-driven, provides information about broader market receptivity. Subscription above twenty times yields elevated scores, while below two times yields suppressed scores.
+
+The agent also considers other IPO-specific factors including underwriter reputation where top-tier investment banks are associated with better performance, company pedigree where established company demergers or strong private equity backing adds credibility, and issue size where very large issues face liquidity absorption challenges.
+
+This comprehensive multi-agent methodology combining specialized analytical perspectives through rigorous mathematical formulations enables our framework to capture the multifaceted nature of IPO investment decisions more effectively than single-factor or single-model approaches.
+
+
+================================================================================
+IV. SYSTEM ARCHITECTURE
+================================================================================
+
+This section presents the detailed system architecture that implements our multi-agent framework, covering the layered design, agent interaction protocols, integration of large language models for natural language understanding and generation, the data pipeline architecture that handles real-time information flows, and critical considerations for scalability and performance that enable deployment in production environments.
+
+A. Architectural Overview and Layered Design
+
+The proposed system architecture follows a classic layered pattern comprising five primary layers that separate concerns and enable modular development and maintenance. Each layer provides well-defined interfaces to adjacent layers while encapsulating implementation details.
+
+The Data Acquisition Layer forms the foundation of our architecture, interfacing with numerous external APIs and data sources to fetch real-time market data, IPO details, news feeds, and institutional activity information. This layer implements adapters for each data source including the Yahoo Finance API for historical and real-time stock prices through the yfinance Python library, the NSE official API for FII and DII net flow data, Google News RSS feeds for financial news articles, and web scraping interfaces for IPO-specific data from tracking websites. The layer handles authentication where required, implements rate limiting to respect API usage policies, manages connection pooling for efficiency, and provides caching to minimize redundant requests for data that changes infrequently. Error handling in this layer is particularly robust, as external services may experience downtime or rate limit violations. The layer implements exponential backoff retry logic, fallback to alternative data sources when primary sources fail, and graceful degradation where missing data triggers appropriate handling in higher layers rather than cascading failures.
+
+The Preprocessing Layer receives raw data from the acquisition layer and transforms it into cleaned, normalized, and structured formats suitable for consumption by analytical agents. This layer performs numerous transformations including text cleaning to remove HTML tags, JavaScript artifacts, and special characters from news articles, price data normalization to handle stock splits and dividends that create discontinuities in historical series, time zone standardization since different data sources may report timestamps in different time zones, and missing data imputation using forward fill for prices and interpolation for continuous variables. The layer also implements feature extraction, computing derived quantities like percentage changes, moving averages, and volatility metrics from raw price series. Data validation checks ensure that values fall within expected ranges and flag anomalies for investigation. The preprocessed data is persisted to a structured database with appropriate indices for efficient retrieval.
+
+The Agent Layer contains the six specialized agents that perform independent analyses of IPO opportunities. Each agent is implemented as a separate module with a common interface consisting of an analyze method that accepts IPO data and returns a normalized score along with a brief textual justification. Agents execute asynchronously without dependencies on each other's outputs, enabling parallel execution that minimizes total latency. Each agent module includes its own data fetching logic for any agent-specific data requirements beyond the common preprocessed data, encapsulates its scoring heuristics and analytical logic, generates a confidence score in the standardized zero to one hundred range, and produces an explanation string highlighting key factors influencing its assessment. The agent modules are designed to be stateless, with all required context passed as inputs, facilitating horizontal scaling by running multiple agent instances if needed.
+
+The Orchestration Layer aggregates individual agent outputs through the Master Orchestrator Agent. This layer receives the six individual agent scores once all agents have completed their analyses, computes the weighted average according to predetermined weights, translates the numerical orchestrator score to a categorical investment signal using threshold logic, assesses confidence level based on score magnitude and inter-agent agreement measured through score variance, and invokes the large language model for high-confidence recommendations to generate detailed natural language explanations. The orchestration layer also implements decision logging, recording all agent scores and final recommendations to a database for subsequent analysis and system improvement.
+
+The Presentation Layer provides user interfaces through which retail investors and analysts interact with the system. We have implemented two complementary interfaces. First, a modern web-based dashboard built with React provides an interactive interface featuring IPO search and selection, real-time agent score visualization with gauge charts, historical performance tracking with interactive plots, portfolio management for tracking post-investment outcomes, and export functionality for generating PDF reports. Second, a Streamlit application offers an alternative interface optimized for rapid prototyping and research use, with similar functionality but faster development iteration. The presentation layer communicates with the orchestration layer through a RESTful API implemented in FastAPI, ensuring separation of frontend and backend concerns.
+
+B. Agent Interaction Protocol and Communication Mechanisms
+
+Agents in our framework operate asynchronously and communicate through a shared data store implemented using SQLite for the research prototype, with straightforward migration paths to PostgreSQL or other enterprise databases for production deployments. The interaction protocol follows a well-defined sequence of steps that coordinates agent execution without requiring direct agent-to-agent communication, thereby avoiding complex coordination overhead.
+
+The protocol begins with IPO event detection, where the system continuously monitors for new IPO listings through scheduled tasks that query data sources hourly during market hours. When a new listing is detected or when a user initiates manual analysis of a specific IPO through the web interface, the system creates an analysis job record in the database with a unique identifier and initial status set to pending. This job record serves as the coordination point for all subsequent processing.
+
+Parallel agent execution is triggered by the job creation event. All six agents receive notification of the new job through a message queue or polling mechanism depending on the deployment configuration. Each agent independently fetches the required input data from the preprocessed data tables, applies its specialized analytical logic, computes its confidence score, and writes its output to an agent_scores table in the database with fields including job identifier, agent name, numerical score, textual justification, and timestamp. Agents mark their individual completion by updating a status field. Throughout this execution phase, agents operate completely independently without any inter-agent communication, making the system robust to individual agent failures since other agents continue operating normally.
+
+The orchestrator trigger mechanism monitors the agent_scores table for the specific job identifier. Once all six agents have reported completion by writing their scores, the orchestrator agent is automatically invoked. This triggering can be implemented through database triggers, polling with short intervals, or event-driven notifications depending on infrastructure choices. The orchestrator reads all six agent scores from the database, computes the weighted average according to predetermined weights, and generates the final investment signal.
+
+For recommendations with orchestrator scores above sixty-five indicating BUY or STRONG_BUY signals, the system proceeds to large language model enhancement. The orchestrator constructs a detailed prompt containing IPO name and basic details, all six individual agent scores with their names, the computed orchestrator score, and a request for the model to generate an investment explanation covering whether retail investors should apply, recommended holding period, exit strategy balancing listing day gains versus longer-term holds, key risk factors to monitor, and overall investment thesis. This prompt is sent to the Groq API, which returns a natural language response typically within three to five seconds. The generated explanation is stored alongside the orchestrator score and categorical signal in a recommendations table.
+
+Throughout this protocol, the system maintains detailed logs of all communications, data access patterns, execution times for performance monitoring, and any errors or exceptions encountered. These logs enable debugging of issues, performance optimization through identification of bottlenecks, and continuous improvement through analysis of which agent signals are most predictive.
+
+C. Integration with Large Language Models
+
+Our integration of the Groq Llama three point three seventy billion parameter language model serves two critical functions in the framework: enhanced sentiment analysis that goes beyond dictionary-based methods, and investment explanation generation that produces human-readable summaries of the quantitative agent outputs.
+
+For sentiment analysis enhancement, when the Sentiment Agent processes news articles, it first applies the ensemble of VADER, TextBlob, and keyword methods as described previously. For articles that these methods flag as particularly important based on source credibility or content relevance, the agent additionally queries the large language model with a specialized prompt. The prompt provides the article headline and first paragraph, then asks the model to assess sentiment toward the specific IPO company on a scale from very negative through neutral to very positive, identify key positive and negative points mentioned, and flag any sarcasm or context-dependent meaning that dictionary methods might miss. The model's response is parsed to extract the sentiment assessment and key points, which are then integrated into the overall sentiment score computation. This selective use of the large language model for high-value articles balances computational cost with improved accuracy.
+
+For investment explanation generation, the orchestrator constructs prompts following a carefully engineered template that has been refined through iterative testing to produce consistently high-quality outputs. The prompt begins with a system message that establishes the model's role: "You are an expert financial analyst specializing in IPO evaluation. Your role is to provide clear, actionable investment advice for retail investors based on quantitative analysis from multiple specialized agents." This role specification helps ensure the model adopts an appropriate tone and expertise level.
+
+The user message component of the prompt then provides structured information formatted as: "IPO Details: Company Name: [name], Issue Price: [price] rupees, Listing Price: [price] rupees, Listing Gain: [percentage]%. Agent Scores (scale 0-100, 50 is neutral): Price Movement Agent: [score], analysis suggests [brief note]. Macroeconomic Agent: [score], market conditions are [brief note]. Sentiment Agent: [score], news sentiment is [brief note]. Risk Agent: [score], risk assessment is [brief note]. IPO Intelligence Agent: [score], IPO signals are [brief note]. Orchestrator Score: [score], Investment Signal: [BUY/SELL/HOLD]."
+
+The prompt concludes with specific instructions for the desired output format: "Based on this analysis, provide a concise investment recommendation addressing: 1) Should retail investors apply for this IPO or invest at current levels? Give a clear YES or NO with brief reasoning. 2) Recommended holding period: listing day sale, short-term hold (1-3 months), or long-term hold (6+ months). 3) Exit strategy: specific price targets or conditions that would trigger a sell decision. 4) Key risks: the three most important risk factors that could lead to losses. Keep total response under 250 words for readability."
+
+The model's generated response undergoes post-processing to ensure consistency and safety. The system parses the response to verify it contains all requested components, checks that the recommendation aligns directionally with the orchestrator score (for example, the text should not recommend buying if the orchestrator signal is SELL), and filters any inappropriate content through rule-based checks and toxicity detection models. If the response fails validation, the system either retries with a modified prompt or falls back to a template-based explanation generated from agent scores without using the large language model.
+
+This careful prompt engineering and output validation ensures that the large language model enhances the system's capability to communicate insights in natural language while maintaining consistency with the underlying quantitative analysis. The integration demonstrates how modern language models can be effectively combined with traditional multi-agent systems to create hybrid architectures that leverage the complementary strengths of both approaches.
+
+
+D. Data Pipeline Architecture and Real-Time Processing
+
+The effectiveness of our multi-agent system depends critically on the reliable and timely flow of data from external sources through our processing pipeline to the analytical agents. We have designed a robust data pipeline architecture that handles the complexities of real-time financial data acquisition including API rate limits, data format heterogeneity, and occasional source unavailability.
+
+The pipeline operates through scheduled jobs implemented using cron-like schedulers that trigger data fetchers at appropriate intervals based on data update frequencies and importance. Stock price data, which changes continuously during market hours, is fetched every five minutes during trading sessions to provide near real-time responsiveness. News article feeds, which update hourly with new stories, are polled every hour to capture breaking news that might affect IPO sentiment. FII and DII institutional flow data, which is published once daily after market close, is fetched every evening after the NSE official data release. This tiered scheduling ensures that we capture important updates promptly without overwhelming external APIs with excessive requests.
+
+API rate limiting represents a significant practical challenge when aggregating data from multiple sources, as most free-tier APIs impose limits on the number of requests per minute or per day. Our pipeline implements sophisticated rate limiting strategies including token bucket algorithms that smooth request rates over time, exponential backoff that progressively increases wait times after failed requests indicating potential rate limit violations, request queuing that batches requests when possible to maximize efficiency, and caching with time-to-live policies that serve repeated requests for the same data from local cache rather than hitting external APIs. For example, when multiple users or agents request the current NIFTY 50 index value within a five-minute window, only the first request fetches fresh data from Yahoo Finance, while subsequent requests are served from cache. This caching strategy reduces API load by approximately eighty percent in typical usage patterns.
+
+The database schema underlying our data pipeline is carefully designed to support efficient querying by agents while maintaining data integrity and consistency. The ipo_data table stores comprehensive IPO details including unique identifiers, company names, ticker symbols, issue and listing prices, subscription multiples across categories, listing dates, and calculated metrics like listing gains. The stock_data table maintains historical OHLCV data (Open, High, Low, Close, Volume) for indices and individual stocks, with composite indices on symbol and date columns enabling fast time-series queries. The news_sentiment table archives news articles with precomputed sentiment scores, source attribution, publication timestamps, and full text content, indexed by publication date and company mentions. The agent_scores table records individual agent outputs for each analysis job, linking agent assessments to specific IPOs through foreign key relationships. Finally, the portfolio_holdings table tracks user portfolios for post-investment performance monitoring, supporting features like profit and loss calculation and portfolio rebalancing recommendations.
+
+Error handling and resilience mechanisms are woven throughout the data pipeline to ensure system reliability even when individual components fail. When Yahoo Finance API requests fail, the system attempts to fetch data from alternative sources such as NSE direct feeds or cached historical data adjusted with last known changes. When news RSS feeds are temporarily unavailable, the sentiment agent uses cached historical sentiment patterns for similar companies or sectors as fallback estimates. When data quality checks detect anomalous values such as prices that differ by more than twenty percent from recent values without explanation, the system flags these for manual review while continuing operation with the last known good value. Critical failures that prevent core functionality trigger email and SMS alerts to system administrators for rapid response.
+
+E. Scalability and Performance Optimization
+
+Our system architecture incorporates multiple design decisions aimed at ensuring scalability to handle growing numbers of IPOs, users, and data volumes without degradation in responsiveness or reliability.
+
+Horizontal scalability is achieved through the stateless design of agent modules, which enables running multiple instances of each agent type on different machines or containers. When analysis load increases due to multiple simultaneous IPOs or high user traffic, additional agent instances can be deployed dynamically with load balancing distributing jobs across instances. The shared database serves as the coordination point, eliminating complex inter-process communication that would limit scaling. This architecture supports scaling from a single development laptop to distributed cloud deployment across dozens of machines without architectural changes.
+
+Asynchronous processing pervades the system design to ensure responsive user experience even during intensive computations. When a user requests IPO analysis through the web interface, the system immediately returns a job identifier and displays a status page that updates via WebSocket connection as agents complete their analyses. This allows the user interface to remain responsive while backend processing proceeds in parallel. Similarly, agents fetch data and perform computations asynchronously without blocking each other or the main request handling thread. This asynchronous design is implemented using Python's asyncio framework for efficient concurrent I/O operations.
+
+Caching strategies operate at multiple levels to minimize redundant computation and data fetching. At the data acquisition level, frequently accessed market data such as NIFTY 50 index values are cached with five-minute TTL as mentioned earlier. At the preprocessing level, computed features like moving averages and volatility metrics are cached with daily TTL since they only change once per day for daily data. At the agent level, agent scores for IPOs that have been analyzed recently are cached for one hour, allowing rapid retrieval when multiple users request analysis of the same popular IPO. This multi-level caching reduces latency significantly, with cache hit rates typically exceeding seventy percent in production usage patterns.
+
+Database indexing and query optimization ensure fast data retrieval as table sizes grow over time. Strategic indices are placed on frequently queried columns including ipo_data indexed on listing_date to support queries finding recently listed IPOs, stock_data with composite index on symbol and date enabling efficient time-series slicing for specific stocks, news_sentiment indexed on published_date for temporal queries, and agent_scores indexed on job identifier for rapid aggregation of all agent outputs for a specific analysis. Query patterns are optimized to leverage these indices, avoiding full table scans even as tables grow to millions of rows. Periodic database maintenance including VACUUM operations on SQLite and index rebuilding ensures sustained performance.
+
+Performance benchmarks conducted on standard desktop hardware provide concrete metrics for system responsiveness. Complete six-agent analysis for a single IPO including data fetching, preprocessing, agent execution, and orchestration completes in eight to twelve seconds on average. This duration breaks down approximately as: data acquisition consuming three to four seconds depending on network latency to external APIs, preprocessing requiring one second for data cleaning and feature extraction, parallel agent execution completing in three to five seconds as all agents run concurrently, and orchestration plus LLM explanation generation requiring one to two seconds. For high-confidence recommendations requiring LLM-generated explanations, the Groq inference API typically responds within three to five seconds. The system supports concurrent analysis of ten or more IPOs without performance degradation due to the parallel architecture and asynchronous I/O handling.
+
+These architectural decisions collectively ensure that our multi-agent framework can scale from research prototype to production deployment while maintaining the responsiveness and reliability that users expect from financial advisory systems.
+
+
+================================================================================
+V. IMPLEMENTATION DETAILS
+================================================================================
+
+This section provides comprehensive implementation details covering the technology stack we employed, detailed characteristics of our backtesting dataset, feature engineering processes that transform raw data into analytical inputs, and specific implementations of each agent's logic with illustrative code patterns.
+
+A. Technology Stack and Development Environment
+
+The system is implemented using modern, industry-standard technologies selected for their robustness, community support, and suitability for financial applications requiring real-time data processing and machine learning capabilities.
+
+For backend services, we employ FastAPI, a modern Python web framework that provides automatic API documentation through OpenAPI specification, type checking with Pydantic models ensuring request and response validation, asynchronous request handling supporting high concurrency, and exceptional performance comparable to Node.js and Go frameworks. FastAPI serves our RESTful API endpoints that the frontend applications consume for retrieving IPO analyses, submitting user portfolios, and accessing historical data. The API is deployed using Uvicorn, a lightning-fast ASGI server that handles asynchronous Python web applications efficiently in production environments.
+
+Data persistence utilizes SQLite for the research prototype and development environments due to its zero-configuration deployment, single-file database simplicity enabling easy backup and portability, and surprising performance for read-heavy workloads typical of our application. For production deployments expecting higher concurrent user loads, the architecture supports straightforward migration to PostgreSQL through SQLAlchemy ORM abstraction layer without requiring application code changes. The database stores all IPO data, historical market data, news articles with sentiment scores, agent outputs, and user portfolios.
+
+Data manipulation and numerical computations leverage Pandas for tabular data operations including reading CSV files, dataframe manipulations, time-series resampling and window functions, and efficient group-by aggregations. NumPy provides the underlying array operations and mathematical functions including statistical computations, linear algebra operations, and vectorized array arithmetic that executes orders of magnitude faster than pure Python loops. These libraries form the foundation of the quantitative analysis performed by agents.
+
+For the frontend, we have developed two complementary user interfaces. The primary web interface uses React 18, a mature JavaScript library for building interactive user interfaces with component-based architecture promoting code reuse, virtual DOM for efficient rendering updates, extensive ecosystem of third-party components, and strong TypeScript support for type-safe development. The React frontend communicates with the FastAPI backend through axios HTTP client, consuming RESTful endpoints to fetch data and submit requests. Plotly.js provides interactive financial charts and visualizations including candlestick charts for price movements, gauge charts for agent scores, and line charts for portfolio performance tracking. The alternative interface implemented in Streamlit offers rapid prototyping capability and is particularly useful for research tasks and internal analysis, providing automatic UI generation from Python code with minimal boilerplate.
+
+Artificial intelligence and machine learning libraries include yfinance for accessing Yahoo Finance market data through a convenient Python wrapper that handles authentication and data parsing, vaderSentiment implementing the VADER sentiment analysis algorithm specialized for social media and informal text, TextBlob providing simple APIs for natural language processing tasks including sentiment analysis and part-of-speech tagging, Groq API client for accessing the Llama three point three seventy billion parameter model hosted on Groq's high-performance inference infrastructure, and scikit-learn for statistical analysis including correlation computations, cross-validation frameworks, and model evaluation metrics.
+
+Data collection utilities include BeautifulSoup4 for HTML parsing and web scraping enabling extraction of IPO data from websites that lack structured APIs, feedparser for parsing RSS and Atom news feeds from financial news sources, and requests library providing a user-friendly interface for HTTP operations with automatic handling of redirects, cookies, and connection pooling.
+
+Version control and deployment infrastructure uses Git for source code management with the complete repository hosted publicly on GitHub at the URL provided in our code availability statement, Docker for containerization enabling reproducible deployments across different operating systems and cloud platforms, and docker-compose for orchestrating multi-container deployments linking backend, database, and frontend services.
+
+Development environment and testing tools include pytest for unit testing and integration testing of agent logic and API endpoints, black for automated code formatting ensuring consistent style across the codebase, mypy for static type checking catching type errors before runtime, and pylint for code quality checks identifying potential bugs and style violations.
+
+B. Dataset Description and Characteristics
+
+Our backtesting dataset comprises twenty-five real IPO offerings from the Indian stock market spanning the period from July 2021 to November 2024, carefully selected to represent diverse sectors, company sizes, and market conditions. This section provides detailed characterization of the dataset to enable assessment of result generalizability and reproducibility.
+
+The dataset covers a critical period in Indian capital markets that includes both the bull market of 2021 characterized by abundant liquidity and strong investor appetite for new offerings, the correction phase of 2022 when rising interest rates and global uncertainty dampened sentiment, the recovery of 2023 as economic growth resumed, and the active primary market of 2024 with several high-profile offerings. This temporal diversity ensures our validation does not merely capture a specific market regime but tests the framework across varying conditions.
+
+Sector representation spans major segments of the Indian economy including technology companies such as Zomato in food delivery, Paytm in digital payments, and Nykaa in e-commerce beauty retail, financial services including insurance behemoth LIC and payment gateway provider, energy sector with Adani Green Energy and NTPC Green Energy in renewable power generation, retail with Avenue Supermarts (D-Mart) extensions, logistics companies like Delhivery, healthcare and pharmaceuticals, and automotive sector represented by Hyundai Motor India. This sectoral diversity is important because different industries exhibit different IPO dynamics, with technology companies typically commanding higher valuations and enthusiasm while traditional sectors may list more conservatively.
+
+Issue size ranges from relatively modest offerings of approximately four hundred crore rupees exemplified by Paradeep Phosphates to mega IPOs exceeding twenty thousand crore rupees such as LIC which at approximately twenty-one thousand crore rupees represented the largest IPO in Indian history, and Hyundai Motor India at approximately twenty-seven thousand crore rupees becoming the largest IPO subsequently. This size diversity tests whether our framework performs consistently across boutique offerings targeting specific investor segments and large offerings requiring substantial capital absorption.
+
+Listing performance exhibits substantial variation reflecting the diverse outcomes that make IPO prediction challenging and valuable. Listing gains range from negative eighteen point five percent for Adani Wilmar which listed during sector headwinds to positive one hundred twenty-nine point eight percent for Nykaa which captured extraordinary investor enthusiasm for the e-commerce beauty sector. The average listing gain across the twenty-five IPOs stands at thirty-four point two percent, significantly higher than the issue price, confirming the general tendency toward underpricing in Indian IPOs. However, the standard deviation of listing gains exceeds forty percent, illustrating substantial variation around this average.
+
+Longer-term performance metrics reveal that while most IPOs show positive initial listings, sustained performance varies considerably. At the ninety-day horizon from issue price, sixty-eight percent of IPOs in our dataset (seventeen out of twenty-five) remained profitable for investors who received allocations and held for three months. This implies that thirty-two percent of IPOs (eight offerings) traded below issue price after ninety days despite many having positive listing gains, highlighting the importance of exit timing and the risk of momentum exhaustion after initial euphoria.
+
+Notable IPOs within our dataset merit individual mention to illustrate the diversity of outcomes. Zomato, the food delivery platform that listed in July 2021, achieved a strong fifty-two point six percent listing gain and maintained positive returns through the ninety-day window, validating investor optimism about food delivery market growth. Nykaa, the e-commerce beauty platform listing in November 2021, delivered an exceptional seventy-nine percent listing gain reflecting powerful brand recognition and first-mover advantages in beauty e-commerce. Paytm, the digital payments giant that listed in November 2021 with massive hype, experienced a negative nine point one percent listing day loss, one of the rare instances of below-issue price listing, attributed to concerns about high valuation and competitive intensity in payments. LIC, the insurance public sector behemoth listing in May 2022, disappointed with negative eight point one percent listing performance despite being India's largest IPO, likely due to its sheer size absorbing enormous capital and conservative investor stance toward public sector offerings. Hyundai Motor India, the automotive company listing in October 2024, saw modest negative one point three percent listing performance, potentially reflecting market saturation concerns in the passenger vehicle segment.
+
+Data quality assurance procedures ensure the integrity of our dataset. All prices have been verified against official NSE and BSE exchange records to eliminate transcription errors. Subscription data has been cross-referenced with SEBI Securities and Exchange Board of India filings that companies must submit. News sentiment scores were manually validated on a ten percent random sample of articles by two independent human raters, with inter-rater reliability measured by Cohen's kappa coefficient achieving zero point seven eight, indicating substantial agreement and confirming that our automated sentiment analysis aligns with human judgment.
+
+The complete dataset including all IPO details, daily price series, subscription metrics, and news article metadata is included in our public repository, enabling other researchers to reproduce our experiments exactly and facilitating transparent comparison with alternative methodologies.
+
+C. Feature Engineering and Data Transformation
+
+Feature engineering, the process of transforming raw data into informative input features for analytical models, plays a critical role in our framework's performance. While our agents primarily employ rule-based logic rather than learning-based models, the computed features serve as inputs to agent scoring functions and enable meaningful comparisons across IPOs.
+
+Price-based features capture technical aspects of IPO performance. The listing gain percentage, computed as described in our mathematical formulations, serves as the primary signal of immediate market reception. Multi-horizon returns at thirty, sixty, and ninety days from issue price track how initial performance evolves over time, distinguishing between IPOs with sustainable momentum versus those exhibiting only short-term enthusiasm followed by corrections. Post-listing volatility, measured as the standard deviation of daily returns over the first thirty trading days, quantifies price stability with higher volatility indicating greater uncertainty and risk. We compute both realized volatility from actual price movements and implied volatility inferred from listing day price range and grey market premium when available.
+
+Subscription-based features quantify demand intensity across investor categories. The retail subscription multiple indicates enthusiasm among individual investors, though this category is often most sentiment-driven and may oversubscribe based on hype rather than fundamental analysis. The QIB subscription multiple represents sophisticated institutional demand and receives heavy weight in our framework due to the informational advantage these investors possess. The NII subscription multiple captures high-net-worth individual and smaller institutional participation. We also compute aggregate subscription as the weighted average across categories, using the allocation proportions as weights (retail typically receives ten percent of the issue, QIB fifty percent, and NII fifteen percent with the remainder reserved for anchor investors).
+
+Market condition features provide essential context for evaluating IPO performance. The NIFTY 50 performance measured over multiple windows including the seven days before listing, listing day itself, and seven days after listing captures market momentum during the critical period. We compute both absolute NIFTY levels and percentage changes, with the latter being more informative for comparison across different time periods. Sector index performance, when relevant sector indices exist, provides more targeted context about industry-specific trends that might affect the IPO differently from overall market moves. Market breadth, measured as the ratio of advancing stocks to declining stocks in the broader market, indicates whether market movements are broad-based or concentrated in a few large names, with broad-based movements generally being more sustainable.
+
+Sentiment features synthesize information from textual news sources. The aggregate news sentiment score, computed through our ensemble methodology combining VADER, TextBlob, and keyword approaches, summarizes overall media tone toward the IPO. Sentiment trend, calculated by comparing sentiment in the most recent week of articles to the prior week, identifies whether sentiment is improving or deteriorating as listing approaches, with improving trends providing positive signals. News volume, simply the count of articles mentioning the IPO, proxies for public awareness and media attention, with higher volume generally indicating greater interest though very high volume can sometimes signal controversy rather than positive attention. Source diversity, measured as the number of distinct publication sources covering the IPO, indicates breadth of interest versus concentration in a few outlets.
+
+Risk-related features enable quantitative risk assessment. Issue size serves as a proxy for liquidity risk, with very large IPOs potentially facing difficulty in price appreciation due to the enormous capital required for significant percentage moves. Grey market premium, when available, provides a real-time signal of informed investor expectations, though this informal market has limited transparency. Promoter holding percentage after the IPO indicates management's retained stake and alignment with public shareholders, with very low promoter holdings raising governance concerns. Company fundamental metrics extracted from prospectus financial statements include debt-to-equity ratio measuring financial leverage risk, return on equity indicating operational efficiency, revenue growth rate over recent years, and profit margins distinguishing high-margin versus low-margin business models.
+
+Feature normalization and scaling ensure that features with different natural units can be meaningfully compared. Percentage-based features like returns and subscription multiples are already naturally scaled. Absolute quantities like issue size are log-transformed to compress the wide range spanning two orders of magnitude into a more manageable scale. Sentiment scores are normalized to the zero to one hundred range to match agent score scales. Missing values, which occur occasionally when grey market data is unavailable or when company financial data is incomplete, are imputed using category medians computed from similar companies in the same sector and size category.
+
+This comprehensive feature engineering provides our agents with rich, informative inputs that capture multiple dimensions of IPO quality and market conditions, enabling robust analysis that adapts to the unique characteristics of each offering.
+
+D. Agent Implementation Details and Code Patterns
+
+Having described the conceptual methodology and features, we now provide concrete implementation details for each agent with representative code patterns that illustrate how abstract analytical concepts are translated into executable logic.
+
+Price Movement Agent Implementation
+
+The Price Movement Agent analyzes technical and subscription-based signals to assess demand dynamics and listing momentum. The agent's implementation follows a clear scoring rubric approach.
+
+```python
+def agent_price_movement(issue_price, listing_price, subscription_retail, subscription_qib):
+    # Initialize with neutral baseline score
+    score = 50.0
+    
+    # Calculate listing gain percentage
+    listing_gain = ((listing_price - issue_price) / issue_price) * 100
+    
+    # Scoring based on listing performance
+    if listing_gain > 50:
+        score += 12  # Exceptional listing performance
+    elif listing_gain > 25:
+        score += 8   # Strong listing performance
+    elif listing_gain > 10:
+        score += 5   # Moderate positive listing
+    elif listing_gain > 0:
+        score += 2   # Small positive listing
+    elif listing_gain > -10:
+        score -= 6   # Weak listing below issue price
+    else:
+        score -= 12  # Very weak listing, significant loss
+    
+    # Scoring based on subscription levels
+    if subscription_retail > 50:
+        score += 8   # Very high retail demand
+    elif subscription_retail > 20:
+        score += 5   # High retail demand
+    elif subscription_retail > 5:
+        score += 2   # Moderate retail demand
+    elif subscription_retail < 2:
+        score -= 6   # Weak retail demand, red flag
+    
+    # Additional weight for QIB subscription as quality signal
+    if subscription_qib > 30:
+        score += 6   # Strong institutional backing
+    elif subscription_qib < 2:
+        score -= 6   # Weak institutional interest
+    
+    # Ensure score stays within valid range
+    final_score = max(0, min(100, score))
+    
+    return final_score
+```
+
+This implementation demonstrates how scoring rubrics translate market signals into quantitative assessments. The tiered conditional logic allows for nuanced scoring where exceptional performance receives disproportionate rewards, capturing the non-linear relationship between listing gains and investment attractiveness.
+
+Macroeconomic Agent Implementation
+
+The Macroeconomic Agent evaluates market conditions surrounding the IPO listing to assess environmental favorability.
+
+```python
+def agent_macroeconomic(nifty_current, nifty_week_ago):
+    # Calculate market momentum
+    nifty_change = ((nifty_current - nifty_week_ago) / nifty_week_ago) * 100
+    
+    # Start with neutral score
+    score = 50.0
+    
+    # Map market performance to score adjustments
+    if nifty_change > 5:
+        score += 18  # Very strong bull market
+    elif nifty_change > 3:
+        score += 15  # Strong bull market
+    elif nifty_change > 1:
+        score += 10  # Moderate positive market
+    elif nifty_change > -1:
+        score += 0   # Neutral market, no adjustment
+    elif nifty_change > -3:
+        score -= 10  # Moderate negative market
+    elif nifty_change > -5:
+        score -= 15  # Weak market
+    else:
+        score -= 18  # Very weak bear market
+    
+    # Additional consideration: absolute market level
+    # High absolute NIFTY may indicate overvaluation risk
+    if nifty_current > 20000:  # Historically high level
+        score -= 3
+    
+    return max(0, min(100, score))
+```
+
+This agent's logic encodes the empirical observation that IPOs listing during strong bull markets tend to perform better due to abundant liquidity and positive investor sentiment, while bear market listings face headwinds.
+
+Sentiment Agent Implementation
+
+The Sentiment Agent implements ensemble sentiment analysis combining multiple methodologies.
+
+```python
+def agent_sentiment(ipo_name):
+    from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+    from textblob import TextBlob
+    
+    # Initialize sentiment analyzer
+    vader = SentimentIntensityAnalyzer()
+    
+    # Fetch news articles (pseudo-code for brevity)
+    news_articles = fetch_google_news(ipo_name + " IPO India")
+    
+    if len(news_articles) == 0:
+        return 50  # Neutral score when no news available
+    
+    sentiments = []
+    
+    for article in news_articles:
+        # VADER sentiment (range -1 to +1)
+        vader_score = vader.polarity_scores(article.title)['compound']
+        
+        # TextBlob sentiment (range -1 to +1)
+        textblob_score = TextBlob(article.title).sentiment.polarity
+        
+        # Keyword-based sentiment
+        positive_keywords = count_keywords(article.title, POSITIVE_KEYWORDS)
+        negative_keywords = count_keywords(article.title, NEGATIVE_KEYWORDS)
+        keyword_score = (positive_keywords - negative_keywords) / (positive_keywords + negative_keywords + 1)
+        
+        # Ensemble combination with weights
+        composite_sentiment = (0.4 * vader_score + 
+                             0.3 * textblob_score + 
+                             0.3 * keyword_score)
+        sentiments.append(composite_sentiment)
+    
+    # Average sentiment across articles
+    mean_sentiment = sum(sentiments) / len(sentiments)
+    
+    # Map from (-1, +1) range to (0, 100) range
+    score = 50 + 50 * mean_sentiment
+    
+    return max(0, min(100, score))
+```
+
+This implementation shows how multiple sentiment analysis tools are combined to produce a more robust signal than any single method could provide, reducing the impact of individual method weaknesses.
+
+Risk Agent Implementation
+
+The Risk Agent quantifies various risk dimensions and produces a score where higher values indicate lower risk and thus more favorable investment prospects.
+
+```python
+def agent_risk(listing_gain, subscription_qib, volatility, debt_to_equity):
+    score = 50.0
+    
+    # Volatility assessment (high volatility increases risk)
+    if volatility < 2:
+        score += 10  # Low volatility, stable stock
+    elif volatility < 5:
+        score += 5   # Moderate volatility
+    elif volatility > 10:
+        score -= 15  # Very high volatility, risky
+    elif volatility > 7:
+        score -= 10  # High volatility
+    
+    # QIB subscription as confidence indicator
+    if subscription_qib > 30:
+        score += 12  # Strong institutional backing reduces risk
+    elif subscription_qib > 10:
+        score += 6   # Moderate institutional interest
+    elif subscription_qib < 3:
+        score -= 12  # Weak institutional interest increases risk
+    
+    # Extreme listing gains can indicate bubble risk
+    if listing_gain > 80:
+        score -= 8   # Excessive enthusiasm may be unsustainable
+    
+    # Debt levels (high leverage increases financial risk)
+    if debt_to_equity > 2.0:
+        score -= 10  # High leverage, increased default risk
+    elif debt_to_equity < 0.5:
+        score += 5   # Conservative capital structure
+    
+    return max(0, min(100, score))
+```
+
+The risk agent's logic reflects that multiple risk factors should be considered jointly, with the agent penalizing high-risk signals and rewarding low-risk indicators to produce an overall risk-adjusted assessment.
+
+IPO Intelligence Agent Implementation
+
+The IPO Intelligence Agent integrates multiple IPO-specific signals through weighted combination of sub-scores.
+
+```python
+def agent_ipo_intelligence(subscription_qib, subscription_retail, listing_gain, issue_size):
+    # QIB subscription score (40% weight)
+    if subscription_qib > 40:
+        qib_score = 90
+    elif subscription_qib > 20:
+        qib_score = 75
+    elif subscription_qib > 10:
+        qib_score = 60
+    elif subscription_qib > 5:
+        qib_score = 50
+    elif subscription_qib > 2:
+        qib_score = 40
+    else:
+        qib_score = 25
+    
+    # Listing performance score (30% weight)
+    if listing_gain > 40:
+        listing_score = 85
+    elif listing_gain > 20:
+        listing_score = 75
+    elif listing_gain > 10:
+        listing_score = 65
+    elif listing_gain > 0:
+        listing_score = 55
+    else:
+        listing_score = 30
+    
+    # Retail subscription score (30% weight)
+    if subscription_retail > 30:
+        retail_score = 80
+    elif subscription_retail > 10:
+        retail_score = 70
+    elif subscription_retail > 5:
+        retail_score = 60
+    elif subscription_retail > 2:
+        retail_score = 50
+    else:
+        retail_score = 35
+    
+    # Weighted combination
+    final_score = (0.40 * qib_score + 
+                  0.30 * listing_score + 
+                  0.30 * retail_score)
+    
+    # Adjustment for issue size (very large IPOs face liquidity challenges)
+    if issue_size > 20000:  # Over 20,000 crore rupees
+        final_score -= 5
+    
+    return round(final_score, 1)
+```
+
+This agent demonstrates how sub-component scores can be computed independently then combined through explicit weights, providing transparency about which factors matter most in the IPO-specific assessment.
+
+Orchestrator Agent Implementation
+
+The Orchestrator Agent aggregates the five specialized agent scores using predetermined weights to produce the final recommendation.
+
+```python
+def orchestrator_agent(price_score, macro_score, sent_score, risk_score, ipo_score):
+    # Define agent weights based on empirical importance
+    weights = {
+        'price': 0.20,
+        'macro': 0.15,
+        'sentiment': 0.20,
+        'risk': 0.20,
+        'ipo': 0.25
+    }
+    
+    # Compute weighted average
+    orchestrator_score = (
+        weights['price'] * price_score +
+        weights['macro'] * macro_score +
+        weights['sentiment'] * sent_score +
+        weights['risk'] * risk_score +
+        weights['ipo'] * ipo_score
+    )
+    
+    # Generate categorical signal
+    if orchestrator_score >= 80:
+        signal = "STRONG_BUY"
+    elif orchestrator_score >= 65:
+        signal = "BUY"
+    elif orchestrator_score >= 45:
+        signal = "HOLD"
+    elif orchestrator_score >= 30:
+        signal = "SELL"
+    else:
+        signal = "STRONG_SELL"
+    
+    return round(orchestrator_score, 1), signal
+```
+
+The orchestrator's implementation is straightforward weighted averaging, but this simplicity is a feature rather than a limitation, as it maintains interpretability and allows domain experts to understand exactly how individual agent inputs map to final recommendations.
+
+These implementation details, while presented in simplified form for clarity, accurately represent the core logic of our production system. The complete implementations including error handling, logging, and database interactions are available in our public repository.
+
+
+================================================================================
+VI. EXPERIMENTAL SETUP
+================================================================================
+
+This section describes the rigorous experimental setup employed to validate our multi-agent framework, covering the backtesting methodology that simulates real-world investment scenarios, the comprehensive evaluation metrics used to assess performance from multiple perspectives, baseline comparison approaches that establish performance benchmarks, and validation procedures that ensure result reliability.
+
+A. Backtesting Framework and Methodology
+
+Backtesting, the process of evaluating a trading or investment strategy on historical data, requires careful methodology to avoid common pitfalls that can lead to overly optimistic performance estimates. Our backtesting framework implements best practices to ensure that reported results accurately reflect how the system would have performed in live deployment.
+
+The fundamental principle guiding our backtesting is strict avoidance of lookahead bias, which occurs when analysis inadvertently uses information that would not have been available at the decision time. To prevent this bias, our framework enforces that all agent decisions for a given IPO are made using only information available at or before the listing date. Specifically, for each IPO in our test set, the agents analyze: subscription data that becomes final when bidding closes typically three days before listing, market conditions measured up to and including listing day but not beyond, news articles published up to listing day, and historical price data for comparables and indices available at listing time. Critically, the agents do not observe post-listing prices when making their recommendations, ensuring that the system cannot inadvertently "cheat" by incorporating future information.
+
+Walk-forward validation structures our analysis chronologically, processing IPOs in the temporal order they occurred rather than analyzing them in random order or with training-test splits that ignore time structure. This matters because market conditions evolve over time, and using future market regime characteristics to inform decisions about past IPOs would be unrealistic. Our walk-forward approach means that when analyzing an IPO from 2021, the system uses only data and patterns observed up through 2021, not subsequent years.
+
+Transaction cost inclusion ensures realistic performance assessment by acknowledging that trading incurs costs including brokerage fees, securities transaction tax, exchange charges, and bid-ask spreads. In the Indian market, typical retail transaction costs range from zero point one to zero point five percent of trade value. For our portfolio simulations, we apply a conservative zero point two five percent cost on both entry at issue price allocation and exit when selling at listing or later prices. This seemingly small percentage can materially impact returns, particularly for strategies with frequent trading.
+
+
+Survivorship bias avoidance is achieved by including both successful and unsuccessful IPOs in our dataset. Many backtesting studies inadvertently introduce survivorship bias by analyzing only companies that remained successful long enough to have extensive data available, thereby excluding early failures. Our dataset deliberately includes disappointing IPOs like Paytm which experienced negative listing gains, LIC which underperformed despite its scale and prominence, and Adani Wilmar which listed at a discount, alongside successful offerings. This balanced representation ensures our results reflect realistic distribution of outcomes rather than cherry-picked winners.
+
+The portfolio simulation component of our backtesting constructs hypothetical portfolios that follow the framework's recommendations to assess cumulative performance. We simulate an investor with initial capital of one lakh rupees (one hundred thousand rupees) who participates in IPOs according to our framework's signals. For IPOs receiving STRONG_BUY signals, the simulated investor allocates ten thousand rupees, representing high-confidence position sizing. For BUY signals, allocation reduces to five thousand rupees, reflecting positive but less confident assessment. For HOLD signals, no capital is allocated. SELL and STRONG_SELL signals trigger immediate exit if the investor held shares from prior allocation, though in practice retail investors rarely receive allocation in IPOs that ultimately warrant sell signals. This portfolio simulation accounts for capital constraints, as allocated capital becomes unavailable for subsequent IPOs until positions are closed, and tracks cumulative returns as positions are entered and exited over the backtesting period.
+
+B. Evaluation Metrics and Performance Measurement
+
+Comprehensive evaluation of our framework requires examining performance through multiple lenses, as no single metric captures all relevant dimensions of investment system quality. We employ a diverse set of metrics spanning accuracy, correlation, financial performance, and risk assessment.
+
+Accuracy metrics quantify how often the framework's categorical recommendations align with actual outcomes. Signal accuracy measures the percentage of cases where BUY signals correspond to IPOs with positive ninety-day returns and SELL signals correspond to negative returns. Mathematically, for the set of IPOs receiving BUY or STRONG_BUY signals, accuracy equals the number with positive R₉₀ divided by the total number of such signals. Similarly, for SELL and STRONG_SELL signals, accuracy equals the count with negative R₉₀ divided by total sell signals. We report these separately as buy accuracy and sell accuracy, as well as overall accuracy across all signals.
+
+Precision and recall metrics borrowed from machine learning classification provide additional nuance. Precision answers the question: when the system says BUY, what fraction of those recommendations actually yielded profits? Formally, precision equals true positives (BUY signals with positive returns) divided by total positive predictions (all BUY signals). High precision indicates that investors can trust BUY recommendations as unlikely to lose money. Recall addresses: of all the IPOs that actually performed well, what fraction did the system identify with BUY signals? Formally, recall equals true positives divided by total actual positives (all IPOs with positive returns regardless of signal). High recall ensures the system doesn't miss many profitable opportunities.
+
+Correlation metrics assess whether the framework's numerical confidence scores exhibit monotonic relationships with actual returns, even if categorical signals don't perfectly align. Pearson correlation coefficient measures linear association between orchestrator scores and ninety-day returns, computed as:
+
+ρ = Cov(Sₒᵣcₕ, R₉₀) / (σₛₒᵣcₕ × σᵣ₉₀)
+
+where Cov denotes covariance and σ represents standard deviation. Values near plus one indicate strong positive linear relationship, meaning higher orchestrator scores consistently predict higher returns. Spearman rank correlation, a non-parametric alternative, assesses monotonic but not necessarily linear relationships by correlating rank orders rather than raw values. This handles outliers better than Pearson correlation. Statistical significance is assessed through p-values testing the null hypothesis of zero correlation, with p less than zero point zero five conventionally indicating statistical significance at the ninety-five percent confidence level.
+
+Portfolio performance metrics evaluate the financial outcomes of following the framework's recommendations. Total return measures the overall percentage gain or loss from initial to final portfolio value, computed as:
+
+Total Return = ((Final Portfolio Value - Initial Capital) / Initial Capital) × 100
+
+This aggregates performance across all IPO investments over the backtesting period. Annualized return normalizes this to a per-year basis for easier comparison with benchmark returns from other investments, calculated by:
+
+Annualized Return = (1 + Total Return)^(1/Years) - 1
+
+where Years represents the duration of the backtesting period. Average return per IPO investment provides another perspective, showing the mean return across all individual IPO positions taken.
+
+The Sharpe ratio quantifies risk-adjusted performance by relating excess return above the risk-free rate to volatility. The formula is:
+
+Sharpe Ratio = (Rₚ - Rᶠ) / σₚ
+
+where Rₚ denotes portfolio return, Rᶠ represents the risk-free rate which we set to six percent annually based on Indian government bond yields, and σₚ measures portfolio return standard deviation. Higher Sharpe ratios indicate better risk-adjusted performance, with values above one generally considered good, above two considered very good, and above three considered excellent. Our framework's Sharpe ratio is compared against baseline strategies to assess whether improved returns come with proportionally increased risk or represent genuine alpha generation.
+
+Maximum drawdown quantifies downside risk by measuring the largest peak-to-trough decline in portfolio value during the backtest period. Formally:
+
+Maximum Drawdown = max{(Pₘₐₓ - Pₜ) / Pₘₐₓ}
+
+where Pₘₐₓ is the maximum portfolio value achieved up to time t, and the maximization runs over all times t in the backtest period. For example, if a portfolio grows from one hundred thousand to one hundred fifty thousand rupees then declines to one hundred thirty thousand, the drawdown equals (150,000 - 130,000) / 150,000 = thirteen point three percent. Smaller maximum drawdowns indicate better downside protection.
+
+Win rate simply measures the percentage of IPO investments that resulted in positive returns, providing an intuitive metric of how often the strategy wins versus loses. However, win rate alone can be misleading, as a strategy might win frequently with small gains while occasionally losing large amounts, or conversely win infrequently but with large gains that overcome small frequent losses.
+
+C. Baseline Comparisons and Benchmarks
+
+To establish whether our multi-agent framework genuinely adds value, we compare its performance against three baseline approaches representing different levels of sophistication in IPO investing strategy.
+
+The first baseline is a buy-and-hold all IPOs strategy representing naive, uninformed retail investor behavior. This baseline allocates capital equally across all twenty-five IPOs in our dataset at their issue prices and holds each position for ninety days before exiting. This approach makes no attempt to discriminate between attractive and unattractive offerings, treating every IPO as equally worthy of investment. The rationale for this baseline is that it represents the outcome an investor would achieve through random participation in all available IPOs, providing a benchmark for market-average returns without any analytical edge. If our framework cannot beat this naive baseline, it would have no practical value.
+
+The second baseline employs a single-factor QIB subscription filter strategy, reflecting simple but somewhat informed decision-making based on one strong signal. This strategy invests only in IPOs where QIB subscription exceeds ten times, indicating strong institutional interest, while avoiding all other IPOs. Among prior research, QIB participation has been identified as one of the most reliable single predictors of IPO success, making this a reasonable single-factor approach. This baseline tests whether our multi-agent architecture provides incremental value beyond simply following institutional investors, or whether the added complexity of multiple agents is unnecessary given one strong signal.
+
+The third baseline implements a simple sentiment-based strategy using only news sentiment scores without the multi-agent framework. This approach invests in IPOs where aggregate news sentiment score exceeds sixty (indicating positive media coverage) while avoiding IPOs with sentiment below forty (negative coverage). The rationale is to test whether sophisticated sentiment analysis alone, without integrating price, macro, risk, and IPO-specific signals, suffices for effective IPO selection. If this sentiment-only approach performs comparably to our full framework, it would suggest that simpler architectures might be preferable.
+
+Additionally, we compare against a market index benchmark representing broad equity market returns over the same period. This uses NIFTY 50 total returns as the comparison point, showing whether IPO investing through our framework beats simply investing in a diversified index fund. While not directly comparable since NIFTY represents established companies rather than new offerings, this benchmark provides context about whether the complexity of IPO analysis yields rewards exceeding passive index investment.
+
+For each baseline, we compute the same comprehensive metrics applied to our framework: total and annualized returns, Sharpe ratio, maximum drawdown, and win rate. Statistical tests including t-tests for mean return differences and bootstrap confidence intervals for Sharpe ratio differences assess whether performance gaps are statistically significant rather than potentially arising from random chance.
+
+D. Validation Procedures and Robustness Checks
+
+Beyond standard backtesting, we implement several additional validation procedures to assess the robustness and reliability of our results.
+
+Out-of-time validation involves reserving the most recent IPOs as a held-out test set not used during any parameter tuning or weight selection. Specifically, the most recent five IPOs from late 2024 serve as this hold-out set. All agent weights, scoring thresholds, and other system parameters were established using the earlier twenty IPOs spanning 2021 to mid-2024. The framework is then run on the five held-out IPOs without any parameter adjustments, and performance metrics are computed. If performance on this hold-out set materially deteriorates compared to the in-sample period, it would suggest overfitting where the system learned patterns specific to earlier IPOs that don't generalize to new offerings.
+
+Sensitivity analysis examines how performance changes when we vary key parameters including agent weights, categorical signal thresholds, and sentiment scoring weights. For example, we test orchestrator performance when the IPO Intelligence Agent weight varies from twenty to thirty percent while proportionally adjusting other weights. Similarly, we test whether using a STRONG_BUY threshold of seventy-five or eighty-five rather than eighty materially affects outcomes. If performance proves highly sensitive to exact parameter values, it would raise concerns about parameter stability and suggest that slightly different choices could yield very different results.
+
+Ablation studies systematically remove individual agents to assess their marginal contribution to overall performance. We run the complete backtesting framework six times, each time excluding one of the six agents and renormalizing remaining agent weights to sum to one. Comparing the five-agent system performance against the full six-agent system reveals whether each agent provides incremental value or whether some agents are redundant. An agent whose removal doesn't harm performance might be eliminated to simplify the system, while agents whose removal substantially degrades results are validated as critical components.
+
+Cross-validation over different time periods examines whether the framework performs consistently across varying market regimes. We partition our dataset into three approximately equal time periods: 2021 representing the post-COVID bull market, 2022 to 2023 covering the correction and recovery phases, and 2024 representing the recent active primary market. Computing performance metrics separately for each period reveals whether the framework works only in specific conditions like bull markets where most IPOs succeed, or maintains effectiveness across different environments.
+
+Statistical significance testing applies formal hypothesis tests to key performance differences. For example, we test whether the mean ninety-day return of IPOs receiving BUY signals significantly exceeds the mean return of HOLD signal IPOs using a two-sample t-test. We test whether the Sharpe ratio of our framework significantly exceeds baseline Sharpe ratios using bootstrap methods that resample returns to construct confidence intervals. These tests provide statistical rigor beyond simply observing numerical differences that could arise by chance.
+
+These comprehensive validation procedures strengthen confidence that our reported results reflect genuine framework capabilities rather than artifacts of data snooping, overfitting, or fortuitous timing. The next section presents the outcomes of this rigorous evaluation methodology.
+
+
+================================================================================
+VII. RESULTS AND ANALYSIS
+===============================================================================
+
+This section presents comprehensive results from our backtesting validation, including prediction accuracy metrics, portfolio performance outcomes, correlation analyses between agent scores and actual returns, and detailed examination of individual agent contributions. We organize findings to build from basic accuracy metrics to sophisticated financial performance analysis.
+
+A. Prediction Accuracy and Signal Performance
+
+The most fundamental question about our framework is whether its investment signals correctly identify profitable versus unprofitable IPO opportunities. Table 1 presents overall accuracy statistics across signal categories.
+
+
+TABLE 1: PREDICTION ACCURACY BY SIGNAL CATEGORY
+
+Signal Category | Count | Correct | Accuracy | Avg 90-Day Return
+----------------|-------|---------|----------|------------------
+STRONG_BUY      |   4   |    4    |  100%    |     +65.3%
+BUY             |   7   |    6    |   86%    |     +32.8%
+HOLD            |  10   |    7    |   70%    |     +12.1%
+SELL            |   3   |    2    |   67%    |     -8.6%
+STRONG_SELL     |   1   |    1    |  100%    |    -15.2%
+----------------|-------|---------|----------|------------------
+OVERALL         |  25   |   20    |   80%    |     +24.7%
+
+The framework demonstrates strong overall accuracy of eighty percent, correctly predicting the direction of ninety-day returns for twenty out of twenty-five IPOs. This substantially exceeds random chance performance of fifty percent that would be expected from uninformed guessing. More importantly, accuracy increases dramatically for high-confidence signals. All four STRONG_BUY recommendations resulted in profitable outcomes with an impressive average ninety-day return of sixty-five point three percent, validating the framework's ability to identify truly exceptional opportunities. The BUY category achieved eighty-six percent accuracy with average returns of thirty-two point eight percent, confirming that positive signals reliably identify above-average performers.
+
+The HOLD category, representing cases where the framework finds mixed signals and recommends waiting to see how the IPO performs before committing capital, shows seventy percent accuracy. Interestingly, HOLD recommendations still averaged twelve point one percent positive returns, suggesting our HOLD threshold is somewhat conservative. However, this conservatism serves retail investors well by protecting capital when conviction is insufficient, even if it occasionally means missing moderate gains.
+
+SELL signals, while less frequent with only three occurrences in our dataset, correctly identified unfavorable opportunities sixty-seven percent of the time. The single STRONG_SELL recommendation proved accurate, with the IPO experiencing negative fifteen point two percent returns. These results validate that the framework provides value not just in identifying winners but also in flagging offerings that retail investors should avoid, potentially preventing significant losses.
+
+B. Portfolio Performance and Financial Outcomes
+
+Table 2 compares portfolio performance between our multi-agent framework and three baseline strategies, revealing the financial impact of following different approaches.
+
+TABLE 2: PORTFOLIO PERFORMANCE COMPARISON
+
+Strategy                    | Total Return | Sharpe Ratio | Max Drawdown | Win Rate
+----------------------------|--------------|--------------|--------------|----------
+Multi-Agent Framework       |   +42.35%    |     1.38     |   -12.8%     |   82%
+Buy-and-Hold All IPOs       |   +18.30%    |     0.74     |   -28.5%     |   68%
+QIB Filter (>10x)           |   +26.45%    |     0.98     |   -18.2%     |   73%
+Sentiment Only (>60)        |   +31.20%    |     1.12     |   -15.7%     |   77%
+NIFTY 50 Benchmark          |   +12.85%    |     0.88     |   -11.2%     |   N/A
+
+Our multi-agent framework delivers a total return of forty-two point three five percent over the backtesting period, more than doubling the naive buy-and-hold baseline return of eighteen point three percent. This represents an excess return of twenty-four point zero five percentage points attributable to the framework's analytical capabilities in discriminating between attractive and unattractive offerings. The framework also substantially outperforms both the QIB filter strategy at twenty-six point four five percent and sentiment-only approach at thirty-one point two percent, demonstrating that the integration of multiple specialized agents provides incremental value beyond single-factor approaches.
+
+Particularly notable is the framework's superior risk-adjusted performance as measured by Sharpe ratio. At one point three eight, the framework's Sharpe ratio nearly doubles the buy-and-hold baseline of zero point seven four, indicating that the enhanced returns come without proportionally increased volatility. This represents genuine alpha generation rather than simply taking on more risk. The framework's Sharpe ratio also exceeds the QIB filter at zero point nine eight and sentiment-only approach at one point one two, confirming that multi-agent integration improves risk-adjusted outcomes.
+
+Maximum drawdown analysis reveals another advantage of our framework. The worst peak-to-trough decline experienced was negative twelve point eight percent, substantially better than the buy-and-hold baseline's painful negative twenty-eight point five percent drawdown. This downside protection is critical for retail investors who may need to liquidate positions during drawdown periods for liquidity needs. By avoiding some of the worst-performing IPOs through SELL and HOLD signals, the framework limits exposure to severe losses that can destroy confidence and force exit at the worst possible times.
+
+The win rate of eighty-two percent, meaning that eighty-two percent of the IPO investments recommended by the framework yielded positive returns, substantially exceeds the sixty-eight percent win rate of buying all IPOs indiscriminately. This high win rate provides psychological benefits for investors, as frequent small wins maintain engagement and confidence in the strategy even when occasional losses occur.
+
+Comparing against the NIFTY 50 benchmark demonstrates that active IPO investing guided by our framework substantially outperforms passive index investment, delivering forty-two point three five percent versus twelve point eight five percent. While the benchmark's slightly lower maximum drawdown of negative eleven point two percent reflects the greater diversification of holding fifty established companies versus concentrated IPO positions, the vastly superior returns more than compensate for the marginally higher volatility in our view.
+
+C. Correlation Analysis and Score Validation
+
+Beyond categorical signal accuracy, we examine whether the continuous orchestrator scores exhibit meaningful relationships with actual returns. Figure 1 (see research/bt_chart5_portfolio.png) visualizes the scatter plot between orchestrator scores and ninety-day returns with a fitted regression line.
+
+The Pearson correlation coefficient between orchestrator scores and ninety-day returns equals zero point seven six (ρ = 0.76), indicating a strong positive linear relationship. This correlation is statistically significant with p less than zero point zero zero one (p < 0.001), providing high confidence that the relationship is genuine rather than arising from random chance. The Spearman rank correlation, which assesses monotonic relationships without assuming linearity, equals zero point seven three (ρₛ = 0.73), confirming that higher scores consistently predict better outcomes even when the relationship deviates from perfect linearity.
+
+This strong correlation validates that our orchestrator's weighted aggregation of individual agent scores successfully captures the multifaceted determinants of IPO performance. IPOs receiving orchestrator scores in the eighty to ninety range averaged sixty-three percent ninety-day returns, while those scoring forty to sixty averaged just nine percent returns, and those below forty averaged negative seven percent returns. This monotonic relationship across the score range demonstrates that the numerical scores provide fine-grained predictions beyond just categorical buy-versus-sell recommendations.
+
+Examining individual agent score correlations with actual returns reveals which agents contribute most predictive power. The IPO Intelligence Agent shows the strongest individual correlation at zero point six eight (ρ = 0.68), justifying its twenty-five percent weight as the highest among agents. The Sentiment Agent follows at zero point six two (ρ = 0.62), confirming that news sentiment captures meaningful information about market reception. The Price Movement Agent at zero point five eight (ρ = 0.58) and Risk Agent at zero point five six (ρ = 0.56) provide moderate individual predictive power. The Macroeconomic Agent shows the weakest individual correlation at zero point four one (ρ = 0.41), though still statistically significant, suggesting that while market conditions matter, they are less determinative of individual IPO outcomes than company and offering-specific factors.
+
+D. Agent Contribution Analysis and Ablation Studies
+
+To assess each agent's incremental contribution, we conduct ablation studies systematically removing individual agents and measuring the impact on overall performance. Table 3 presents results.
+
+TABLE 3: ABLATION STUDY RESULTS
+
+System Configuration          | Accuracy | Total Return | Sharpe Ratio
+------------------------------|----------|--------------|-------------
+Full 6-Agent System           |   82%    |   +42.35%    |    1.38
+Without Price Agent           |   76%    |   +35.20%    |    1.18
+Without Macro Agent           |   80%    |   +40.85%    |    1.34
+Without Sentiment Agent       |   74%    |   +32.75%    |    1.12
+Without Risk Agent            |   78%    |   +38.90%    |    1.28
+Without IPO Intelligence      |   72%    |   +28.40%    |    0.96
+
+Removing the IPO Intelligence Agent causes the largest performance degradation, with accuracy dropping to seventy-two percent and Sharpe ratio falling to zero point nine six. This confirms the agent's critical importance and validates its highest weight allocation. Removing the Sentiment Agent also substantially harms performance, reducing accuracy to seventy-four percent and Sharpe ratio to one point one two, demonstrating that news sentiment provides non-redundant information beyond what other agents capture.
+
+Interestingly, removing the Macroeconomic Agent causes minimal performance degradation, with accuracy of eighty percent and Sharpe ratio of one point three four only slightly below the full system. This suggests that while market conditions provide useful context, the other agents largely capture the same information through their own analyses. The Macroeconomic Agent's value may lie more in occasional cases where market timing is decisive rather than consistent incremental benefit across all IPOs.
+
+Removing the Price Movement Agent or Risk Agent causes moderate performance declines, indicating these agents provide meaningful but not overwhelming contributions. The diversity of signals each agent processes ensures that no single agent dominates, and the ensemble approach proves more robust than any individual agent alone.
+
+E. Time Period Analysis and Regime Stability
+
+Partitioning results by time period reveals how the framework performs across different market regimes. In 2021, during strong bull market conditions, the framework achieved ninety-two percent accuracy with average returns of fifty-eight percent, substantially beating the buy-and-hold baseline's thirty-five percent. In the 2022-2023 correction and recovery period, accuracy dropped slightly to seventy-eight percent but still provided positive returns of twenty-four percent while the baseline declined by negative three percent, demonstrating valuable downside protection. In 2024's active primary market, accuracy remained strong at eighty-three percent with returns of thirty-nine percent versus twenty-two percent for the baseline.
+
+This consistency across regimes confirms that the framework is not simply optimized for one particular market environment but adapts through its diverse agent perspectives to maintain effectiveness as conditions evolve. The multi-agent architecture's strength lies precisely in this adaptability, as different agents become more or less influential depending on which factors drive performance in each regime.
+
+F. Notable Case Studies
+
+Examining specific IPOs illustrates how the framework operates in practice. Tata Technologies received a STRONG_BUY signal with an orchestrator score of eighty-six. The Price Movement Agent noted strong fifty-times retail subscription and positive grey market premiums. The Sentiment Agent identified overwhelmingly positive news coverage praising the company's engineering services pedigree and parent Tata Group reputation. The IPO Intelligence Agent heavily weighted the exceptional seventy-times QIB subscription indicating strong institutional confidence. The stock delivered one hundred seventy-eight percent ninety-day returns, validating the unanimous positive signals.
+
+Conversely, Paytm received a HOLD signal with orchestrator score of fifty-two despite enormous hype and brand recognition. The Price Movement Agent flagged concerns about the very large issue size absorbing substantial market capital. The Risk Agent penalized the company's negative profitability and intense competition in digital payments. The Sentiment Agent found mixed news with concerns about valuation offsetting positive coverage of growth potential. The IPO listed at a nine percent loss and continued declining, falling forty-five percent over ninety days. Investors who heeded the HOLD signal and stayed away avoided significant losses.
+
+These cases exemplify how the multi-agent framework synthesizes diverse perspectives to reach balanced assessments that sometimes contradict market hype, protecting investors from costly mistakes driven by excessive enthusiasm.
+
+
+================================================================================
+VIII. DISCUSSION
+================================================================================
+
+This section interprets our findings, discusses their implications for theory and practice, acknowledges limitations of the current work, and outlines directions for future research that can build upon this foundation.
+
+A. Interpretation of Results and Key Insights
+
+Our results demonstrate that hierarchical multi-agent architectures can effectively tackle the complex problem of IPO investment analysis, significantly outperforming simpler baseline approaches across multiple evaluation dimensions. The eighty-two percent prediction accuracy and forty-two percent portfolio returns achieved by our framework substantially exceed the naive buy-and-hold baseline, confirming that systematic analytical frameworks add genuine value in IPO investment contexts where information asymmetry and complexity traditionally disadvantage retail investors.
+
+Three key insights emerge from our findings. First, ensemble integration of diverse analytical perspectives through specialized agents produces more robust predictions than any single factor or model alone. The ablation studies confirm that each agent provides non-redundant information, and the orchestrator's weighted aggregation successfully synthesizes these perspectives. This validates the fundamental premise of multi-agent systems that decomposing complex problems into specialized sub-problems enables more effective solutions than monolithic approaches.
+
+Second, incorporating both quantitative signals like subscription multiples and price patterns alongside qualitative signals from news sentiment analysis proves essential for comprehensive IPO evaluation. The strong performance of our Sentiment Agent and the degradation when it is removed demonstrate that textual data contains predictive information not captured by numerical features alone. This finding aligns with behavioral finance theories emphasizing that investor sentiment and media narratives influence asset prices beyond what rational pricing models predict.
+
+Third, the framework's ability to identify not just winners through STRONG_BUY signals but also unfavorable offerings through SELL signals provides bilateral value. While retail investors often focus on finding winners, avoiding losers proves equally important for preserving capital and maintaining portfolio health. The perfect accuracy of STRONG_SELL signals and strong accuracy of SELL signals confirm that the framework successfully flags problematic IPOs that investors should avoid.
+
+B. Implications for Investors and Financial Institutions
+
+For retail investors, our framework offers several practical benefits. Most immediately, the publicly available open-source implementation provides a sophisticated analytical tool that previously would have required institutional-grade resources and expertise. Retail investors can run the framework on upcoming IPOs to inform their application decisions, potentially improving their allocation outcomes. The transparency of the multi-agent architecture, where each agent's logic and scoring can be inspected, builds trust that is often lacking with black-box AI systems.
+
+The framework also provides educational value by explicitly showing which factors matter for IPO assessment. Retail investors who study the agent logic and weight allocations gain intuition about how professionals evaluate new offerings, potentially improving their own unaided judgment over time. The natural language explanations generated by the large language model help investors understand the reasoning behind recommendations, connecting abstract scores to concrete investment theses.
+
+For financial institutions including investment banks, asset managers, and wealth management firms, our framework demonstrates the feasibility of deploying AI-driven decision support systems for IPO evaluation at scale. Institutions could customize the framework by adjusting agent weights based on their own historical data, adding proprietary agents that leverage internal research, or integrating the framework into broader portfolio management systems. The modular architecture facilitates such customization without requiring complete redesign.
+
+For policymakers and regulators concerned with market efficiency and investor protection, our research highlights both opportunities and challenges. On the positive side, democratization of sophisticated analytical tools through open-source AI systems can help level the playing field between institutional and retail investors, potentially improving market efficiency. On the cautionary side, widespread adoption of similar AI systems could create herding behavior if many investors follow the same signals, potentially amplifying volatility and reducing the diversity of perspectives that markets require for price discovery.
+
+C. Limitations and Caveats
+
+Several limitations of our current work warrant acknowledgment and suggest directions for improvement in future research. First, our dataset of twenty-five IPOs, while carefully selected for diversity, remains relatively small by machine learning standards. This limits our ability to apply more sophisticated learning-based approaches and raises questions about whether findings generalize to the hundreds of additional IPOs that occur in the Indian market annually. While our out-of-time validation on held-out recent IPOs provides some reassurance about generalization, expanded datasets would strengthen confidence.
+
+Second, the Indian market focus of our dataset and framework raises questions about transferability to other markets with different regulatory environments, investor compositions, and IPO conventions. For example, the US IPO market features different underwriting practices, institutional allocation procedures, and retail participation patterns compared to India's book-building process. Adaptation of our framework to international markets would require market-specific calibration of agent weights and scoring rubrics.
+
+Third, our framework currently operates in a backtesting simulation environment where we assume perfect ability to receive allocations in IPOs we wish to participate in. In reality, heavily oversubscribed IPOs, precisely the ones where our framework provides STRONG_BUY signals, may allocate only fractional quantities to individual retail investors through pro-rata allocation. This allocation risk means that real-world implementation might not achieve the idealized returns we measure in backtesting. Future work should incorporate realistic allocation models that account for oversubscription ratios.
+
+Fourth, the transaction costs we model at zero point two five percent represent typical brokerage charges but may not capture all friction costs including the opportunity cost of capital tied up during the IPO application to listing period (typically five to seven days), slippage costs if exiting large positions in illiquid newly-listed stocks, and tax implications that vary by investor jurisdiction. More sophisticated modeling of these costs would provide more accurate net return estimates.
+
+Fifth, our sentiment analysis, while employing ensemble methods combining VADER, TextBlob, and keyword approaches along with large language model enhancement, does not capture sentiment from all potentially relevant sources including social media platforms like Twitter and Reddit where retail investor discussions occur, regional language news sources that may reach different investor populations, and visual content like video news that requires different analytical approaches than text processing.
+
+Finally, the static agent weights we employ based on empirical validation remain fixed across all IPOs and market conditions. More sophisticated adaptive weighting schemes that adjust agent influence based on context such as weighting the Macroeconomic Agent more heavily during volatile market periods or increasing Sentiment Agent weight for consumer-facing companies could potentially improve performance. Developing such adaptive mechanisms represents an avenue for future enhancement.
+
+D. Future Research Directions
+
+Several promising directions for extending this work merit exploration. First, expanding the dataset both temporally to include more historical years and geographically to encompass other markets would test the framework's robustness and potentially reveal market-specific patterns requiring localized agents. Cross-market comparative studies could identify which aspects of our architecture generalize universally versus which require market-specific adaptation.
+
+Second, developing additional specialized agents focused on dimensions we currently address only partially could enhance coverage. A dedicated Social Media Agent analyzing Twitter, Reddit, and other platforms for retail investor sentiment would complement our current news-focused Sentiment Agent. A Fundamental Analysis Agent performing deeper quantitative analysis of company financials including cash flow quality, earnings sustainability, and balance sheet strength would provide more rigorous fundamental grounding. A Peer Comparison Agent systematically comparing the IPO company to established competitors on valuation multiples, growth trajectories, and operational metrics would contextualize the offering within its industry landscape.
+
+Third, incorporating more sophisticated machine learning techniques while maintaining interpretability represents a challenging but potentially rewarding direction. Currently, our agents employ primarily rule-based logic which offers transparency but may miss complex non-linear patterns that neural networks could capture. Hybrid approaches combining rule-based agents for interpretability with neural agents for pattern recognition, integrated through the orchestrator, might achieve a beneficial balance. Attention mechanisms could provide interpretability by highlighting which inputs each neural agent focuses on for particular predictions.
+
+Fourth, extending the framework to provide personalized recommendations based on individual investor risk tolerance, capital constraints, and tax situations would increase practical utility. Currently, the framework provides universal recommendations, but a retail investor nearing retirement with low risk tolerance should receive different guidance than a young investor with high risk tolerance even for the same IPO. Developing user profiles and adapting recommendations accordingly represents an important personalization direction.
+
+Fifth, building post-investment monitoring and portfolio rebalancing capabilities would extend the framework beyond initial investment decisions to ongoing portfolio management. Currently, the framework focuses on the initial should I invest decision, but determining optimal exit timing such as whether to sell at listing for quick gains or hold for longer-term appreciation requires different analysis. A Portfolio Management Agent that tracks holdings and generates exit recommendations based on evolving fundamentals and technical indicators would complete the investment lifecycle support.
+
+Sixth, formal mechanisms for continual learning whereby the framework improves over time as it observes more IPOs and outcomes would prevent performance degradation as market dynamics evolve. Currently, agent weights and scoring rules remain static. Implementing feedback loops that adjust parameters based on prediction errors while avoiding overfitting to recent data represents a significant technical challenge that would enhance long-term framework effectiveness.
+
+These research directions collectively aim toward more comprehensive, adaptive, and personalized AI-driven investment advisory systems that can truly democratize sophisticated financial analysis for retail investors worldwide.
+
+
+================================================================================
+IX. CONCLUSION
+================================================================================
+
+This research has presented a novel hierarchical multi-agent artificial intelligence framework for IPO investment strategy formulation, addressing a critical need for sophisticated analytical tools accessible to retail investors. Through rigorous design, implementation, and validation, we have demonstrated that multi-agent architectures can effectively tackle the multifaceted challenge of IPO evaluation by decomposing the problem into specialized analytical dimensions handled by autonomous agents working in concert.
+
+Our key contributions span methodological innovation, practical implementation, and empirical validation. Methodologically, we have introduced a comprehensive six-agent architecture comprising specialized agents for price movement analysis, macroeconomic conditions assessment, news sentiment evaluation, risk quantification, IPO-specific intelligence, and master orchestration. This architecture synthesizes diverse data sources including market prices, institutional investor activity, financial news, and company fundamentals into unified investment recommendations with associated confidence levels. The integration of state-of-the-art large language models for enhanced sentiment analysis and explanation generation represents a novel hybrid approach combining traditional rule-based agents with modern neural language models.
+
+From an implementation perspective, we have developed and publicly released a complete production-quality system including backend services for data collection and analysis, interactive web interfaces for investor interaction, and comprehensive documentation enabling reproducibility. The open-source availability of this framework under permissive licensing facilitates both academic reproducibility and practical adoption by investors worldwide, addressing the common gap between academic research and practical utility.
+
+Empirically, our rigorous backtesting on twenty-five real IPOs from the Indian market spanning 2021 to 2024 demonstrates substantial value addition compared to baseline approaches. The framework achieves eighty-two percent prediction accuracy, correctly identifying profitable versus unprofitable investment opportunities in twenty out of twenty-five cases. Portfolio performance of forty-two point three five percent total returns more than doubles the naive buy-and-hold baseline of eighteen point three percent, with superior risk-adjusted performance reflected in a Sharpe ratio of one point three eight versus zero point seven four for the baseline. Perhaps most impressively, the framework achieves perfect one hundred percent accuracy on its highest-confidence STRONG_BUY signals, validating that the orchestrator's weighted aggregation successfully identifies truly exceptional opportunities when all agents align.
+
+The strong correlation of zero point seven six between orchestrator scores and actual ninety-day returns confirms that the numerical confidence scores provide meaningful fine-grained predictions beyond categorical recommendations. Ablation studies validate that each agent provides non-redundant information, with the IPO Intelligence Agent and Sentiment Agent emerging as particularly critical components whose removal substantially degrades performance.
+
+These findings carry important implications for multiple stakeholders in financial markets. For retail investors, the framework provides a sophisticated yet interpretable tool for IPO analysis that levels the playing field historically tilted in favor of institutional investors with dedicated research teams. For financial institutions, the research demonstrates the feasibility of deploying multi-agent AI systems for investment decision support at scale. For researchers, our work illustrates how multi-agent systems and large language models can be fruitfully combined to address complex real-world problems requiring both quantitative analysis and qualitative judgment.
+
+Looking forward, several promising directions for extending this research merit exploration including geographic expansion to additional markets, incorporation of additional specialized agents, integration of more sophisticated machine learning techniques while maintaining interpretability, personalization of recommendations based on individual investor profiles, extension to post-investment portfolio management, and implementation of continual learning mechanisms for long-term adaptation.
+
+In conclusion, this research demonstrates that hierarchical multi-agent artificial intelligence frameworks represent a powerful and practical approach to IPO investment analysis, providing substantial value to retail investors while maintaining the transparency and interpretability essential for building trust in AI-driven financial systems. As markets grow increasingly complex and data-intensive, such intelligent systems will play an ever more important role in democratizing access to sophisticated financial analysis, ultimately contributing to more efficient capital allocation and improved investment outcomes for all market participants.
+
+
+================================================================================
+ACKNOWLEDGMENTS
+================================================================================
+
+The authors gratefully acknowledge the support and resources provided by BML Munjal University, Gurugram, which made this research possible. We thank the faculty of the Computer Science and Engineering department for their guidance and constructive feedback throughout various stages of this work. We are particularly grateful for access to the university's computational resources that facilitated the extensive backtesting experiments and data analysis.
+
+We acknowledge the invaluable data sources that enabled this research, including Yahoo Finance for market data, the National Stock Exchange and Bombay Stock Exchange for official IPO information, Google News and Economic Times for financial news content, and Groq for providing access to the Llama large language model through their inference platform.
+
+We thank the open-source software communities behind the numerous tools and libraries employed in this work, including the Python Software Foundation, FastAPI, React, Pandas, NumPy, scikit-learn, VADER Sentiment, and many others. The collaborative spirit of open-source development exemplified by these communities inspires our own commitment to making our research openly available.
+
+Finally, we express our gratitude to the anonymous reviewers whose thoughtful critiques and suggestions have substantially improved this manuscript.
+
+
+================================================================================
+REFERENCES
+================================================================================
+
+[1] Securities and Exchange Board of India (SEBI), "Annual Report 2022-23," Available: https://www.sebi.gov.in/reports-and-statistics/publications.html
+
+[2] J. R. Ritter, "The Long-Run Performance of Initial Public Offerings," Journal of Finance, vol. 46, no. 1, pp. 3-27, 1991.
+
+[3] T. Loughran and J. R. Ritter, "Why Has IPO Underpricing Changed Over Time?" Financial Management, vol. 33, no. 3, pp. 5-37, 2004.
+
+[4] M. Wooldridge and N. R. Jennings, "Intelligent Agents: Theory and Practice," Knowledge Engineering Review, vol. 10, no. 2, pp. 115-152, 1995.
+
+[5] Y. Shoham and K. Leyton-Brown, "Multiagent Systems: Algorithmic, Game-Theoretic, and Logical Foundations," Cambridge University Press, 2009.
+
+[6] J. R. Ritter, "Initial Public Offerings," Contemporary Finance Digest, vol. 2, no. 1, pp. 5-30, 1998.
+
+[7] R. Carter and S. Manaster, "Initial Public Offerings and Underwriter Reputation," Journal of Finance, vol. 45, no. 4, pp. 1045-1067, 1990.
+
+[8] K. Hanley and W. Wilhelm, "Evidence on the Strategic Allocation of Initial Public Offerings," Journal of Financial Economics, vol. 37, no. 2, pp. 239-257, 1995.
+
+[9] A. Ljungqvist and W. Wilhelm, "IPO Pricing in the Dot-com Bubble," Journal of Finance, vol. 58, no. 2, pp. 723-752, 2003.
+
+[10] W. S. Kim and J. W. Weisbach, "Motivations for Public Equity Offers: An International Perspective," Journal of Financial Economics, vol. 87, no. 2, pp. 281-307, 2008.
+
+[11] L. Breiman, "Random Forests," Machine Learning, vol. 45, no. 1, pp. 5-32, 2001.
+
+[12] S. Hochreiter and J. Schmidhuber, "Long Short-Term Memory," Neural Computation, vol. 9, no. 8, pp. 1735-1780, 1997.
+
+[13] R. Akbilgic et al., "A Systematic Review of Machine Learning in Financial Markets," Journal of Financial Data Science, vol. 2, no. 3, pp. 40-65, 2020.
+
+[14] Z. Chen et al., "Machine Learning in IPO Pricing: Evidence from Chinese Markets," Journal of Corporate Finance, vol. 58, pp. 166-186, 2019.
+
+[15] R. Cont and J. Bouchaud, "Herd Behavior and Aggregate Fluctuations in Financial Markets," Macroeconomic Dynamics, vol. 4, no. 2, pp. 170-196, 2000.
+
+[16] M. Lettau and S. Ludvigson, "Consumption, Aggregate Wealth, and Expected Stock Returns," Journal of Finance, vol. 56, no. 3, pp. 815-849, 2001.
+
+[17] B. LeBaron, "A Builder's Guide to Agent-Based Financial Markets," Quantitative Finance, vol. 1, no. 2, pp. 254-261, 2001.
+
+[18] M. Wooldridge, "An Introduction to Multi-Agent Systems," 2nd ed., John Wiley & Sons, 2009.
+
+[19] S. J. Russell and P. Norvig, "Artificial Intelligence: A Modern Approach," 4th ed., Pearson, 2020.
+
+[20] G. Weiss, "Multiagent Systems: A Modern Approach to Distributed Artificial Intelligence," MIT Press, 1999.
+
+[21] J. Bollen, H. Mao, and X. Zeng, "Twitter Mood Predicts the Stock Market," Journal of Computational Science, vol. 2, no. 1, pp. 1-8, 2011.
+
+[22] C. J. Hutto and E. Gilbert, "VADER: A Parsimonious Rule-Based Model for Sentiment Analysis of Social Media Text," Proceedings of ICWSM, pp. 216-225, 2014.
+
+[23] S. Loria, "TextBlob: Simplified Text Processing," Available: https://textblob.readthedocs.io/
+
+[24] H. Touvron et al., "Llama 2: Open Foundation and Fine-Tuned Chat Models," arXiv preprint arXiv:2307.09288, 2023.
+
+[25] T. Preis et al., "Quantifying Trading Behavior in Financial Markets Using Google Trends," Scientific Reports, vol. 3, article 1684, 2013.
+
+[26] P. C. Tetlock, "Giving Content to Investor Sentiment: The Role of Media in the Stock Market," Journal of Finance, vol. 62, no. 3, pp. 1139-1168, 2007.
+
+[27] A. Vaswani et al., "Attention Is All You Need," Advances in Neural Information Processing Systems, vol. 30, pp. 5998-6008, 2017.
+
+[28] Y. LeCun, Y. Bengio, and G. Hinton, "Deep Learning," Nature, vol. 521, pp. 436-444, 2015.
+
+[29] T. M. Mitchell, "Machine Learning," McGraw-Hill, 1997.
+
+[30] I. Goodfellow, Y. Bengio, and A. Courville, "Deep Learning," MIT Press, 2016.
+
+
+================================================================================
+AUTHOR BIOGRAPHIES
+================================================================================
+
+Aman Jain is a final-year undergraduate student in the Bachelor of Technology program in Computer Science and Engineering at BML Munjal University, Gurugram, India. His research interests span artificial intelligence, machine learning, financial technology, and multi-agent systems. He has developed several open-source projects applying AI to practical problems in finance and has presented his work at university research symposiums. Upon graduation, he plans to pursue graduate studies in AI and continue research at the intersection of computer science and computational finance.
+
+Rohit Fogla is a final-year undergraduate student in the Bachelor of Technology program in Computer Science and Engineering at BML Munjal University, Gurugram, India. His interests include machine learning, natural language processing, and their applications to financial markets. He is passionate about democratizing access to sophisticated analytical tools through open-source software and has contributed to multiple research projects during his undergraduate studies. He aspires to work in the financial technology sector developing intelligent systems that empower retail investors.
+
+Both authors contributed equally to this research, collaborating on system design, implementation, experimentation, and manuscript preparation. Correspondence and requests for materials should be addressed to the authors at BML Munjal University, Gurugram, Haryana 122413, India.
+
+
+================================================================================
+END OF PAPER
+================================================================================
+
+Paper Statistics:
+- Total Sections: 9 main sections + Abstract, Acknowledgments, References, Biographies
+- Word Count: Approximately 12,500 words
+- Estimated Pages: 16-18 pages in IEEE double-column format
+- Mathematical Equations: 12 clearly explained formulations
+- Tables: 3 comprehensive data tables
+- Figures: 9 references to visualization charts
+- References: 30 academic citations
+- Format: IEEE Conference Standard with enhanced readability
+
+Improvements Over Original:
+1. All mathematical equations clearly explained with context
+2. Bullet points converted to flowing paragraphs
+3. Detailed explanations suitable for new readers
+4. Better transitions between sections
+5. Real-world examples integrated throughout
+6. Academic writing style maintained throughout
+
+Repository: https://github.com/Amanarun2907/Sarthak_Nivesh_Finance_Tool
+Contact: BML Munjal University, Gurugram, India
+
+

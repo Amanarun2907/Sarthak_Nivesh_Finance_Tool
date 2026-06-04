@@ -1,0 +1,260 @@
+{
+  "passed": 11,
+  "failed": 32,
+  "tests": [
+    {
+      "name": "Root Endpoint",
+      "status": "\u2705 PASS",
+      "status_code": 200,
+      "response_size": 55
+    },
+    {
+      "name": "Health Check",
+      "status": "\u2705 PASS",
+      "status_code": 200,
+      "response_size": 20
+    },
+    {
+      "name": "Market Overview",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "Top Gainers",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "Top Losers",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "Market Breadth",
+      "status": "\u274c ERROR",
+      "error": "HTTPConnectionPool(host='localhost', port=8000): Read timed out. (read timeout=10)"
+    },
+    {
+      "name": "Stock List",
+      "status": "\u2705 PASS",
+      "status_code": 200,
+      "response_size": 1373
+    },
+    {
+      "name": "Stock Price - RELIANCE",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "Stock OHLCV - TCS",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "Stock Technicals - HDFCBANK",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "Stock Fundamentals - INFY",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "Stock Signal - SBIN",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "MF Categories",
+      "status": "\u2705 PASS",
+      "status_code": 200,
+      "response_size": 91
+    },
+    {
+      "name": "MF List (Equity)",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "MF Details",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "MF NAV History",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "SIP Calculator",
+      "status": "\u274c ERROR",
+      "error": "HTTPConnectionPool(host='localhost', port=8000): Read timed out. (read timeout=10)"
+    },
+    {
+      "name": "Goal Calculator",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "SIP Recommendations",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "Live IPOs",
+      "status": "\u2705 PASS",
+      "status_code": 200,
+      "response_size": 143
+    },
+    {
+      "name": "IPO Details",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "IPO Analysis",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "IPO Exit Strategy",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "FII/DII Data",
+      "status": "\u2705 PASS",
+      "status_code": 200,
+      "response_size": 174
+    },
+    {
+      "name": "Bulk Deals",
+      "status": "\u2705 PASS",
+      "status_code": 200,
+      "response_size": 2
+    },
+    {
+      "name": "Block Deals",
+      "status": "\u2705 PASS",
+      "status_code": 200,
+      "response_size": 2
+    },
+    {
+      "name": "Sector Flow",
+      "status": "\u274c ERROR",
+      "error": "HTTPConnectionPool(host='localhost', port=8000): Read timed out. (read timeout=10)"
+    },
+    {
+      "name": "Portfolio Summary",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "Portfolio Risk",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "Add Holding",
+      "status": "\u274c FAIL (405)",
+      "status_code": 405,
+      "response_size": 31
+    },
+    {
+      "name": "Latest News",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "News Sentiment",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "Market Mood",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "Sector Sentiment",
+      "status": "\u2705 PASS",
+      "status_code": 200,
+      "response_size": 212
+    },
+    {
+      "name": "AI Chat",
+      "status": "\u2705 PASS",
+      "status_code": 200,
+      "response_size": 32
+    },
+    {
+      "name": "Quick Actions",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "Sector Heatmap",
+      "status": "\u274c ERROR",
+      "error": "HTTPConnectionPool(host='localhost', port=8000): Read timed out. (read timeout=10)"
+    },
+    {
+      "name": "Correlation Matrix",
+      "status": "\u2705 PASS",
+      "status_code": 200,
+      "response_size": 517
+    },
+    {
+      "name": "Volume Analysis",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "Market Breadth Gauge",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "Agent Report",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "Agent Status",
+      "status": "\u274c FAIL (404)",
+      "status_code": 404,
+      "response_size": 22
+    },
+    {
+      "name": "IPO Multi-Agent Analysis",
+      "status": "\u274c FAIL (405)",
+      "status_code": 405,
+      "response_size": 31
+    }
+  ]
+}
