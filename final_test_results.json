@@ -1,0 +1,96 @@
+{
+  "total": 22,
+  "passed": 22,
+  "failed": 0,
+  "bugs_found": [],
+  "tests": [
+    {
+      "name": "Valid IPO Analysis (Hyundai)",
+      "status": "PASS"
+    },
+    {
+      "name": "Invalid Symbol Handling",
+      "status": "PASS"
+    },
+    {
+      "name": "Zero Subscription Values",
+      "status": "PASS"
+    },
+    {
+      "name": "High Listing Gain Scenario",
+      "status": "PASS"
+    },
+    {
+      "name": "Poor Listing Performance",
+      "status": "PASS"
+    },
+    {
+      "name": "Price Agent - Valid Symbol",
+      "status": "PASS"
+    },
+    {
+      "name": "Price Agent - Invalid Symbol",
+      "status": "PASS"
+    },
+    {
+      "name": "Macroeconomic Agent",
+      "status": "PASS"
+    },
+    {
+      "name": "Sentiment Agent",
+      "status": "PASS"
+    },
+    {
+      "name": "Risk Agent",
+      "status": "PASS"
+    },
+    {
+      "name": "IPO Intelligence Agent",
+      "status": "PASS"
+    },
+    {
+      "name": "Data Fetcher Initialization",
+      "status": "PASS"
+    },
+    {
+      "name": "Data Fetcher - With Symbol",
+      "status": "PASS"
+    },
+    {
+      "name": "Data Fetcher - Without Symbol",
+      "status": "PASS"
+    },
+    {
+      "name": "Empty String Inputs",
+      "status": "PASS"
+    },
+    {
+      "name": "Very Large Numbers",
+      "status": "PASS"
+    },
+    {
+      "name": "Special Characters in Name",
+      "status": "PASS"
+    },
+    {
+      "name": "Future Listing Date",
+      "status": "PASS"
+    },
+    {
+      "name": "Very Old Listing Date",
+      "status": "PASS"
+    },
+    {
+      "name": "Concurrent Analyses",
+      "status": "PASS"
+    },
+    {
+      "name": "Output Completeness",
+      "status": "PASS"
+    },
+    {
+      "name": "Agent Scores Structure",
+      "status": "PASS"
+    }
+  ]
+}

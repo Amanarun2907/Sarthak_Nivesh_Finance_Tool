@@ -1,0 +1,141 @@
+{
+  "total_tests": 19,
+  "passed": 11,
+  "failed": 2,
+  "warnings": 6,
+  "tests": [
+    {
+      "name": "Import RealIPODataFetcher",
+      "status": "PASS",
+      "message": "Module imported successfully",
+      "details": null,
+      "timestamp": "2026-06-06T16:05:44.073747"
+    },
+    {
+      "name": "Import Multi-Agent Framework",
+      "status": "PASS",
+      "message": "All agents imported",
+      "details": null,
+      "timestamp": "2026-06-06T16:06:00.030180"
+    },
+    {
+      "name": "Fetch IPO Calendar",
+      "status": "WARN",
+      "message": "No IPOs found (APIs may be down)",
+      "details": null,
+      "timestamp": "2026-06-06T16:06:03.201940"
+    },
+    {
+      "name": "Fetch Subscription Data",
+      "status": "WARN",
+      "message": "No subscription data (IPO may not be open)",
+      "details": null,
+      "timestamp": "2026-06-06T16:06:16.824462"
+    },
+    {
+      "name": "Fetch GMP",
+      "status": "WARN",
+      "message": "No GMP data available",
+      "details": null,
+      "timestamp": "2026-06-06T16:06:18.317176"
+    },
+    {
+      "name": "Fetch Allotment Status",
+      "status": "PASS",
+      "message": "Finalized: False",
+      "details": null,
+      "timestamp": "2026-06-06T16:06:19.916399"
+    },
+    {
+      "name": "Complete Data - Listed IPO",
+      "status": "PASS",
+      "message": "Data Quality: 20/100",
+      "details": "Current: Rs.1913.60, Listing: Rs.2134.40",
+      "timestamp": "2026-06-06T16:06:25.351211"
+    },
+    {
+      "name": "Smart IPO Search",
+      "status": "WARN",
+      "message": "No matches found",
+      "details": null,
+      "timestamp": "2026-06-06T16:06:27.800480"
+    },
+    {
+      "name": "Price Movement Agent",
+      "status": "PASS",
+      "message": "Score: 60.0, Signal: HOLD",
+      "details": "Summary: The stock price of Hyundai Motor India is currently trading at Rs1913.60, near the upper end of the ",
+      "timestamp": "2026-06-06T16:06:30.631028"
+    },
+    {
+      "name": "Macroeconomic Agent",
+      "status": "PASS",
+      "message": "Score: 42.0, Signal: HOLD",
+      "details": "Summary: The current market conditions, with NIFTY50 down by 0.21% and India VIX at 15.79, indicate a moderat",
+      "timestamp": "2026-06-06T16:06:35.808994"
+    },
+    {
+      "name": "Sentiment Agent",
+      "status": "PASS",
+      "message": "Score: 53.1, Articles: 10",
+      "details": "Summary: The sentiment surrounding Hyundai Motor India's IPO is neutral, with investors adopting a wait-and-s",
+      "timestamp": "2026-06-06T16:06:39.080645"
+    },
+    {
+      "name": "Risk Agent",
+      "status": "PASS",
+      "message": "Score: 32.0, Sharpe: -1.51",
+      "details": "Volatility: 30.6%",
+      "timestamp": "2026-06-06T16:06:40.433601"
+    },
+    {
+      "name": "IPO Intelligence Agent",
+      "status": "PASS",
+      "message": "Score: 44.5, Real Data: True",
+      "details": "GMP: Rs.0.00, Summary: Hyundai Motor India's IPO listing has been disappointing, with a mere 8.90% list",
+      "timestamp": "2026-06-06T16:06:47.698860"
+    },
+    {
+      "name": "Full Integration Test",
+      "status": "PASS",
+      "message": "Decision: HOLD, Score: 46.5",
+      "details": "Confidence: 68.0%, Target: Rs.2050.00",
+      "timestamp": "2026-06-06T16:07:10.374683"
+    },
+    {
+      "name": "API Status Endpoint",
+      "status": "WARN",
+      "message": "Backend not running: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /api/ipo_multiagent/status (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001D1BCF00AA0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))",
+      "details": null,
+      "timestamp": "2026-06-06T16:07:14.418119"
+    },
+    {
+      "name": "API Analysis Endpoint",
+      "status": "WARN",
+      "message": "Backend not running or timeout: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /api/ipo_multiagent/analyze (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001D1BCE618E0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))",
+      "details": null,
+      "timestamp": "2026-06-06T16:07:18.458841"
+    },
+    {
+      "name": "Invalid Symbol Handling",
+      "status": "FAIL",
+      "message": "System crashed: cannot access local variable 'gmp' where it is not associated with a value",
+      "details": null,
+      "timestamp": "2026-06-06T16:07:46.440476"
+    },
+    {
+      "name": "Zero Subscription Handling",
+      "status": "PASS",
+      "message": "System handled zero subscription data",
+      "details": "Decision: HOLD",
+      "timestamp": "2026-06-06T16:08:12.704002"
+    },
+    {
+      "name": "Upcoming IPO Handling",
+      "status": "FAIL",
+      "message": "System crashed: cannot access local variable 'gmp' where it is not associated with a value",
+      "details": null,
+      "timestamp": "2026-06-06T16:08:55.978770"
+    }
+  ]
+}

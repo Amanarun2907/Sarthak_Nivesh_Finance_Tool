@@ -132,12 +132,13 @@ class PriceMovementAgent:
         else:              score-=3; signals.append(f"1M mom {d['mom_1m']:.1f}%")
         return max(0.0,min(100.0,score)),signals
     def run(self,symbol,ipo_name):
-        d=self._fetch(symbol)
-        if "error" in d:
-            return AgentResult(self.NAME,50.0,"HOLD",30.0,f"No price data: {d['error']}",error=d["error"])
-        rule_score,signals=self._rule_score(d)
-        sp="You are a specialist IPO technical analyst. Be precise and data-driven."
-        up=f"""IPO: {ipo_name} ({symbol})
+        try:
+            d=self._fetch(symbol)
+            if "error" in d:
+                return AgentResult(self.NAME,50.0,"HOLD",30.0,f"No price data: {d['error']}",error=d["error"])
+            rule_score,signals=self._rule_score(d)
+            sp="You are a specialist IPO technical analyst. Be precise and data-driven."
+            up=f"""IPO: {ipo_name} ({symbol})
 Price: Rs{d['current_price']:.2f} ({d['change_pct']:+.2f}%) | RSI: {d['rsi']:.1f} | MACD hist: {d['macd_hist']:.3f}
 MA20: Rs{d['ma20']:.2f} | MA50: Rs{d['ma50']:.2f} | Vol: {d['vol_ratio']:.2f}x
 ATR: Rs{d['atr']:.2f} | 1M mom: {d['mom_1m']:+.2f}% | Support: Rs{d['s1']:.2f} | Resist: Rs{d['r1']:.2f}
@@ -155,21 +156,23 @@ KEY_RESISTANCE: [Rs value]
 MOMENTUM_STATUS: [Accelerating/Decelerating/Flat]
 VOLUME_VERDICT: [Accumulation/Distribution/Neutral]
 PRICE_SUMMARY: [2 precise sentences with specific price levels and indicator values]"""
-        llm_text=self.llm.ask(sp,up,max_tokens=500)
-        try:    ls=float(self.llm.parse(llm_text,"PRICE_SCORE",str(rule_score)))
-        except: ls=rule_score
-        try:    lc=float(self.llm.parse(llm_text,"PRICE_CONFIDENCE","60"))
-        except: lc=60.0
-        return AgentResult(self.NAME,round(rule_score*0.4+ls*0.6,1),
-            self.llm.parse(llm_text,"PRICE_SIGNAL","HOLD"),round(lc,1),
-            self.llm.parse(llm_text,"PRICE_SUMMARY","; ".join(signals[:3])),
-            dict(price_data=d,rule_signals=signals,rule_score=rule_score,
-                 trend_direction=self.llm.parse(llm_text,"TREND_DIRECTION","Sideways"),
-                 trend_strength=self.llm.parse(llm_text,"TREND_STRENGTH","Moderate"),
-                 key_support=self.llm.parse(llm_text,"KEY_SUPPORT",f"Rs{d['s1']:.2f}"),
-                 key_resistance=self.llm.parse(llm_text,"KEY_RESISTANCE",f"Rs{d['r1']:.2f}"),
-                 momentum_status=self.llm.parse(llm_text,"MOMENTUM_STATUS","Flat"),
-                 volume_verdict=self.llm.parse(llm_text,"VOLUME_VERDICT","Neutral"),llm_raw=llm_text))
+            llm_text=self.llm.ask(sp,up,max_tokens=500)
+            try:    ls=float(self.llm.parse(llm_text,"PRICE_SCORE",str(rule_score)))
+            except: ls=rule_score
+            try:    lc=float(self.llm.parse(llm_text,"PRICE_CONFIDENCE","60"))
+            except: lc=60.0
+            return AgentResult(self.NAME,round(rule_score*0.4+ls*0.6,1),
+                self.llm.parse(llm_text,"PRICE_SIGNAL","HOLD"),round(lc,1),
+                self.llm.parse(llm_text,"PRICE_SUMMARY","; ".join(signals[:3])),
+                dict(price_data=d,rule_signals=signals,rule_score=rule_score,
+                     trend_direction=self.llm.parse(llm_text,"TREND_DIRECTION","Sideways"),
+                     trend_strength=self.llm.parse(llm_text,"TREND_STRENGTH","Moderate"),
+                     key_support=self.llm.parse(llm_text,"KEY_SUPPORT",f"Rs{d['s1']:.2f}"),
+                     key_resistance=self.llm.parse(llm_text,"KEY_RESISTANCE",f"Rs{d['r1']:.2f}"),
+                     momentum_status=self.llm.parse(llm_text,"MOMENTUM_STATUS","Flat"),
+                     volume_verdict=self.llm.parse(llm_text,"VOLUME_VERDICT","Neutral"),llm_raw=llm_text))
+        except Exception as e:
+            return AgentResult(self.NAME,50.0,"HOLD",20.0,f"Analysis failed: {str(e)}",error=str(e))
 
 class MacroeconomicAgent:
     NAME = "Macroeconomic Agent"
@@ -226,10 +229,25 @@ class MacroeconomicAgent:
         elif dc<-1.0:score-=4;  signals.append(f"Dow {dc:.2f}%")
         return max(0.0,min(100.0,score)),signals
     def run(self):
-        macro=self._fetch(); rule_score,signals=self._rule_score(macro)
-        idx=macro["indices"]; fii=macro["fii_dii"]
-        sp="You are a senior macro analyst for Indian capital markets. Be specific with numbers."
-        up=f"""MACRO SNAPSHOT for IPO suitability:
+        try:
+            macro=self._fetch(); rule_score,signals=self._rule_score(macro)
+            idx=macro["indices"]; fii=macro["fii_dii"]
+            
+            # Check if we have any data
+            if not idx or all(v.get("current", 0) == 0 for v in idx.values()):
+                # Return default values if no data available
+                return AgentResult(
+                    self.NAME, 50.0, "HOLD", 30.0,
+                    "Unable to fetch macroeconomic data. Using neutral assessment.",
+                    dict(macro_data={"indices": {}, "fii_dii": {}}, 
+                         rule_signals=["No data available"], rule_score=50.0,
+                         market_regime="Unknown", fii_verdict="Unknown",
+                         vix_risk="Unknown", liquidity="Unknown",
+                         nifty={}, vix={}, fii_dii={}, llm_raw="", error="Data fetch failed")
+                )
+            
+            sp="You are a senior macro analyst for Indian capital markets. Be specific with numbers."
+            up=f"""MACRO SNAPSHOT for IPO suitability:
 NIFTY50: {idx.get('NIFTY50',{}).get('current',0):.0f} ({idx.get('NIFTY50',{}).get('change_pct',0):+.2f}%)
 SENSEX: {idx.get('SENSEX',{}).get('current',0):.0f} | INDIA VIX: {idx.get('INDIA_VIX',{}).get('current',0):.2f}
 USD/INR: {idx.get('USD_INR',{}).get('current',0):.2f} ({idx.get('USD_INR',{}).get('change_pct',0):+.2f}%)
@@ -249,21 +267,32 @@ FII_VERDICT: [Accumulating/Distributing/Neutral]
 VIX_RISK: [Low/Medium/High/Very_High]
 LIQUIDITY_CONDITION: [Ample/Moderate/Tight]
 MACRO_SUMMARY: [3 sentences on macro conditions for IPO investing today with specific data points]"""
-        lt=self.llm.ask(sp,up,max_tokens=500)
-        try:    ls=float(self.llm.parse(lt,"MACRO_SCORE",str(rule_score)))
-        except: ls=rule_score
-        try:    lc=float(self.llm.parse(lt,"MACRO_CONFIDENCE","65"))
-        except: lc=65.0
-        return AgentResult(self.NAME,round(rule_score*0.35+ls*0.65,1),
-            self.llm.parse(lt,"MACRO_SIGNAL","HOLD"),round(lc,1),
-            self.llm.parse(lt,"MACRO_SUMMARY","; ".join(signals[:3])),
-            dict(macro_data=macro,rule_signals=signals,rule_score=rule_score,
-                 market_regime=self.llm.parse(lt,"MARKET_REGIME","Sideways"),
-                 fii_verdict=self.llm.parse(lt,"FII_VERDICT","Neutral"),
-                 vix_risk=self.llm.parse(lt,"VIX_RISK","Medium"),
-                 liquidity=self.llm.parse(lt,"LIQUIDITY_CONDITION","Moderate"),
-                 nifty=idx.get("NIFTY50",{}),vix=idx.get("INDIA_VIX",{}),
-                 fii_dii=fii,llm_raw=lt))
+            lt=self.llm.ask(sp,up,max_tokens=500)
+            try:    ls=float(self.llm.parse(lt,"MACRO_SCORE",str(rule_score)))
+            except: ls=rule_score
+            try:    lc=float(self.llm.parse(lt,"MACRO_CONFIDENCE","65"))
+            except: lc=65.0
+            return AgentResult(self.NAME,round(rule_score*0.35+ls*0.65,1),
+                self.llm.parse(lt,"MACRO_SIGNAL","HOLD"),round(lc,1),
+                self.llm.parse(lt,"MACRO_SUMMARY","; ".join(signals[:3])),
+                dict(macro_data=macro,rule_signals=signals,rule_score=rule_score,
+                     market_regime=self.llm.parse(lt,"MARKET_REGIME","Sideways"),
+                     fii_verdict=self.llm.parse(lt,"FII_VERDICT","Neutral"),
+                     vix_risk=self.llm.parse(lt,"VIX_RISK","Medium"),
+                     liquidity=self.llm.parse(lt,"LIQUIDITY_CONDITION","Moderate"),
+                     nifty=idx.get("NIFTY50",{}),vix=idx.get("INDIA_VIX",{}),
+                     fii_dii=fii,llm_raw=lt))
+        except Exception as e:
+            # Return default values if any error occurs
+            return AgentResult(
+                self.NAME, 50.0, "HOLD", 30.0,
+                f"Error in macro analysis: {str(e)[:100]}. Using neutral assessment.",
+                dict(macro_data={"indices": {}, "fii_dii": {}}, 
+                     rule_signals=["Error occurred"], rule_score=50.0,
+                     market_regime="Unknown", fii_verdict="Unknown",
+                     vix_risk="Unknown", liquidity="Unknown",
+                     nifty={}, vix={}, fii_dii={}, llm_raw="", error=str(e))
+            )
 
 class SentimentAgent:
     NAME = "Sentiment Agent"
@@ -408,7 +437,16 @@ RISK_SUMMARY: [3 sentences on risk-reward profile for retail IPO investor with s
 
 class IPOIntelligenceAgent:
     NAME = "IPO Intelligence Agent"
-    def __init__(self,llm): self.llm=llm
+    def __init__(self,llm):
+        self.llm=llm
+        try:
+            from ipo_real_data_fetcher import RealIPODataFetcher
+            self.data_fetcher = RealIPODataFetcher()
+            self.has_fetcher = True
+        except:
+            self.data_fetcher = None
+            self.has_fetcher = False
+    
     def _rule_score(self,issue_price,current_price,listing_price,sub_total,sub_qib,gmp,days):
         score=50.0; signals=[]
         if issue_price>0:
@@ -421,12 +459,12 @@ class IPOIntelligenceAgent:
             elif lg<0:   score-=5;  signals.append(f"Marginal listing loss {lg:.1f}%")
             if cg>lg+5:  score+=5;  signals.append("Sustained above listing")
             elif cg<lg-10:score-=5; signals.append("Price eroded post-listing")
-        if gmp>0 and issue_price>0:
+        if gmp and gmp>0 and issue_price>0:
             gp=(gmp/issue_price)*100
             if gp>30:   score+=10; signals.append(f"GMP {gp:.1f}% strong")
             elif gp>15: score+=6;  signals.append(f"GMP {gp:.1f}% positive")
             elif gp>0:  score+=2;  signals.append(f"GMP {gp:.1f}% mild")
-        elif gmp<0 and issue_price>0:
+        elif gmp and gmp<0 and issue_price>0:
             gp=(gmp/issue_price)*100; score-=8; signals.append(f"Negative GMP {gp:.1f}%")
         if sub_total>100:  score+=10; signals.append(f"Mega subscribed {sub_total:.0f}x")
         elif sub_total>50: score+=7;  signals.append(f"Highly subscribed {sub_total:.0f}x")
@@ -436,23 +474,67 @@ class IPOIntelligenceAgent:
         elif sub_qib>20: score+=4; signals.append(f"QIB {sub_qib:.0f}x moderate")
         elif 0<sub_qib<2:score-=6; signals.append(f"QIB {sub_qib:.1f}x low")
         if days>=90:   signals.append("90-day milestone reached")
-        elif days>=60: signals.append("60-day milestone")
+        elif days>=60: signals.append("60-day checkpoint")
         elif days>=30: signals.append("30-day checkpoint")
         return max(0.0,min(100.0,score)),signals
     def run(self,ipo_name,symbol,issue_price,current_price,listing_price,
             sub_total=0.0,sub_qib=0.0,sub_retail=0.0,listing_date_str=""):
+        
+        # FETCH REAL DATA if available
+        real_data_used = False
+        gmp = 0.0  # Initialize GMP to avoid UnboundLocalError
+        
+        if self.has_fetcher:
+            try:
+                print(f"🔄 Fetching REAL DATA for {ipo_name}...")
+                real_data = self.data_fetcher.get_complete_ipo_data(ipo_name, symbol)
+                
+                # Override with real data if available
+                if real_data['data_quality'] >= 20:  # At least some real data
+                    if real_data['issue_price'] > 0:
+                        issue_price = real_data['issue_price']
+                    if real_data['listing_price'] > 0:
+                        listing_price = real_data['listing_price']
+                    if real_data['current_price'] > 0:
+                        current_price = real_data['current_price']
+                    if real_data['subscription_data']['total'] > 0:
+                        sub_total = real_data['subscription_data']['total']
+                        sub_qib = real_data['subscription_data']['qib']
+                        sub_retail = real_data['subscription_data']['retail']
+                    gmp = real_data.get('gmp', 0.0)
+                    if real_data.get('listing_date'):
+                        listing_date_str = real_data['listing_date']
+                    
+                    real_data_used = True
+                    print(f"✅ Using REAL DATA (Quality: {real_data['data_quality']}/100)")
+                    print(f"   Sources: {', '.join(real_data['data_sources_used'])}")
+            except Exception as e:
+                print(f"⚠️  Real data fetch failed: {e}, using provided data")
+                gmp = 0.0  # Ensure GMP is set even on error
+        else:
+            gmp = 0.0  # No fetcher available
+        
         days=0
         if listing_date_str:
             try: days=(datetime.now()-datetime.strptime(listing_date_str,"%Y-%m-%d")).days
-            except: days=0
-        rule_score,signals=self._rule_score(issue_price,current_price,listing_price,sub_total,sub_qib,0,days)
+            except:
+                try: days=(datetime.now()-datetime.strptime(listing_date_str,"%d %b %Y")).days
+                except: days=0
+        
+        rule_score,signals=self._rule_score(issue_price,current_price,listing_price,sub_total,sub_qib,gmp,days)
         lg=((listing_price-issue_price)/issue_price)*100 if issue_price>0 else 0.0
         cg=((current_price-issue_price)/issue_price)*100 if issue_price>0 else 0.0
+        gmp_pct=(gmp/issue_price)*100 if issue_price>0 and gmp!=0 else 0.0
+        
+        data_quality_note = "📊 REAL DATA USED" if real_data_used else "⚠️ Manual/Estimated Data"
+        
         sp="You are India's leading IPO analyst. Provide highly specific, actionable hold/exit advice."
         up=f"""IPO INTELLIGENCE: {ipo_name} ({symbol})
+{data_quality_note}
 Issue Price: Rs{issue_price:.2f} | Listing Price: Rs{listing_price:.2f} (Listing Gain: {lg:+.2f}%)
 Current Price: Rs{current_price:.2f} (From Issue: {cg:+.2f}%) | Days since listing: {days}
 Total Subscription: {sub_total:.1f}x | QIB: {sub_qib:.1f}x | Retail: {sub_retail:.1f}x
+Grey Market Premium (GMP): Rs{gmp:.2f} ({gmp_pct:+.1f}% premium)
 30-day milestone: {"PENDING" if days<30 else f"{cg:+.1f}% from issue"}
 60-day milestone: {"PENDING" if days<60 else f"{cg:+.1f}% from issue"}
 90-day milestone: {"PENDING" if days<90 else f"{cg:+.1f}% from issue"}
@@ -469,7 +551,7 @@ TARGET_PRICE_90D: [Rs value]
 STOP_LOSS_PRICE: [Rs value]
 IDEAL_HOLDING_PERIOD: [X months]
 LISTING_ASSESSMENT: [Outstanding/Good/Fair/Disappointing/Very_Disappointing]
-IPO_SUMMARY: [3 sentences on IPO intelligence verdict with specific numbers]"""
+IPO_SUMMARY: [3 sentences on IPO intelligence verdict with specific numbers including GMP and subscription data]"""
         lt=self.llm.ask(sp,up,max_tokens=600)
         try:    ls=float(self.llm.parse(lt,"IPO_SCORE",str(rule_score)))
         except: ls=rule_score
@@ -477,10 +559,13 @@ IPO_SUMMARY: [3 sentences on IPO intelligence verdict with specific numbers]"""
         except: lc=65.0
         return AgentResult(self.NAME,round(rule_score*0.35+ls*0.65,1),
             self.llm.parse(lt,"IPO_SIGNAL","HOLD"),round(lc,1),
-            self.llm.parse(lt,"IPO_SUMMARY",f"IPO gain {cg:+.1f}%, sub {sub_total:.0f}x"),
+            self.llm.parse(lt,"IPO_SUMMARY",f"IPO gain {cg:+.1f}%, sub {sub_total:.0f}x, GMP Rs{gmp:.0f}"),
             dict(issue_price=issue_price,listing_price=listing_price,current_price=current_price,
                  listing_gain=round(lg,2),current_gain=round(cg,2),
-                 sub_total=sub_total,sub_qib=sub_qib,days_since_listing=days,rule_signals=signals,
+                 sub_total=sub_total,sub_qib=sub_qib,sub_retail=sub_retail,
+                 gmp=gmp,gmp_percent=round(gmp_pct,2),
+                 days_since_listing=days,rule_signals=signals,
+                 real_data_used=real_data_used,
                  hold_or_exit=self.llm.parse(lt,"HOLD_OR_EXIT","HOLD"),
                  hold_exit_reason=self.llm.parse(lt,"HOLD_EXIT_REASON",""),
                  target_30d=self.llm.parse(lt,"TARGET_PRICE_30D",f"Rs{current_price*1.1:.2f}"),
@@ -584,10 +669,32 @@ MONITOR_3: [Specific price/event trigger requiring position review]"""
 def run_ipo_multi_agent_analysis(ipo_name,symbol,issue_price,listing_price,
     current_price=0.0,sub_total=0.0,sub_qib=0.0,sub_retail=0.0,
     listing_date_str="",progress_callback=None):
-    return OrchestratorAgent().run(ipo_name=ipo_name,symbol=symbol,
-        issue_price=issue_price,listing_price=listing_price,current_price=current_price,
-        sub_total=sub_total,sub_qib=sub_qib,sub_retail=sub_retail,
-        listing_date_str=listing_date_str,progress_callback=progress_callback)
+    """
+    Main entry point for complete IPO analysis with comprehensive error handling
+    Returns: OrchestratorResult with all analysis details
+    """
+    try:
+        return OrchestratorAgent().run(ipo_name=ipo_name,symbol=symbol,
+            issue_price=issue_price,listing_price=listing_price,current_price=current_price,
+            sub_total=sub_total,sub_qib=sub_qib,sub_retail=sub_retail,
+            listing_date_str=listing_date_str,progress_callback=progress_callback)
+    except Exception as e:
+        # Return safe default result on error
+        print(f"❌ Critical analysis error: {e}")
+        import traceback
+        traceback.print_exc()
+        
+        # Return minimal safe result
+        return OrchestratorResult(
+            ipo_name=ipo_name,symbol=symbol,final_decision="HOLD",overall_score=50.0,
+            confidence=30.0,entry_strategy="Analysis failed - check inputs",
+            exit_strategy="Analysis failed - retry recommended",
+            target_price=issue_price * 1.1 if issue_price > 0 else 0,
+            stop_loss=issue_price * 0.9 if issue_price > 0 else 0,
+            risk_level="HIGH",holding_period="N/A",agent_scores={},
+            investment_thesis=f"Error: {str(e)}",key_risks=["Technical error occurred"],
+            key_catalysts=[],monitoring_triggers=[]
+        )
 
 __all__=["run_ipo_multi_agent_analysis","OrchestratorAgent","OrchestratorResult",
          "AgentResult","PriceMovementAgent","MacroeconomicAgent","SentimentAgent",
