@@ -1,0 +1,168 @@
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                   ICFMCF 2026 POSTER - QUICK REFERENCE                    ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+📌 PAPER INFORMATION
+────────────────────────────────────────────────────────────────────────────
+Title:      Initial Public Offer Investment Strategy Utilizing Hierarchical 
+            Multi-Agent Artificial Intelligence System
+Paper ID:   40096
+Conference: 8th International Conference on Financial Markets & Corporate 
+            Finance (ICFMCF 2026)
+Dates:      July 3-5, 2026
+Venue:      Department of Management Studies, IIT Madras, Chennai, India
+Authors:    Aman Jain¹, Rohit Fogla¹, Farah Naz²
+            ¹School of Engineering & Technology, BML Munjal University
+            ²School of Management, BML Munjal University
+
+📧 CONTACT
+────────────────────────────────────────────────────────────────────────────
+Aman Jain:  aman.jain.arun.777@gmail.com
+Rohit Fogla: foglarohit901@gmail.com
+Farah Naz:  fnaz2218@gmail.com
+
+🎯 MAIN FILE
+────────────────────────────────────────────────────────────────────────────
+Poster:     ICFMCF_2026_IPO_AI_Poster_FINAL.pptx  ← OPEN THIS
+
+📖 DOCUMENTATION
+────────────────────────────────────────────────────────────────────────────
+Quick Start:       START_HERE_CHECKLIST.md          ← READ FIRST
+Master Summary:    COMPLETE_PACKAGE_SUMMARY.md
+Detailed Guide:    POSTER_README.md
+Design Specs:      POSTER_DESIGN_SPECIFICATIONS.md
+Chart Index:       VISUALIZATIONS_INDEX.md
+Charts Summary:    CHARTS_GENERATED_SUMMARY.md
+
+📊 KEY PERFORMANCE METRICS
+────────────────────────────────────────────────────────────────────────────
+Dataset Size:      25 IPOs (NSE/BSE, 2021-2024)
+Overall Accuracy:  83%
+Portfolio Return:  +25.8%
+Sharpe Ratio:      1.38
+Max Drawdown:      −12.8%
+Correlation (r):   0.76
+BUY Success Rate:  84%
+Confidence Score:  Up to 80%
+
+📊 5 KEY FIGURES IN POSTER
+────────────────────────────────────────────────────────────────────────────
+1. bt_chart4_accuracy.png      - Signal Accuracy (83%, r=0.76)
+2. bt_chart5_portfolio.png     - Portfolio Performance (+25.8%)
+3. bt_chart3_agent_scores.png  - Agent Heatmap (hierarchical framework)
+4. bt_chart2_multihorizon.png  - Multi-Horizon Returns (30/60/90-day)
+5. bt_chart1_listing_gains.png - IPO Performance Overview (25 IPOs)
+
+🎨 POSTER SPECIFICATIONS
+────────────────────────────────────────────────────────────────────────────
+Size:          A1 Portrait
+Dimensions:    594mm × 841mm (23.4" × 33.1")
+Resolution:    600 DPI (target for printing)
+Color Scheme:  BMU Blue (#003D82) + IIT Maroon (#8B0000) + Teal (#008B8B)
+Format:        PowerPoint (.pptx) → Export to PDF
+
+⚡ REMAINING TASKS (5%)
+────────────────────────────────────────────────────────────────────────────
+☐ 1. Download 3 logos (15 min)
+     • BMU Logo:       https://www.bmu.edu.in/
+     • IIT Madras:     https://commons.wikimedia.org/wiki/File:IIT_Madras_Logo.svg
+     • ICFMCF 2026:    https://conf.code.iitm.ac.in/conf/ICFMCF_2026/
+     
+☐ 2. Insert logos into PowerPoint (10 min)
+     • Open: ICFMCF_2026_IPO_AI_Poster_FINAL.pptx
+     • Delete placeholder text boxes
+     • Insert → Pictures → Select logos
+     • Resize to ~1.2 inches height
+     • Position: BMU (left), ICFMCF (center), IIT Madras (right)
+
+☐ 3. Review content (10 min)
+     • Check author details
+     • Verify metrics
+     • Proofread text
+
+☐ 4. Export PDF (5 min)
+     • File → Export → Create PDF/XPS
+     • Options → High quality (600 DPI)
+     • Save as: ICFMCF_2026_IPO_AI_Poster_PRINT.pdf
+
+☐ 5. Print at shop (before June 10, 2026)
+     • A1 Portrait (594mm × 841mm)
+     • High-quality matte/semi-gloss paper
+     • Full color, 600 DPI
+
+☐ 6. Register for conference (before June 17, 2026)
+     • https://conf.code.iitm.ac.in/conf/ICFMCF_2026/login
+     • Complete payment
+
+🛠️ QUICK COMMANDS
+────────────────────────────────────────────────────────────────────────────
+Check logos:           python download_logos.py
+Open poster:           start ICFMCF_2026_IPO_AI_Poster_FINAL.pptx
+Regenerate poster:     python create_conference_poster.py
+List visualizations:   dir *.png
+
+📁 FILE LOCATIONS
+────────────────────────────────────────────────────────────────────────────
+Poster:         PRJ-3/ICFMCF_2026_IPO_AI_Poster_FINAL.pptx
+Charts:         PRJ-3/*.png (31 files) + PRJ-3/research/*.png (backup)
+Logos:          PRJ-3/logos/ (create folder, download 3 logos here)
+Docs:           PRJ-3/*.md (10 guide files)
+Scripts:        PRJ-3/*.py (2 helper scripts)
+
+🎯 TIMELINE
+────────────────────────────────────────────────────────────────────────────
+TODAY:           Download logos, insert into PowerPoint
+THIS WEEK:       Review, export PDF, test print
+BEFORE JUNE 10:  Professional print (A1 poster)
+BEFORE JUNE 17:  Conference registration + payment
+JULY 3-5:        Present at IIT Madras! 🎉
+
+📊 AGENT ARCHITECTURE
+────────────────────────────────────────────────────────────────────────────
+Financial Analysis Agent:   20%
+Macroeconomic Agent:        15%
+Market Sentiment Agent:     20%
+Risk Assessment Agent:      20%
+IPO Intelligence Agent:     25% (highest weight)
+Decision Aggregator:        Weighted synthesis
+Recommendation Agent:       LLM-based (Llama 3.3)
+
+🔧 TECHNOLOGY STACK
+────────────────────────────────────────────────────────────────────────────
+LLM:            Llama 3.3 70B (Groq API)
+Sentiment:      VADER + TextBlob
+Data Sources:   Yahoo Finance, NSE/BSE, ipowatch.in
+Dataset:        25 real IPOs (July 2021 - November 2024)
+
+✅ PACKAGE STATUS
+────────────────────────────────────────────────────────────────────────────
+✅ PowerPoint poster created
+✅ All 31 visualizations generated
+✅ Visualizations copied to parent folder
+✅ Complete documentation (10 files)
+✅ Helper scripts ready
+☐ 3 logos to download
+☐ Insert logos into poster
+☐ Export PDF and print
+
+COMPLETION: 95% ████████████████████░
+
+💡 TIPS FOR SUCCESS
+────────────────────────────────────────────────────────────────────────────
+• Use Wikipedia Commons for IIT Madras logo (best quality SVG)
+• Request official BMU logo from marketing@bmu.edu.in if needed
+• Export PDF at MAXIMUM quality (600 DPI minimum)
+• Do a test print on A4 paper before final A1 print
+• Check colors and readability on test print
+• Bring USB with both PowerPoint AND PDF to print shop
+• Ask print shop to show preview before final printing
+• Verify poster quality before leaving the print shop
+
+🎓 GOOD LUCK AT IIT MADRAS!
+────────────────────────────────────────────────────────────────────────────
+Your research is impressive and your poster is professional.
+Time to showcase your work at one of India's top institutions!
+
+═══════════════════════════════════════════════════════════════════════════
+
+For help: Read START_HERE_CHECKLIST.md or COMPLETE_PACKAGE_SUMMARY.md
