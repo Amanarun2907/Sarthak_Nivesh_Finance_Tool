@@ -1,15 +1,15 @@
-@echo off
-echo ════════════════════════════════════════════════════════════════════════════
-echo    🚀 SARTHAK NIVESH - COMPLETE FULL STACK SYSTEM
+﻿@echo off
+echo â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+echo    ðŸš€ SARTHAK NIVESH - COMPLETE FULL STACK SYSTEM
 echo    IPO Intelligence Hub with All 6 Agents
-echo ════════════════════════════════════════════════════════════════════════════
+echo â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 echo.
 
 REM Set environment variables
-set GROQ_API_KEY=YOUR_GROQ_API_KEY_HERE
+REM GROQ_API_KEY is read from .env - set it there, never hardcode it in this file
 set PYTHONPATH=%CD%
 
-echo 📦 Installing/Updating dependencies...
+echo ðŸ“¦ Installing/Updating dependencies...
 echo.
 
 REM Install backend dependencies
@@ -18,22 +18,22 @@ pip install -r requirements.txt
 cd ..\..
 
 echo.
-echo ════════════════════════════════════════════════════════════════════════════
-echo    ✅ Setup Complete!
-echo ════════════════════════════════════════════════════════════════════════════
+echo â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+echo    âœ… Setup Complete!
+echo â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 echo.
-echo 🎯 Starting Backend Server on http://localhost:8000
-echo 📚 API Documentation: http://localhost:8000/docs
+echo ðŸŽ¯ Starting Backend Server on http://localhost:8000
+echo ðŸ“š API Documentation: http://localhost:8000/docs
 echo.
 echo All 6 IPO Intelligence Agents Active:
-echo   1. 📊 Subscription Analysis Agent
-echo   2. 💰 GMP Analysis Agent
-echo   3. 📈 Financials ^& Fundamentals Agent
-echo   4. 🎯 Listing Day Predictor Agent
-echo   5. 📅 Post-Listing Tracker Agent
-echo   6. ⚠️  Risk Assessment Agent
+echo   1. ðŸ“Š Subscription Analysis Agent
+echo   2. ðŸ’° GMP Analysis Agent
+echo   3. ðŸ“ˆ Financials ^& Fundamentals Agent
+echo   4. ðŸŽ¯ Listing Day Predictor Agent
+echo   5. ðŸ“… Post-Listing Tracker Agent
+echo   6. âš ï¸  Risk Assessment Agent
 echo.
-echo ════════════════════════════════════════════════════════════════════════════
+echo â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 echo.
 
 REM Start backend

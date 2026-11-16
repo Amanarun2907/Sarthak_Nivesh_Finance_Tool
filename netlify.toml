@@ -1,0 +1,20 @@
+# Netlify config for the Sarthak Nivesh React front-end.
+# The FastAPI backend is deployed separately on Render (see web/backend/render.yaml).
+# web/frontend/.env.production sets REACT_APP_API_URL to the Render backend URL,
+# so the built site calls the API automatically — no manual wiring needed.
+
+[build]
+  base = "web/frontend"
+  command = "npm install && npm run build"
+  publish = "build/"
+
+[build.environment]
+  NODE_VERSION = "18"
+  # CI=false keeps the build from failing on react-scripts warnings.
+  CI = "false"
+
+# SPA fallback so client-side routes resolve to index.html.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

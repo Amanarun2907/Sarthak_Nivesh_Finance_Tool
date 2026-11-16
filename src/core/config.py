@@ -20,7 +20,7 @@ except Exception:
 # API Keys — loaded from .env, never hardcoded
 ALPHA_VANTAGE_API_KEY = os.environ.get("ALPHA_VANTAGE_API_KEY", "")
 NEWS_API_KEY = os.environ.get("NEWS_API_KEY", "")
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "YOUR_GROQ_API_KEY_HERE")
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")  # Set via .env / env var; never hardcode a key here
 
 # Project Configuration
 PROJECT_NAME = "सार्थक निवेश"

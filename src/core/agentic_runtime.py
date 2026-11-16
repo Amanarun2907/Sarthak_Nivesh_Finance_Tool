@@ -88,20 +88,55 @@ except Exception:
     pass
 
 # 3. LiteLLM compatibility for CrewAI + Groq
+# MUST run before CrewAI imports so the patched completion is what CrewAI sees.
 try:
-    import litellm
-    litellm.drop_params = True
-    _orig_completion = litellm.completion
+    import litellm as _litellm_module
+    _litellm_module.drop_params = True
 
-    def _safe_completion(*args, **kwargs):
-        if "messages" in kwargs:
-            for m in kwargs["messages"]:
-                if isinstance(m, dict):
-                    m.pop("cache_breakpoint", None)
-                    m.pop("cache_control", None)
-        return _orig_completion(*args, **kwargs)
+    _GROQ_KEY    = os.environ.get("GROQ_API_KEY", "")
+    _GROQ_BASE   = "https://api.groq.com/openai/v1"
+    _GROQ_MODEL  = "openai/gpt-oss-120b"
+    _UNSUPPORTED_MODELS = {
+        "llama-3.3-70b-versatile", "llama-3.1-70b-versatile",
+        "llama3-70b-8192", "llama3-groq-70b-8192-tool-use-preview",
+        "llama-3.1-8b-instant", "llama3-8b-8192",
+        "mixtral-8x7b-32768", "gemma2-9b-it", "gemma-7b-it",
+    }
 
-    litellm.completion = _safe_completion
+    _orig_litellm_completion = _litellm_module.completion
+
+    def _groq_safe_completion(*args, **kwargs):
+        """Intercepts ALL litellm.completion calls and remaps unsupported Groq models."""
+        # Update key in case it changed
+        _key = os.environ.get("GROQ_API_KEY", _GROQ_KEY)
+
+        # Check positional model arg
+        model_arg = args[0] if args else None
+        model_kw  = kwargs.get("model", "")
+        raw_model = str(model_kw or model_arg or "")
+
+        # Strip provider prefix to get bare model name
+        bare = raw_model.replace("groq/", "").replace("openai/", "").strip()
+
+        if bare in _UNSUPPORTED_MODELS:
+            # Replace with available model + correct endpoint
+            if args:
+                args = (_GROQ_MODEL,) + args[1:]
+            kwargs["model"]    = _GROQ_MODEL
+            kwargs["api_base"] = _GROQ_BASE
+            kwargs["api_key"]  = _key
+
+        # Strip unsupported message fields
+        for m in kwargs.get("messages", []):
+            if isinstance(m, dict):
+                m.pop("cache_breakpoint", None)
+                m.pop("cache_control", None)
+
+        return _orig_litellm_completion(*args, **kwargs)
+
+    # Replace the module-level function
+    _litellm_module.completion = _groq_safe_completion
+
 except Exception:
     pass
 
@@ -109,6 +144,66 @@ except Exception:
 # 3b. CrewAI Native or Resilient Bridge
 try:
     from crewai import Agent, Task, Crew, Process, LLM
+
+    # Patch CrewAI's internal flow runtime to remap unsupported Groq models
+    # The 'call_llm_and_parse' listener inside crewai.flow uses a default model
+    # (llama-3.3-70b-versatile) that isn't available on this Groq account.
+    # We patch it to route through the openai/gpt-oss-120b model instead.
+    # Deep-patch CrewAI's flow runtime: replace the model in call_llm_and_parse listener.
+    # This listener fires for every crew.kickoff() step and uses a hardcoded default model.
+    # We inject a monkey-patch so it uses openai/gpt-oss-120b (available on this Groq account).
+    try:
+        import crewai.flow.runtime as _flow_rt
+        import inspect, types
+
+        _GROQ_KEY = os.getenv("GROQ_API_KEY", "")
+        _GROQ_BASE = "https://api.groq.com/openai/v1"
+        _GROQ_MODEL = "openai/gpt-oss-120b"
+        _UNSUPPORTED = {
+            "llama-3.3-70b-versatile", "llama-3.1-70b-versatile", "llama3-70b-8192",
+            "llama-3.1-8b-instant", "llama3-8b-8192", "mixtral-8x7b-32768",
+            "gemma2-9b-it", "gemma-7b-it", "llama-guard-3-8b",
+        }
+
+        # Find call_llm_and_parse in the flow runtime module and patch it
+        for _attr_name in dir(_flow_rt):
+            _attr = getattr(_flow_rt, _attr_name, None)
+            if callable(_attr) and "llm" in _attr_name.lower():
+                # Wrap the function to remap model names
+                def _make_wrapper(original_fn):
+                    def _wrapper(*args, **kwargs):
+                        # Remap 'model' kwarg if present
+                        if "model" in kwargs:
+                            m = str(kwargs["model"]).replace("groq/", "").strip()
+                            if m in _UNSUPPORTED:
+                                kwargs["model"] = _GROQ_MODEL
+                                kwargs.setdefault("api_base", _GROQ_BASE)
+                                kwargs.setdefault("api_key", _GROQ_KEY)
+                        return original_fn(*args, **kwargs)
+                    return _wrapper
+                try:
+                    setattr(_flow_rt, _attr_name, _make_wrapper(_attr))
+                except Exception:
+                    pass
+
+        # Also set default LLM for CrewAI agents via environment variable
+        os.environ["GROQ_API_KEY"] = _GROQ_KEY
+        # Patch crewai's default LLM config if it has one
+        try:
+            import crewai.utilities.rpm_controller as _rpm
+        except Exception:
+            pass
+        try:
+            import crewai.llm as _crewai_llm_mod
+            # Override CrewAI's default model selection
+            if hasattr(_crewai_llm_mod, "DEFAULT_MODEL"):
+                _crewai_llm_mod.DEFAULT_MODEL = _GROQ_MODEL
+        except Exception:
+            pass
+
+    except Exception:
+        pass
+
     CREWAI_AVAILABLE = True
 except Exception:
     CREWAI_AVAILABLE = False
@@ -118,7 +213,7 @@ except Exception:
         hierarchical = "hierarchical"
 
     class LLM:
-        def __init__(self, model: str = "groq/llama-3.3-70b-versatile", api_key: str = "", temperature: float = 0.2, **kwargs):
+        def __init__(self, model: str = "groq/openai/gpt-oss-120b", api_key: str = "", temperature: float = 0.2, **kwargs):
             self.model = model
             self.api_key = api_key or os.getenv("GROQ_API_KEY", "")
             self.temperature = temperature
@@ -166,11 +261,12 @@ except Exception:
                     agent = task.agent or (self.agents[0] if self.agents else None)
                     sys_msg = f"You are a {agent.role}. Goal: {agent.goal}. Backstory: {agent.backstory}" if agent else "You are an expert investment agent."
                     headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
-                    model_name = "llama-3.3-70b-versatile"
+                    model_name = "openai/gpt-oss-120b"
                     if agent and agent.llm and hasattr(agent.llm, "model"):
                         m = str(agent.llm.model).replace("groq/", "").strip()
-                        if m:
-                            model_name = m
+                        # Keep openai/ prefix as-is — Groq API accepts it directly
+                        if m and m != "openai/gpt-oss-120b":
+                            model_name = m.replace("groq/", "")
                     payload = {
                         "model": model_name,
                         "messages": [
@@ -190,21 +286,30 @@ except Exception:
 
 
 # 4. CrewAI LLM Factory
-def get_crewai_llm(model: str = "groq/llama-3.3-70b-versatile", temperature: float = 0.2):
+def get_crewai_llm(model: str = "openai/gpt-oss-120b", temperature: float = 0.2):
     """
-    Returns an initialized CrewAI LLM instance configured for the project.
+    Returns a CrewAI-compatible LLM using Groq's OpenAI-compatible endpoint.
+    Uses openai/ prefix with Groq base_url so LiteLLM routes it correctly
+    to the openai/gpt-oss-120b model available on this Groq account.
     """
     api_key = os.getenv("GROQ_API_KEY", "")
+    base_url = "https://api.groq.com/openai/v1"
+    # Ensure env vars are set for LiteLLM routing
+    if api_key:
+        os.environ["GROQ_API_KEY"] = api_key
+        os.environ["OPENAI_API_KEY"] = api_key   # LiteLLM openai/ provider uses OPENAI_API_KEY
+        os.environ["OPENAI_API_BASE"] = base_url
     try:
         from crewai import LLM as NativeLLM
         return NativeLLM(
             model=model,
             api_key=api_key,
-            temperature=temperature
+            base_url=base_url,
+            temperature=temperature,
         )
     except Exception:
         return LLM(
-            model=model,
+            model=f"groq/{model}",
             api_key=api_key,
             temperature=temperature
         )

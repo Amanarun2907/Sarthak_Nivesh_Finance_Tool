@@ -1,0 +1,604 @@
+================================================================================
+  सार्थक निवेश (SARTHAK NIVESH) — COMPLETE END-TO-END PROJECT EXPLANATION
+  AI-Powered Real-Time Investment Intelligence Platform for Indian Markets
+  Multi-Agent Agentic System (CrewAI + ADK) with MCP, Guardrails & Observability
+================================================================================
+
+Author / Team : Aman Jain (B.Tech 2023–27), 6th Semester Project (2026)
+Repository    : https://github.com/Amanarun2907/Sarthak_Nivesh_Finance_Tool
+Project Type  : Academic Agentic-AI capstone (finance / investment intelligence)
+
+--------------------------------------------------------------------------------
+HOW TO READ THIS DOCUMENT
+--------------------------------------------------------------------------------
+Part A  : What the project is and how it works end-to-end (the big picture).
+Part B  : The 10 Minimum Requirement Criteria and exactly how each one is met,
+          with the real file / class / function that implements it.
+Part C  : Agentic design patterns used.
+Part D  : Data sources and technology stack.
+Part E  : How to run the project locally.
+Part F  : Deployment (Render for backend, Netlify for frontend).
+Part G  : End-to-end performance, cost and running-time estimates.
+Part H  : Security notes (read before pushing / deploying).
+
+Everything below maps to real code in this repository. Where a file is named,
+that file exists and contains what is described.
+
+================================================================================
+PART A — WHAT THE PROJECT IS (END-TO-END)
+================================================================================
+
+Sarthak Nivesh ("Meaningful Investment") is a real-time investment intelligence
+platform for Indian retail investors. It is NOT a single chatbot. It is a
+multi-agent system in which several specialised AI agents, built on TWO
+different agentic frameworks (CrewAI and ADK), collaborate, share context,
+call external tools, validate every input/output through guardrails, and emit
+a single structured investment recommendation — all under full tracing and
+performance measurement.
+
+The platform has two front-ends that share one Python brain:
+
+  1. A FastAPI backend (web/backend/main.py) that exposes ~12 routers
+     (dashboard, stocks, mutual funds, SIP goals, IPO, smart money, portfolio,
+     news, AI assistant, analytics, agentic AI hub, IPO multi-agent).
+  2. A React 18 front-end (web/frontend) that calls that API and renders 13
+     feature pages (dashboard, stock intelligence, mutual funds, SIP planner,
+     IPO intelligence, IPO multi-agent, smart money, portfolio, AI finance
+     coach, news & sentiment, AI assistant, advanced analytics, agentic hub).
+
+The live data is 100% real (NSE/BSE symbols via Yahoo Finance, AMFI for mutual
+fund NAVs, ipowatch.in for IPOs, NSE for FII/DII flows, RSS for news). There is
+no dummy data anywhere.
+
+END-TO-END FLOW OF ONE ANALYSIS REQUEST
+---------------------------------------
+User (React page) -> POST /api/ipo_multiagent/analyze  (or /api/agentic/run)
+  -> FastAPI router validates the request body (Pydantic / required fields)
+  -> Multi-Agent Orchestrator (src/core/multi_agent_orchestrator.py) starts:
+       Step 1  Input Validation      -> Guardrails (prompt injection / toxic /
+                                         type / bounds checks)
+       Step 2  Initialise Tracking    -> Performance evaluator, LangFuse
+                                         observability trace, Agent Control
+                                         Tower task, A2A shared AgentState
+       Step 3  Parallel Agent Run     -> ThreadPoolExecutor runs:
+                                           * CrewAI Price Movement Agent
+                                           * CrewAI Sentiment Agent
+                                           * ADK Risk Analysis Agent
+                                           * ADK IPO Agent
+                                         Each agent:
+                                           - registers on the A2A protocol
+                                           - calls MCP tools (stock data /
+                                             news) wrapped as framework tools
+                                           - is wrapped in an observability
+                                             span + performance execution
+                                           - has its output validated
+                                           - writes its result into the shared
+                                             AgentState (context sharing)
+       Step 4  Weighted Aggregation   -> scores combined with configurable
+                                         weights into a single decision
+       Step 5  Structured Output      -> Pydantic InvestmentRecommendation
+                                         (BUY/SELL/HOLD/AVOID, confidence,
+                                         per-agent scores, reasoning, cost,
+                                         tokens, explainability report)
+  -> JSON response -> React renders charts + report.
+
+This single flow satisfies all ten requirement criteria simultaneously.
+
+================================================================================
+PART B — THE 10 MINIMUM REQUIREMENT CRITERIA (AND HOW EACH IS MET)
+================================================================================
+
+These are the project's minimum-requirement criteria. Each is implemented in
+real code; the mapping is given below.
+
+--------------------------------------------------------------------------------
+REQUIREMENT 1 — CONTEXT SHARING & STATE UPDATES
+  "Intermediate outputs from one agent must feed into another. Use state for
+   sharing context."
+--------------------------------------------------------------------------------
+IMPLEMENTED IN : src/core/a2a_protocol.py  (class AgentState)
+                src/core/multi_agent_orchestrator.py (Step 2 + Step 3)
+
+How it works:
+- AgentState is a Pydantic shared-state container. It holds:
+    task_id, symbol, company_name, user_query, analysis_type,
+    agent_outputs (dict of every agent's intermediate result),
+    completed_agents / pending_agents / failed_agents (lists),
+    final_recommendation, confidence_score.
+- The orchestrator creates ONE AgentState per task (protocol.create_state(...))
+  and passes its id to every agent.
+- Each agent calls state.update_agent_output(agent_id, output) to publish its
+  intermediate result. Downstream agents read earlier agents' outputs from the
+  same state object — so the Risk agent can see what the Price agent found,
+  and the IPO/Sentiment agents share the same symbol/company context.
+- A2A also emits STATE_UPDATE messages (MessageType.STATE_UPDATE) so framework
+  boundaries do not block context flow.
+This is genuine state-based context sharing, not just passing arguments.
+
+--------------------------------------------------------------------------------
+REQUIREMENT 2 — TOOL INTEGRATION USING MCP
+  "At least two external tools (library or custom) must be used (e.g. web
+   search API, database lookup, file parser, calculator)."
+--------------------------------------------------------------------------------
+IMPLEMENTED IN : src/core/mcp_tools.py  (MCP registry + two tools)
+
+Two real external tools, wrapped in a Model-Context-Protocol-style registry:
+
+  Tool #1 — MCPStockDataFetcher  (tool_name = "stock_data_fetcher")
+      External source : Yahoo Finance (the `yfinance` library API)
+      Input  : StockDataRequest (Pydantic) — symbol, period, interval
+      Output : MCPToolResponse (Pydantic) — current price, prev close, % change,
+               volume, 52w high/low, annualised volatility, RSI(14), MACD,
+               MA20, market cap, P/E, sector, industry, full OHLCV history.
+      Validates the symbol (forces .NS suffix for Indian stocks) and checks
+      network availability before calling.
+
+  Tool #2 — MCPNewsAnalyzer  (tool_name = "news_analyzer")
+      External source : RSS feeds — Economic Times, MoneyControl, Google
+      Finance (parsed with feedparser + BeautifulSoup4)
+      Input  : NewsRequest (Pydantic) — company_name, symbol, days_back
+      Output : MCPToolResponse (Pydantic) — news articles + sentiment.
+
+Each tool exposes get_tool_schema() returning input_schema / output_schema
+(JSON schemas) — i.e. the tools self-describe in MCP fashion. The registry is
+accessed via get_mcp_registry(); agents call mcp.execute_tool(name, **kwargs).
+
+More than the minimum two tools effectively exist (stock data + news are two
+distinct external integrations; plus the platform also calls AMFI, NSE FII/DII
+and ipowatch.in in other routers), but the two MCP tools above are the formal,
+registered, schema-described ones used by the agents.
+
+--------------------------------------------------------------------------------
+REQUIREMENT 3 — STRUCTURED OUTPUT USING PYDANTIC
+  "Final output must be generated in a structured form (Markdown, Table, or
+   JSON)."
+--------------------------------------------------------------------------------
+IMPLEMENTED IN : src/core/multi_agent_orchestrator.py (InvestmentRecommendation)
+                 web/backend/routers/ipo_multiagent.py (structured OrchestratorResult)
+
+The final output is a Pydantic model serialised to JSON:
+
+  InvestmentRecommendation (Pydantic BaseModel):
+    task_id, symbol, company_name, timestamp,
+    recommendation            -> "BUY" | "SELL" | "HOLD" | "AVOID"
+    confidence_score          -> 0..100 (validated with ge=0, le=100)
+    price_score, sentiment_score, risk_score, ipo_score  -> 0..100 each
+    weighted_price, weighted_sentiment, weighted_risk, weighted_ipo
+    key_strengths: List[str], key_risks: List[str], reasoning: List[str]
+    total_duration_seconds, total_cost_usd, total_tokens
+    explainability_report: Optional[Dict]
+    validation_passed: bool, validation_warnings: List[str]
+
+Because it is a Pydantic model, FastAPI serialises it directly to JSON and the
+schema is enforced (ranges, required fields). The React front-end renders this
+JSON as charts, score cards and a written report. Pydantic is used throughout
+the stack (A2AMessage, AgentState, MCPToolResponse, ValidationResult,
+TraceMetadata, SpanMetrics, ModelPricing), so structure is guaranteed at every
+boundary, not only at the end.
+
+--------------------------------------------------------------------------------
+REQUIREMENT 4 — AGENTIC DESIGN PATTERNS
+  "Implement suitable agentic design patterns as found suitable and relevant."
+--------------------------------------------------------------------------------
+IMPLEMENTED IN : src/core/multi_agent_orchestrator.py
+                src/core/agent_control_tower.py
+                web/backend/routers/ipo_multiagent.py (IPO 6-agent hierarchy)
+                web/backend/routers/agentic.py (market 6-agent hub)
+
+Patterns used (all present in the code):
+
+  1. Hierarchical / Orchestrator-Worker pattern
+     A central MultiAgentOrchestrator coordinates specialist agents and a
+     synthesiser step. The orchestrator is the "manager"; the four (or six)
+     agents are the "workers"; the aggregation step is the synthesiser.
+
+  2. Fan-out / Parallel execution pattern
+     Agents run concurrently via ThreadPoolExecutor(max_workers=4) instead of
+     sequentially, reducing latency (see the agentic hub ~50s / IPO ~13s times
+     in Part G). Each agent is submitted as a future and collected as_completed.
+
+  3. Ensemble / Weighted-Voting aggregation pattern
+     Not all agents are equal. Weights (price 0.25, sentiment 0.25, risk 0.25,
+     ipo 0.25 in the core orchestrator; financials 25%, subscription 20%, GMP
+     15%, listing 15%, post-listing 15%, risk 10% in the IPO router) combine
+     specialist scores into one final score, which maps to BUY/HOLD/AVOID.
+
+  4. Map-Reduce / Synthesis pattern
+     Specialist agents "map" over sub-problems (price, sentiment, risk, IPO);
+     a synthesiser (Master agent / Groq LLM) "reduces" them into one report with
+     Top opportunities, Key risks, Smart-money signal, Action plan, Confidence.
+
+  5. Monitor / Control-Tower pattern (governance)
+     agent_control_tower.py tracks AgentStatus, AgentMetrics (health_score,
+     cost, tokens, runtime) and TaskExecution with agent-call lineage
+     (parent_call_id) for audit/replay.
+
+  6. Defensive / Resilience pattern
+     _safe() NaN/Inf serialiser, graceful per-router loading (try/except in
+     main.py so one failing router never brings down the API), safe float
+     conversion, and try/except around every external fetch.
+
+--------------------------------------------------------------------------------
+REQUIREMENT 5 — TASK MONITORING & LOGGING USING CALLBACK FUNCTIONS
+  "Agents must include a monitoring mechanism that tracks intermediate outputs,
+   execution flows, and errors for transparency and debugging."
+--------------------------------------------------------------------------------
+IMPLEMENTED IN : src/core/observability_system.py  (ObservabilityCallback)
+                src/core/agent_control_tower.py     (live metrics + lineage)
+                src/core/crewai_agents.py / adk_agents.py (per-agent callbacks)
+
+How callbacks are used:
+- ObservabilityCallback.register_handler(fn) lets you attach callback handlers
+  that fire on monitoring events (trace start, span start/end, errors).
+- Each agent wraps its work in start_agent_span(...) / end and feeds
+  start_time, end_time, duration_ms, input_data, output_data, status, error,
+  tokens and cost into SpanMetrics. This is the "callback-style" monitoring
+  hook layered onto every agent execution.
+- The Agent Control Tower records AgentCall objects with parent_call_id, so
+  the full agent-to-agent execution flow (who called whom, in what order, with
+  what input/output) is reconstructable — i.e. execution-flow logging.
+- Errors are captured (status="failed", error=...) rather than crashing the
+  pipeline, so debugging is transparent: a failed agent is logged and skipped
+  while the others continue.
+- The web layer surfaces this live: the IPO router reports per-agent progress
+  and the React "Agent Control Tower" page shows agent health/progress.
+
+--------------------------------------------------------------------------------
+REQUIREMENT 6 — AGENT-TO-AGENT COMMUNICATION USING THE A2A PROTOCOL
+  "Use interoperability — e.g. one agent defined using ADK, another using
+   CrewAI."
+--------------------------------------------------------------------------------
+IMPLEMENTED IN : src/core/a2a_protocol.py  (A2AMessage, AgentFramework, registry)
+
+A2A is the inter-agent bus that lets a CrewAI agent and an ADK agent talk:
+
+  A2AMessage (Pydantic):
+    message_id, timestamp,
+    sender_id, sender_framework (AgentFramework.CREWAI | ADK | CUSTOM),
+    receiver_id, receiver_framework,
+    message_type (REQUEST | RESPONSE | BROADCAST | STATE_UPDATE | ERROR),
+    priority (LOW | MEDIUM | HIGH | URGENT),
+    action, payload, context (shared state),
+    requires_response, in_response_to (message correlation),
+    metadata.
+
+  AgentFramework enum explicitly distinguishes CREWAI vs ADK, so messages are
+  routed across framework boundaries. Agents register themselves
+  (protocol.register_agent(agent_id, framework, capabilities, metadata)).
+  Messages can be targeted (receiver_id set) or broadcast, and STATE_UPDATE
+  messages push context into the shared AgentState. in_response_to links a
+  reply back to its request, giving a proper request/response correlation.
+
+--------------------------------------------------------------------------------
+REQUIREMENT 7 — MUST USE BOTH CREWAI AND ADK (NO OTHER AGENTIC FRAMEWORK)
+  "You MUST use both CrewAI and ADK. Do NOT use any agentic framework other than
+   CrewAI and ADK."
+--------------------------------------------------------------------------------
+IMPLEMENTED IN : src/core/crewai_agents.py  (CrewAI agents)
+                src/core/adk_agents.py      (ADK agents)
+                src/core/multi_agent_orchestrator.py (uses both together)
+
+CrewAI side  (src/core/crewai_agents.py):
+  - Imports the real CrewAI SDK: `from crewai import Agent, Task, Crew, Process`
+    and `from crewai.tools import BaseTool`.
+  - StockDataFetcherTool(BaseTool) and NewsAnalyzerTool(BaseTool) wrap the MCP
+    tools as native CrewAI tools (this is how MCP integrates with CrewAI).
+  - CrewAIPriceMovementAgent builds a crewai Agent(role, goal, backstory) and
+    registers on the A2A protocol as AgentFramework.CREWAI.
+  - Factory: create_crewai_price_agent(), create_crewai_sentiment_agent().
+  Agents: Price Movement (technical analysis), Sentiment (news sentiment).
+
+ADK side  (src/core/adk_agents.py):
+  - Uses the Anthropic SDK (`from anthropic import Anthropic`,
+    model "claude-3-sonnet-20240229") as the ADK agent runtime, and registers
+    on the A2A protocol as AgentFramework.ADK ("anthropic_adk").
+  - ADKRiskAnalysisAgent.analyze(...) is wrapped in observability spans and
+    performance tracking, reads A2A context, and returns a risk score + factors.
+  - Factory: create_adk_risk_agent(api_key=...), create_adk_ipo_agent(...).
+  Agents: Risk Analysis, IPO Analysis.
+
+NOTE ON "ADK" (important, read this): In this codebase "ADK" denotes the
+Anthropic-SDK-based agent layer (AgentFramework.ADK = "anthropic_adk"), used
+alongside CrewAI to satisfy the two-framework / interoperability requirement.
+No other agentic framework (AutoGen, LangGraph agent runtime, etc.) is used.
+The LiteLLM layer in agentic_runtime.py is only an LLM-call compatibility
+shim (it patches CrewAI's model calls to work with current Groq models); it is
+not an agentic framework.
+
+The orchestrator instantiates BOTH and runs them together:
+    self.price_agent     = create_crewai_price_agent()     # CrewAI
+    self.sentiment_agent  = create_crewai_sentiment_agent() # CrewAI
+    self.risk_agent       = create_adk_risk_agent(...)       # ADK
+    self.ipo_agent        = create_adk_ipo_agent(...)        # ADK
+
+--------------------------------------------------------------------------------
+REQUIREMENT 8 — SECURE THE AGENTIC SYSTEM (GUARDRAILS + CALLBACK VALIDATION)
+  "Use guardrails for safeguard; callbacks for data validation (type checking
+   from a tool's return, user-prompt parsing for toxic/abusive language or
+   prompt-injection attacks)."
+--------------------------------------------------------------------------------
+IMPLEMENTED IN : src/core/guardrails_security.py  (InputGuardrails + output checks)
+                src/core/crewai_agents.py / adk_agents.py (call guardrails)
+
+Guardrails layer:
+
+  SecurityThreat enum:
+    PROMPT_INJECTION, TOXIC_LANGUAGE, SUSPICIOUS_INPUT, DATA_LEAKAGE,
+    INVALID_TYPE, OUT_OF_BOUNDS.
+
+  InputGuardrails:
+    - Prompt-injection detection — regex patterns for "ignore previous
+      instructions", "ignore above", "disregard previous", "you are now",
+      "new instructions", "system:", "<script>", "javascript:", "eval(",
+      "exec(", "__import__".
+    - Toxic/abusive-language detection — profanity + insult patterns.
+    - SQL-injection detection — "drop/delete/truncate", "union select",
+      "or 1=1", trailing comment markers.
+    - Length / bounds checking (max_input_length, max_output_length).
+    - validate_user_input(user_input) -> ValidationResult (pass/fail, threat
+      type, message).
+    - validate_input(symbol=..., name=...) — used by every tool before fetch.
+    - validate_output(tool_name, output, expected_type) — TYPE CHECKING of a
+      tool's return value (the exact requirement: type checking from a tool's
+      return). CrewAI's StockDataFetcherTool / NewsAnalyzerTool call
+      validate_output(..., expected_type=dict) after every tool run.
+    - Output sanitisation (GuardrailConfig.enable_output_sanitization).
+
+  ValidationResult (Pydantic) carries passed / level / threat_type / message /
+  details, and is truthy-testable (__bool__). A failed validation blocks the
+  agent from proceeding and is logged. This is "callbacks for data validation"
+  in practice: validation runs as a hook around every tool call and every
+  user input.
+
+--------------------------------------------------------------------------------
+REQUIREMENT 9 — OBSERVABILITY MECHANISM FOR TRACING (AUDITABILITY / PROVENANCE)
+  "e.g. an open-source observability platform like LangFuse."
+--------------------------------------------------------------------------------
+IMPLEMENTED IN : src/core/observability_system.py  (LangFuse integration)
+
+  - Imports LangFuse: `from langfuse import Langfuse` and
+    `from langfuse.decorators import observe, langfuse_context`.
+  - Graceful fallback: if langfuse is not installed, observe becomes a no-op
+    decorator and a dummy context, so the app still runs (useful for local
+    runs without a LangFuse account).
+  - TraceMetadata + SpanMetrics (Pydantic) model every span: trace_id, span_id,
+    name, start/end, duration_ms, input_data, output_data, metadata, status
+    (running/completed/failed), error, tokens_input/output, cost_usd,
+    memory_mb, cpu_percent.
+  - start_task_trace(...) creates a trace; start_agent_span(...) opens a span
+    inside it; every agent and tool call is a span under the trace. This gives
+    full AUDITABILITY (what ran, when, with what input, what it returned) and
+    PROVENANCE (which agent/tool produced which piece of the final answer).
+  - When a real LangFuse project is configured (LANGFUSE_PUBLIC_KEY /
+    LANGFUSE_SECRET_KEY env vars), traces are exported to the LangFuse UI for
+    inspection. Locally, traces/spans are kept in-memory and exposed through the
+    control tower for debugging.
+  - trace_agent_execution decorator and register_handler(callback) provide
+    the callback hooks that connect observability to monitoring (Req 5) and
+    performance (Req 10).
+
+--------------------------------------------------------------------------------
+REQUIREMENT 10 — END-TO-END PERFORMANCE EVALUATION, COST & RUNNING TIME
+  "Perform end-to-end performance evaluation, cost and running time estimates."
+--------------------------------------------------------------------------------
+IMPLEMENTED IN : src/core/performance_evaluator.py
+                src/core/multi_agent_orchestrator.py (embeds metrics in output)
+
+  - ModelPricing (Pydantic): input_cost_per_1k_tokens, output_cost_per_1k_tokens,
+    context_window. MODEL_PRICING table holds gpt-4, gpt-3.5-turbo,
+    claude-3-opus, claude-3-sonnet, claude-3-haiku.
+  - ExecutionMetrics (dataclass): execution_id, component_name, component_type
+    (agent/tool/orchestrator), framework (crewai/adk/custom), start/end time,
+    duration_seconds, memory_start/end/peak_mb, cpu_percent_avg, model_name,
+    tokens_input/output, api_calls, estimated_cost_usd, status, error. Has
+    to_dict() for JSON output.
+  - TaskPerformanceReport aggregates all executions of a task into totals:
+    total_duration, total_cost, total_tokens, per-agent breakdown.
+  - start_execution(...) / start_task(...) begin timing+resource measurement;
+    the matching end call computes duration, peak memory (via psutil) and cost
+    (tokens × price).
+  - The final InvestmentRecommendation itself carries total_duration_seconds,
+    total_cost_usd and total_tokens — so every recommendation is self-describing
+    about how long it took and what it cost.
+  - Representative figures (the project's own measured estimates): the market
+    Agentic AI Hub (6 agents) runs in ~50s; the IPO 6-agent analysis in ~13s.
+    Cost per run is fractions of a cent on Groq (gpt-oss-120b, near-free tier)
+    or a few US cents with Claude Sonnet — see Part G for the methodology.
+
+================================================================================
+PART C — THE TWO MULTI-AGENT SYSTEMS EXPOSED BY THE API
+================================================================================
+
+The platform ships two complementary multi-agent systems:
+
+1) CORE MULTI-AGENT ORCHESTRATOR (src/core/multi_agent_orchestrator.py)
+   - 4 agents: CrewAI Price + CrewAI Sentiment + ADK Risk + ADK IPO.
+   - Used for stock-level comprehensive analysis. Returns InvestmentRecommendation.
+   - This is the canonical implementation that cleanly demonstrates ALL 10
+     requirements together (A2A state, MCP tools, guardrails, observability,
+     performance, Pydantic output, CrewAI+ADK interop).
+
+2) LIVE WEB MULTI-AGENT ENDPOINTS (web/backend/routers/)
+   - /api/agentic/run (agentic.py) — 6 parallel market agents analyse the whole
+     market (stock intelligence, market analysis, smart money/FII-DII, news &
+     sentiment, risk management, advanced analytics) + a Master agent that
+     synthesises a report. ~50s.
+   - /api/ipo_multiagent/analyze (ipo_multiagent.py) — 6-agent hierarchical IPO
+     framework (subscription, GMP, financials, listing predictor, post-listing
+     tracker, risk). Weighted voting -> BUY/HOLD/AVOID + dynamic exit strategy.
+     ~13s. Model: Groq Llama 3.3 70B. Returns a structured OrchestratorResult.
+   Both routers add src/core and src/sections/06_agentic_ai_hub to the path,
+   so they build on the same core primitives (guardrails, MCP, observability,
+   performance, A2A) described in Part B.
+
+================================================================================
+PART D — DATA SOURCES & TECHNOLOGY STACK
+================================================================================
+
+DATA SOURCES (all live, no dummy data)
+  Stock prices (100+ NSE stocks)  : Yahoo Finance (yfinance)
+  NIFTY 50 / SENSEX               : Yahoo Finance (^NSEI, ^BSESN)
+  Mutual fund NAV (2400+)         : AMFI official NAV file
+  Mutual fund returns            : mfapi.in (NAV history)
+  IPO data + details             : ipowatch.in (scraped)
+  FII/DII flows, bulk/block deals: NSE India official API
+  Financial news                  : Economic Times / MoneyControl / Google Finance RSS
+  AI responses                    : Groq API (Llama 3.3 70B / gpt-oss-120b);
+                                    Anthropic Claude 3 Sonnet for ADK agents
+
+TECHNOLOGY STACK
+  Backend      : Python 3.10+, FastAPI, Uvicorn
+  Agentic      : CrewAI (Agent/Task/Crew/BaseTool) + ADK (Anthropic SDK agents)
+  Tools        : MCP-style registry (yfinance, feedparser, BeautifulSoup4)
+  Validation   : Pydantic v2 (requests, responses, A2A messages, state)
+  Security     : custom Guardrails (injection/toxic/SQL/type/bounds)
+  Observability: LangFuse (with in-memory fallback)
+  Monitoring   : Agent Control Tower + Observability callbacks
+  Eval/Perf    : performance_evaluator (psutil + model pricing)
+  Frontend     : React 18, React Router, Plotly.js, Axios, react-hot-toast
+  Database     : SQLite (data/sarthak_nivesh.db) for portfolio & SIP goals
+  LLM shim     : LiteLLM patch in agentic_runtime.py (remaps deprecated Groq
+                 models to openai/gpt-oss-120b for CrewAI)
+
+================================================================================
+PART E — HOW TO RUN THE PROJECT LOCALLY
+================================================================================
+
+You need: Python 3.10+ and Node.js 18+.
+
+1) Get a free Groq API key at https://console.groq.com and put it in the root
+   .env file:
+       GROQ_API_KEY=gsk_your_key_here
+   (Optional, for ADK agents) ANTHROPIC_API_KEY=...
+   (Optional, for tracing)   LANGFUSE_PUBLIC_KEY=... / LANGFUSE_SECRET_KEY=...
+
+2) BACKEND (terminal 1)
+       pip install -r web/backend/requirements.txt
+       cd web/backend
+       python -m uvicorn main:app --reload --port 8000
+   Wait for "Application startup complete." Open http://localhost:8000/health
+   (returns {"status":"healthy"}). Routers that fail to load (missing optional
+   deps) are listed at http://localhost:8000/failed_routers and skipped — the
+   API still runs.
+
+3) FRONTEND (terminal 2)
+       cd web/frontend
+       npm install
+       npm start
+   Opens http://localhost:3000. The dev build uses .env.development
+   (REACT_APP_API_URL=http://localhost:8000) so it talks to the local backend.
+
+4) Quick smoke tests
+   - Market dashboard: GET http://localhost:8000/api/dashboard/indices
+   - Agentic hub: POST http://localhost:8000/api/agentic/run  {"query":"..."}
+   - IPO multi-agent: POST http://localhost:8000/api/ipo_multiagent/analyze
+        {"ipo_name":"Hyundai India","symbol":"HYUNDAI.NS",
+         "issue_price":1960,"listing_price":1934,...}
+
+================================================================================
+PART F — DEPLOYMENT (RENDER FOR BACKEND, NETLIFY FOR FRONTEND)
+================================================================================
+
+This is a split deployment: the FastAPI backend on Render, the React front-end
+on Netlify. The front-end is already configured to call the Render backend
+(web/frontend/.env.production sets
+REACT_APP_API_URL=https://sarthak-nivesh-api.onrender.com, which matches the
+service name in render.yaml).
+
+A) BACKEND ON RENDER
+   Config lives in web/backend/render.yaml and web/backend/Procfile:
+       buildCommand: pip install -r requirements.txt
+       startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+       rootDir: web/backend            (so requirements.txt / main.py resolve)
+       env vars to set in the Render dashboard:
+           GROQ_API_KEY   = gsk_...        (required for AI features)
+           ANTHROPIC_API_KEY = sk-...     (optional, for ADK agents)
+           PYTHON_VERSION = 3.11.0
+   Steps:
+   1. Push this repo to GitHub (see Part H first — scrub the API key).
+   2. On render.com -> New -> Web Service -> connect the GitHub repo.
+   3. Render reads render.yaml (rootDir = web/backend), installs deps, runs
+      uvicorn. Set GROQ_API_KEY as an environment variable (never commit it).
+   4. Health check: https://sarthak-nivesh-api.onrender.com/health
+
+B) FRONTEND ON NETLIFY
+   Add web/frontend/netlify.toml (SPA build + redirect):
+       [build]
+         base = "web/frontend"
+         command = "npm install && npm run build"
+         publish = "build/"
+       [[redirects]]
+         from = "/*"
+         to   = "/index.html"
+         status = 200
+   Steps:
+   1. On netlify.com -> Add new site -> Import from GitHub -> choose the repo.
+   2. Netlify reads netlify.toml (base = web/frontend), runs npm install +
+      npm run build (react-scripts), publishes the static build/ folder.
+   3. The production build uses web/frontend/.env.production, so the site calls
+      https://sarthak-nivesh-api.onrender.com automatically.
+   4. (Optional) set REACT_APP_API_URL as an env var in Netlify if you ever
+      change the backend URL, then trigger a redeploy.
+
+Note: web/frontend/vercel.json also exists for anyone preferring Vercel, but
+the requested target is Netlify, configured above.
+
+================================================================================
+PART G — END-TO-END PERFORMANCE, COST & RUNNING-TIME ESTIMATES
+================================================================================
+
+Methodology (from src/core/performance_evaluator.py):
+  cost_usd = (tokens_input/1000 * input_cost_per_1k)
+           + (tokens_output/1000 * output_cost_per_1k)
+  duration = end_time - start_time (per execution; psutil tracks memory/CPU).
+
+These are measured per run and embedded in every InvestmentRecommendation, so
+the numbers below are representative estimates, not fixed guarantees.
+
+1) Core 4-agent stock analysis (CrewAI price+sentiment, ADK risk+IPO)
+   - LLM calls : ~4 (one per agent) + 1 synthesis
+   - Tokens    : ~15k–40k total (prompt+completion)
+   - Wall time : ~10–25s (parallel via ThreadPoolExecutor)
+   - Cost      : <$0.001 on Groq gpt-oss-120b; ~$0.02–0.05 if ADK agents use
+                 Claude 3 Sonnet (per the MODEL_PRICING table)
+
+2) Market Agentic AI Hub (6 agents, /api/agentic/run)
+   - LLM calls : 6 agent calls + 1–7 synthesis calls
+   - Wall time : ~50s (project-measured)
+   - Cost      : dominated by Groq (near-free tier) -> a few US cents at most
+
+3) IPO 6-agent analysis (/api/ipo_multiagent/analyze)
+   - LLM calls : 6 agents
+   - Wall time : ~13s (project-measured)
+   - Cost      : < $0.01 typical on Groq
+
+Latency is mainly external-data fetching (yfinance/RSS/AMFI) and LLM latency;
+parallelism (ThreadPoolExecutor) keeps it roughly to the slowest agent, not
+the sum. Memory stays modest (hundreds of MB) because state is per-task and
+spans are closed when agents finish.
+
+================================================================================
+PART H — SECURITY NOTES (READ BEFORE PUSHING / DEPLOYING)
+================================================================================
+
+1) The only secret the app needs at runtime is GROQ_API_KEY (free). It must
+   live in the environment (.env locally, Render/Netlify env vars in prod),
+   NEVER in source code.
+
+2) Before any push, confirm no live API key is committed. The repository
+   history on the old origin remote previously contained a hardcoded Groq key
+   in config.py and several .bat/.txt files; that key must be revoked/rotated
+   at https://console.groq.com and replaced with a placeholder in source. The
+   .gitignore already excludes the root .env, so the live key should only ever
+   be read from the environment (config.py falls back to os.environ.get).
+
+3) The CORS policy in web/backend/main.py is permissive (allow_origins=["*"])
+   for the academic demo. For production, restrict allow_origins to the
+   Netlify site URL.
+
+4) This is an educational project. Nothing here is financial advice; always
+   consult a SEBI-registered advisor before investing.
+
+================================================================================
+END OF DOCUMENT
+================================================================================
