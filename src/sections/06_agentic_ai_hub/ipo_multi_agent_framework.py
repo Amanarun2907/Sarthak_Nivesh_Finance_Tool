@@ -69,7 +69,11 @@ try:
 except Exception:
     _perf_eval = None
 
-from crewai import Agent, Task, Crew, Process, LLM
+from agentic_runtime import (
+    Agent, Task, Crew, Process, LLM,
+    get_crewai_llm, get_adk_client, CREWAI_AVAILABLE,
+    is_network_available
+)
 
 # ── Logging setup ──────────────────────────────────────────────────────────────
 logging.basicConfig(
@@ -1420,7 +1424,7 @@ Return a JSON object:
     )
 
 
-
+class MultiAgentOrchestrator:
     """
     Synthesizes all 5 agent outputs (3 CrewAI + 2 ADK) via:
      - Quantitative weighted voting

@@ -113,10 +113,13 @@ def analyze_ipo(data: dict = Body(...)):
     if issue_price < 0:
         raise HTTPException(status_code=422, detail="issue_price must be >= 0")
 
-    # ── Import framework (lazy — only when route is called) ──────────────────
+    # ── Import framework (lazy with reload to prevent stale module cache) ──────────────────
     try:
-        from ipo_multi_agent_framework import run_ipo_multi_agent_analysis, OrchestratorResult
-    except ImportError as e:
+        import importlib
+        import ipo_multi_agent_framework
+        importlib.reload(ipo_multi_agent_framework)
+        from ipo_multi_agent_framework import run_ipo_multi_agent_analysis, OrchestratorResult, MultiAgentOrchestrator
+    except Exception as e:
         raise HTTPException(
             status_code=500,
             detail=f"Failed to import IPO Multi-Agent Framework: {str(e)}"
