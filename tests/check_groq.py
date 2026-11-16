@@ -7,7 +7,7 @@ print("Key prefix:", key[:8] if len(key) > 8 else "TOO SHORT")
 r = requests.post(
     "https://api.groq.com/openai/v1/chat/completions",
     headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
-    json={"model": "llama-3.3-70b-versatile",
+    json={"model": "openai/gpt-oss-120b",
           "messages": [{"role": "user", "content": "Say: GROQ_WORKS"}],
           "max_tokens": 10},
     timeout=20,

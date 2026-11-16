@@ -1,0 +1,255 @@
+{
+  "task_id": "d8c418d894f08073",
+  "timestamp": "2026-10-26T19:50:38.507081",
+  "ipo_details": {
+    "ipo_name": "Swiggy IPO",
+    "company_name": "Swiggy",
+    "symbol": "SWIGGY",
+    "exchange": "NSE",
+    "price_band_min": 371.0,
+    "price_band_max": 390.0,
+    "issue_price": null,
+    "issue_size_crores": 11327.0,
+    "lot_size": 38,
+    "open_date": "2024-11-06",
+    "close_date": "2024-11-08",
+    "allotment_date": null,
+    "listing_date": null,
+    "qib_subscription": 3.59,
+    "hni_subscription": 1.06,
+    "retail_subscription": 1.14,
+    "gmp_rupees": 20.0,
+    "gmp_percentage": 5.13,
+    "lead_managers": null,
+    "registrar": null
+  },
+  "final_recommendation": "SUBSCRIBE - Proceed with caution",
+  "overall_score": 60.0,
+  "overall_confidence": 0.6,
+  "agents": {
+    "subscription": {
+      "agent_id": "sub_crew",
+      "agent_name": "Subscription Analysis (CrewAI)",
+      "framework": "CrewAI",
+      "score": 60.0,
+      "confidence": 0.6,
+      "recommendation": "Hold",
+      "key_insights": [
+        "Error: Error code: 400 - {'error': {'message': 'The model `llama3-70b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}"
+      ],
+      "reasoning": "Agent failed: Error code: 400 - {'error': {'message': 'The model `llama3-70b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}",
+      "execution_time": 0.08019447326660156,
+      "tokens_used": 0,
+      "cost_usd": 0.0,
+      "status": "failed"
+    },
+    "gmp": {
+      "agent_id": "gmp_crew",
+      "agent_name": "GMP Analysis (CrewAI)",
+      "framework": "CrewAI",
+      "score": 60.0,
+      "confidence": 0.6,
+      "recommendation": "Hold",
+      "key_insights": [
+        "Error: Error code: 400 - {'error': {'message': 'The model `llama3-70b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}"
+      ],
+      "reasoning": "Agent failed: Error code: 400 - {'error': {'message': 'The model `llama3-70b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}",
+      "execution_time": 0.0804288387298584,
+      "tokens_used": 0,
+      "cost_usd": 0.0,
+      "status": "failed"
+    },
+    "financials": {
+      "agent_id": "fin_crew",
+      "agent_name": "Financials Analysis (CrewAI)",
+      "framework": "CrewAI",
+      "score": 60.0,
+      "confidence": 0.6,
+      "recommendation": "Hold",
+      "key_insights": [
+        "Error: Error code: 400 - {'error': {'message': 'The model `llama3-70b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}"
+      ],
+      "reasoning": "Agent failed: Error code: 400 - {'error': {'message': 'The model `llama3-70b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}",
+      "execution_time": 0.052503347396850586,
+      "tokens_used": 0,
+      "cost_usd": 0.0,
+      "status": "failed"
+    },
+    "listing": {
+      "agent_id": "list_adk",
+      "agent_name": "Listing Predictor (ADK)",
+      "framework": "ADK",
+      "score": 60.0,
+      "confidence": 0.6,
+      "recommendation": "Hold",
+      "key_insights": [
+        "Error: Error code: 400 - {'error': {'message': 'The model `llama3-70b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}"
+      ],
+      "reasoning": "Agent failed: Error code: 400 - {'error': {'message': 'The model `llama3-70b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}",
+      "execution_time": 0.050783395767211914,
+      "tokens_used": 0,
+      "cost_usd": 0.0,
+      "status": "failed"
+    },
+    "post_listing": {
+      "agent_id": "post_adk",
+      "agent_name": "Post-Listing Tracker (ADK)",
+      "framework": "ADK",
+      "score": 60.0,
+      "confidence": 0.6,
+      "recommendation": "Hold",
+      "key_insights": [
+        "Error: Error code: 400 - {'error': {'message': 'The model `llama3-70b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}"
+      ],
+      "reasoning": "Agent failed: Error code: 400 - {'error': {'message': 'The model `llama3-70b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}",
+      "execution_time": 0.06597447395324707,
+      "tokens_used": 0,
+      "cost_usd": 0.0,
+      "status": "failed"
+    },
+    "risk": {
+      "agent_id": "risk_adk",
+      "agent_name": "Risk Assessment (ADK)",
+      "framework": "ADK",
+      "score": 60.0,
+      "confidence": 0.6,
+      "recommendation": "Hold",
+      "key_insights": [
+        "Error: Error code: 400 - {'error': {'message': 'The model `llama3-70b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}"
+      ],
+      "reasoning": "Agent failed: Error code: 400 - {'error': {'message': 'The model `llama3-70b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}",
+      "execution_time": 0.05208015441894531,
+      "tokens_used": 0,
+      "cost_usd": 0.0,
+      "status": "failed"
+    }
+  },
+  "dynamic_strategy": {
+    "action": "SUBSCRIBE",
+    "allocation_percentage": 5.0,
+    "entry_strategy": "Small allocation, retail only",
+    "exit_strategy": "Exit on listing if profitable",
+    "risk_level": "Moderate-High",
+    "expected_return_min": 0.0,
+    "expected_return_max": 15.0,
+    "time_horizon": "Listing day",
+    "conditions": [
+      "Strong subscription needed",
+      "Set stop loss"
+    ]
+  },
+  "strengths": [],
+  "risks": [],
+  "action_items": [
+    "Recommendation: SUBSCRIBE",
+    "Allocation: 5.0%"
+  ],
+  "control_tower": {
+    "task_id": "d8c418d894f08073",
+    "total_agents": 6,
+    "active_agents": 0,
+    "completed_agents": 6,
+    "failed_agents": 0,
+    "overall_progress": 100.0,
+    "agent_states": [
+      {
+        "agent_id": "sub_crew",
+        "agent_name": "Subscription Analysis (CrewAI)",
+        "framework": "CrewAI",
+        "status": "failed",
+        "progress": 25.0,
+        "start_time": "2026-10-26T19:50:38.124121",
+        "end_time": "2026-10-26T19:50:38.204316",
+        "duration": 0.08019447326660156,
+        "health": "error",
+        "current_task": "Error: Error code: 400 - {'error': {'message': 'The model `llama3-70b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}"
+      },
+      {
+        "agent_id": "gmp_crew",
+        "agent_name": "GMP Analysis (CrewAI)",
+        "framework": "CrewAI",
+        "status": "failed",
+        "progress": 25.0,
+        "start_time": "2026-10-26T19:50:38.204316",
+        "end_time": "2026-10-26T19:50:38.284744",
+        "duration": 0.0804288387298584,
+        "health": "error",
+        "current_task": "Error: Error code: 400 - {'error': {'message': 'The model `llama3-70b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}"
+      },
+      {
+        "agent_id": "fin_crew",
+        "agent_name": "Financials Analysis (CrewAI)",
+        "framework": "CrewAI",
+        "status": "failed",
+        "progress": 25.0,
+        "start_time": "2026-10-26T19:50:38.284744",
+        "end_time": "2026-10-26T19:50:38.337248",
+        "duration": 0.052503347396850586,
+        "health": "error",
+        "current_task": "Error: Error code: 400 - {'error': {'message': 'The model `llama3-70b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}"
+      },
+      {
+        "agent_id": "list_adk",
+        "agent_name": "Listing Predictor (ADK)",
+        "framework": "ADK",
+        "status": "failed",
+        "progress": 25.0,
+        "start_time": "2026-10-26T19:50:38.337248",
+        "end_time": "2026-10-26T19:50:38.388031",
+        "duration": 0.050783395767211914,
+        "health": "error",
+        "current_task": "Error: Error code: 400 - {'error': {'message': 'The model `llama3-70b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}"
+      },
+      {
+        "agent_id": "post_adk",
+        "agent_name": "Post-Listing Tracker (ADK)",
+        "framework": "ADK",
+        "status": "failed",
+        "progress": 25.0,
+        "start_time": "2026-10-26T19:50:38.388031",
+        "end_time": "2026-10-26T19:50:38.454005",
+        "duration": 0.06597447395324707,
+        "health": "error",
+        "current_task": "Error: Error code: 400 - {'error': {'message': 'The model `llama3-70b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}"
+      },
+      {
+        "agent_id": "risk_adk",
+        "agent_name": "Risk Assessment (ADK)",
+        "framework": "ADK",
+        "status": "failed",
+        "progress": 25.0,
+        "start_time": "2026-10-26T19:50:38.454005",
+        "end_time": "2026-10-26T19:50:38.507081",
+        "duration": 0.05208015441894531,
+        "health": "error",
+        "current_task": "Error: Error code: 400 - {'error': {'message': 'The model `llama3-70b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}"
+      }
+    ],
+    "total_cost": 0.0,
+    "total_duration": 0.38386058807373047,
+    "anomalies": []
+  },
+  "context_sharing": {
+    "shares": 6,
+    "flow": "CrewAI -> ADK"
+  },
+  "tools_used": [
+    {
+      "tool": "Groq AI",
+      "type": "LLM"
+    }
+  ],
+  "monitoring_events": [
+    {
+      "event": "task_complete",
+      "time": "2026-10-26T19:50:38.507081"
+    }
+  ],
+  "security_validation": {
+    "status": "passed"
+  },
+  "performance_metrics": {
+    "duration": 0.38386058807373047,
+    "cost": 0.0
+  }
+}

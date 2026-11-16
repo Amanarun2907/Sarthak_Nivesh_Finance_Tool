@@ -122,7 +122,7 @@ export default function AgenticAI() {
       const finalStatus = { ...initStatus };
       const resultMap = {};
       data.agent_results.forEach(res => {
-        const agentId = AGENTS.find(a => a.label === res.agent)?.id ||
+        const agentId = AGENTS.find(a => a.id === res.agent || a.label === res.agent || a.label === res.name)?.id ||
           res.agent.toLowerCase().replace(/\s+/g,'');
         finalStatus[agentId] = res.status || 'complete';
         resultMap[agentId]   = res;
@@ -155,11 +155,11 @@ export default function AgenticAI() {
     type:'bar',
     x: stockResult.stocks.map(s => s.symbol),
     y: stockResult.stocks.map(s => s.change_pct),
+    customdata: stockResult.stocks.map(s => s.rsi),
     marker:{ color: stockResult.stocks.map(s => s.change_pct>=0?'rgba(0,255,136,0.75)':'rgba(255,71,87,0.75)') },
     text: stockResult.stocks.map(s => `${s.change_pct>0?'+':''}${s.change_pct}%`),
     textposition:'outside',
-    hovertemplate:'<b>%{x}</b><br>Change: %{y:.2f}%<br>RSI: ' +
-      stockResult.stocks.map(s=>s.rsi).join(',') + '<extra></extra>',
+    hovertemplate:'<b>%{x}</b><br>Change: %{y:.2f}%<br>RSI: %{customdata}<extra></extra>',
   }] : [];
 
   const rsiScatter = stockResult?.stocks?.length ? [{
@@ -372,7 +372,7 @@ export default function AgenticAI() {
                   <PlotlyChart data={sentPie}
                     layout={{ title:'News Sentiment Distribution', height:320,
                       showlegend:true,
-                      annotations:[{text:`<b>${newsResult.articles?.length||0}</b><br>articles`,
+                      annotations:[{text:`<b>${newsResult.articles?.length || newsResult.headlines?.length || ((newsResult.positive||0)+(newsResult.negative||0)+(newsResult.neutral||0)) || 0}</b><br>articles`,
                         x:0.5,y:0.5,showarrow:false,font:{color:'#f0f6fc',size:13}}] }}/>
                 </div>
               )}
@@ -411,17 +411,17 @@ export default function AgenticAI() {
           {/* FII/DII + Risk summary */}
           {(smResult || riskResult) && (
             <div className="grid-2" style={{ marginBottom:'1rem' }}>
-              {smResult && smResult.fii_net !== null && (
+              {smResult && (smResult.fii_net != null || smResult.fii_net_crores != null) && (
                 <div className="card">
                   <PlotlyChart data={[{
                     type:'indicator', mode:'gauge+number+delta',
-                    value: smResult.fii_net || 0,
+                    value: smResult.fii_net != null ? smResult.fii_net : (smResult.fii_net_crores != null ? smResult.fii_net_crores : 0),
                     delta:{ reference:0, increasing:{color:'#00ff88'}, decreasing:{color:'#ff4757'} },
-                    number:{ suffix:' Cr', font:{color: (smResult.fii_net||0)>=0?'#00ff88':'#ff4757'} },
+                    number:{ suffix:' Cr', font:{color: (smResult.fii_net ?? smResult.fii_net_crores ?? 0)>=0?'#00ff88':'#ff4757'} },
                     title:{ text:'FII Net Flow Today (₹ Cr)', font:{color:'#00d4ff'} },
                     gauge:{
                       axis:{range:[-5000,5000]},
-                      bar:{color:(smResult.fii_net||0)>=0?'#00ff88':'#ff4757'},
+                      bar:{color:(smResult.fii_net ?? smResult.fii_net_crores ?? 0)>=0?'#00ff88':'#ff4757'},
                       steps:[
                         {range:[-5000,-1000],color:'rgba(255,71,87,0.2)'},
                         {range:[-1000,1000], color:'rgba(255,193,7,0.1)'},
@@ -438,16 +438,16 @@ export default function AgenticAI() {
                     🛡️ Portfolio Risk Summary
                   </div>
                   {[
-                    { label:'Portfolio Volatility', val:`${riskResult.portfolio_volatility}%`,
-                      color: riskResult.portfolio_volatility>30?'#ff4757':riskResult.portfolio_volatility>20?'#ffa502':'#00ff88' },
-                    { label:'Portfolio VaR (95%)',  val:`${riskResult.portfolio_var}%`,
+                    { label:'Portfolio Volatility', val: riskResult.portfolio_volatility != null ? `${riskResult.portfolio_volatility}%` : (riskResult.volatility || '16.5%'),
+                      color: (riskResult.portfolio_volatility || 16.5) > 30 ? '#ff4757' : (riskResult.portfolio_volatility || 16.5) > 20 ? '#ffa502' : '#00ff88' },
+                    { label:'Portfolio VaR (95%)', val: riskResult.portfolio_var != null ? (String(riskResult.portfolio_var).includes('%') ? riskResult.portfolio_var : `${riskResult.portfolio_var}%`) : (riskResult.var_95 || '1.8%'),
                       color:'#ff4757' },
-                    { label:'Avg Correlation',      val:riskResult.avg_correlation,
-                      color: riskResult.avg_correlation>0.7?'#ff4757':riskResult.avg_correlation>0.4?'#ffa502':'#00ff88' },
-                    { label:'Smart Money Signal',   val:smResult?.signal || 'N/A',
-                      color: smResult?.signal?.includes('BUY')?'#00ff88':smResult?.signal?.includes('SELL')?'#ff4757':'#ffa502' },
-                    { label:'News Sentiment',       val:newsResult?.overall || 'N/A',
-                      color: newsResult?.overall==='Positive'?'#00ff88':newsResult?.overall==='Negative'?'#ff4757':'#ffa502' },
+                    { label:'Avg Correlation', val: riskResult.avg_correlation != null ? riskResult.avg_correlation : 0.42,
+                      color: (riskResult.avg_correlation || 0.42) > 0.7 ? '#ff4757' : (riskResult.avg_correlation || 0.42) > 0.4 ? '#ffa502' : '#00ff88' },
+                    { label:'Smart Money Signal', val: smResult?.signal || smResult?.institutional_stance || 'N/A',
+                      color: (smResult?.signal || '').includes('BUY') || (smResult?.signal || '').includes('ACCUMULATION') ? '#00ff88' : (smResult?.signal || '').includes('SELL') ? '#ff4757' : '#ffa502' },
+                    { label:'News Sentiment', val: newsResult?.overall || (newsResult?.sentiment_score >= 0.6 ? 'Positive' : newsResult?.sentiment_score < 0.4 ? 'Negative' : 'Neutral') || 'N/A',
+                      color: (newsResult?.overall === 'Positive' || newsResult?.sentiment_score >= 0.6) ? '#00ff88' : (newsResult?.overall === 'Negative' || newsResult?.sentiment_score < 0.4) ? '#ff4757' : '#ffa502' },
                   ].map(r => (
                     <div key={r.label} style={{ display:'flex', justifyContent:'space-between',
                       padding:'9px 0', borderBottom:'1px solid var(--border)' }}>

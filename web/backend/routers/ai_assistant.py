@@ -25,7 +25,7 @@ def _groq(prompt, system, max_tokens=700):
         r = requests.post(
             "https://api.groq.com/openai/v1/chat/completions",
             headers={"Content-Type":"application/json","Authorization":f"Bearer {key}"},
-            json={"model":"llama-3.3-70b-versatile","temperature":0.6,"max_tokens":max_tokens,
+            json={"model":"openai/gpt-oss-120b","temperature":0.6,"max_tokens":max_tokens,
                   "messages":[{"role":"system","content":system},{"role":"user","content":prompt}]},
             timeout=40)
         if r.status_code == 200:
@@ -85,7 +85,8 @@ def _nifty():
 
 def _portfolio():
     try:
-        conn = sqlite3.connect(_DB)
+        _DB.parent.mkdir(parents=True, exist_ok=True)
+        conn = sqlite3.connect(str(_DB))
         rows = conn.execute(
             "SELECT symbol,company_name,quantity,buy_price,sector FROM portfolio_holdings WHERE user_id='default'"
         ).fetchall()

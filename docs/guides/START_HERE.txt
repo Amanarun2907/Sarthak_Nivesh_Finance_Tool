@@ -1,0 +1,58 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                                                                            ║
+║              👋 START HERE - EASIEST WAY TO RUN YOUR PROJECT              ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+
+🎯 TO RUN THE COMPLETE PROJECT (ONE COMMAND):
+═══════════════════════════════════════════════════════════════════════════
+
+    Double-click: RUN_COMPLETE_PROJECT.bat
+
+    OR
+
+    Run in terminal: RUN_COMPLETE_PROJECT.bat
+
+
+This will:
+✅ Install all dependencies
+✅ Start Backend (http://localhost:8000)
+✅ Start Frontend (http://localhost:3000)
+✅ Activate all 6 IPO Intelligence agents
+
+
+🌐 THEN OPEN YOUR BROWSER:
+═══════════════════════════════════════════════════════════════════════════
+
+    Frontend App: http://localhost:3000
+    API Docs:     http://localhost:8000/docs
+
+
+🤖 ALL 6 IPO AGENTS WORKING:
+═══════════════════════════════════════════════════════════════════════════
+
+✅ Subscription Analysis
+✅ GMP Analysis  
+✅ Financials & Fundamentals
+✅ Listing Day Predictor
+✅ Post-Listing Tracker
+✅ Risk Assessment
+
+
+🧪 TO TEST THE AGENTS:
+═══════════════════════════════════════════════════════════════════════════
+
+After servers are running:
+
+    python TEST_IPO_INTELLIGENCE.py
+
+
+📚 FOR MORE INFO:
+═══════════════════════════════════════════════════════════════════════════
+
+Read: QUICK_START.txt
+Read: IPO_INTELLIGENCE_COMPLETE_GUIDE.txt
+
+
+That's it! Good luck! 🚀

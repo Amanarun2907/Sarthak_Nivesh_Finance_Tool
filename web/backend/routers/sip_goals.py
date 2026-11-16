@@ -32,7 +32,8 @@ PROFILE_DESC = {
 # ── DB ────────────────────────────────────────────────────────────────────────
 
 def _ensure_table():
-    conn = sqlite3.connect(_DB)
+    _DB.parent.mkdir(parents=True, exist_ok=True)
+    conn = sqlite3.connect(str(_DB))
     conn.execute("""CREATE TABLE IF NOT EXISTS sip_goals (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -105,6 +106,24 @@ def _fetch_amfi_funds(profile: str, max_funds: int = 5):
         return []
 
 
+PROFILE_FALLBACK_FUNDS = {
+    "Conservative": [
+        {"scheme_code": "119841", "name": "ICICI Prudential All Seasons Bond - Direct Growth", "nav": 38.60, "cagr_3y": 7.90},
+        {"scheme_code": "120704", "name": "HDFC Corporate Bond Fund - Direct Growth", "nav": 32.40, "cagr_3y": 7.40},
+        {"scheme_code": "119597", "name": "SBI Magnum Gilt Fund - Direct Growth", "nav": 64.80, "cagr_3y": 7.60},
+    ],
+    "Moderate": [
+        {"scheme_code": "122639", "name": "Parag Parikh Flexi Cap Fund - Direct Growth", "nav": 84.15, "cagr_3y": 21.60},
+        {"scheme_code": "120716", "name": "UTI Nifty 50 Index Fund - Direct Growth", "nav": 178.60, "cagr_3y": 16.90},
+        {"scheme_code": "118989", "name": "HDFC Top 100 Fund - Direct Growth", "nav": 1120.35, "cagr_3y": 19.50},
+    ],
+    "Aggressive": [
+        {"scheme_code": "118778", "name": "Nippon India Small Cap Fund - Direct Growth", "nav": 172.40, "cagr_3y": 29.80},
+        {"scheme_code": "125354", "name": "Quant Small Cap Fund - Direct Growth", "nav": 268.10, "cagr_3y": 33.20},
+        {"scheme_code": "120586", "name": "Motilal Oswal Midcap Fund - Direct Growth", "nav": 96.25, "cagr_3y": 32.40},
+    ]
+}
+
 def _live_return(profile: str):
     funds = _fetch_amfi_funds(profile, max_funds=5)
     cagrs = [f["cagr_3y"] for f in funds if f.get("cagr_3y")]
@@ -118,7 +137,7 @@ def _live_return(profile: str):
     return {
         "return_pct": FALLBACK[profile],
         "source": "Historical average (AMFI temporarily unavailable)",
-        "funds": [],
+        "funds": PROFILE_FALLBACK_FUNDS.get(profile, PROFILE_FALLBACK_FUNDS["Moderate"]),
     }
 
 # ── Math ──────────────────────────────────────────────────────────────────────
@@ -187,7 +206,7 @@ Use ₹ symbol for amounts. Speak like a trusted advisor, not a robot.
             "https://api.groq.com/openai/v1/chat/completions",
             headers={"Content-Type": "application/json",
                      "Authorization": f"Bearer {key}"},
-            json={"model": "llama-3.3-70b-versatile", "temperature": 0.65,
+            json={"model": "openai/gpt-oss-120b", "temperature": 0.65,
                   "max_tokens": 500,
                   "messages": [
                       {"role": "system", "content": "You are a trusted Indian financial advisor. Be warm, specific, and practical."},
@@ -254,7 +273,8 @@ def calculate(data: dict = Body(...)):
 @router.post("/save")
 def save_goal(data: dict = Body(...)):
     _ensure_table()
-    conn = sqlite3.connect(_DB)
+    _DB.parent.mkdir(parents=True, exist_ok=True)
+    conn = sqlite3.connect(str(_DB))
     conn.execute("""INSERT INTO sip_goals
         (goal_name, goal_type, target_today, years, inflation,
          existing_savings, monthly_sip, risk_profile, expected_return)
@@ -269,7 +289,8 @@ def save_goal(data: dict = Body(...)):
 @router.get("/goals")
 def get_goals():
     _ensure_table()
-    conn = sqlite3.connect(_DB)
+    _DB.parent.mkdir(parents=True, exist_ok=True)
+    conn = sqlite3.connect(str(_DB))
     rows = conn.execute(
         "SELECT * FROM sip_goals WHERE status='Active' ORDER BY created_at DESC"
     ).fetchall()
@@ -282,7 +303,8 @@ def get_goals():
 
 @router.delete("/goals/{goal_id}")
 def delete_goal(goal_id: int):
-    conn = sqlite3.connect(_DB)
+    _DB.parent.mkdir(parents=True, exist_ok=True)
+    conn = sqlite3.connect(str(_DB))
     conn.execute("UPDATE sip_goals SET status='Deleted' WHERE id=?", (goal_id,))
     conn.commit(); conn.close()
     return {"status": "deleted"}

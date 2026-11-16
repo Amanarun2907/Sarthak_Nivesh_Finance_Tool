@@ -1,0 +1,255 @@
+{
+  "task_id": "3c0b26ccd36ba8c6",
+  "timestamp": "2026-10-26T19:47:02.633563",
+  "ipo_details": {
+    "ipo_name": "Swiggy IPO",
+    "company_name": "Swiggy",
+    "symbol": "SWIGGY",
+    "exchange": "NSE",
+    "price_band_min": 371.0,
+    "price_band_max": 390.0,
+    "issue_price": null,
+    "issue_size_crores": 11327.0,
+    "lot_size": 38,
+    "open_date": "2024-11-06",
+    "close_date": "2024-11-08",
+    "allotment_date": null,
+    "listing_date": null,
+    "qib_subscription": 3.59,
+    "hni_subscription": 1.06,
+    "retail_subscription": 1.14,
+    "gmp_rupees": 20.0,
+    "gmp_percentage": 5.13,
+    "lead_managers": null,
+    "registrar": null
+  },
+  "final_recommendation": "SUBSCRIBE - Proceed with caution",
+  "overall_score": 60.0,
+  "overall_confidence": 0.6,
+  "agents": {
+    "subscription": {
+      "agent_id": "sub_crew",
+      "agent_name": "Subscription Analysis (CrewAI)",
+      "framework": "CrewAI",
+      "score": 60.0,
+      "confidence": 0.6,
+      "recommendation": "Hold",
+      "key_insights": [
+        "Error: Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}"
+      ],
+      "reasoning": "Agent failed: Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}",
+      "execution_time": 0.050633907318115234,
+      "tokens_used": 0,
+      "cost_usd": 0.0,
+      "status": "failed"
+    },
+    "gmp": {
+      "agent_id": "gmp_crew",
+      "agent_name": "GMP Analysis (CrewAI)",
+      "framework": "CrewAI",
+      "score": 60.0,
+      "confidence": 0.6,
+      "recommendation": "Hold",
+      "key_insights": [
+        "Error: Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}"
+      ],
+      "reasoning": "Agent failed: Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}",
+      "execution_time": 0.040880441665649414,
+      "tokens_used": 0,
+      "cost_usd": 0.0,
+      "status": "failed"
+    },
+    "financials": {
+      "agent_id": "fin_crew",
+      "agent_name": "Financials Analysis (CrewAI)",
+      "framework": "CrewAI",
+      "score": 60.0,
+      "confidence": 0.6,
+      "recommendation": "Hold",
+      "key_insights": [
+        "Error: Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}"
+      ],
+      "reasoning": "Agent failed: Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}",
+      "execution_time": 0.04548454284667969,
+      "tokens_used": 0,
+      "cost_usd": 0.0,
+      "status": "failed"
+    },
+    "listing": {
+      "agent_id": "list_adk",
+      "agent_name": "Listing Predictor (ADK)",
+      "framework": "ADK",
+      "score": 60.0,
+      "confidence": 0.6,
+      "recommendation": "Hold",
+      "key_insights": [
+        "Error: Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}"
+      ],
+      "reasoning": "Agent failed: Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}",
+      "execution_time": 0.0653996467590332,
+      "tokens_used": 0,
+      "cost_usd": 0.0,
+      "status": "failed"
+    },
+    "post_listing": {
+      "agent_id": "post_adk",
+      "agent_name": "Post-Listing Tracker (ADK)",
+      "framework": "ADK",
+      "score": 60.0,
+      "confidence": 0.6,
+      "recommendation": "Hold",
+      "key_insights": [
+        "Error: Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}"
+      ],
+      "reasoning": "Agent failed: Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}",
+      "execution_time": 0.06870031356811523,
+      "tokens_used": 0,
+      "cost_usd": 0.0,
+      "status": "failed"
+    },
+    "risk": {
+      "agent_id": "risk_adk",
+      "agent_name": "Risk Assessment (ADK)",
+      "framework": "ADK",
+      "score": 60.0,
+      "confidence": 0.6,
+      "recommendation": "Hold",
+      "key_insights": [
+        "Error: Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}"
+      ],
+      "reasoning": "Agent failed: Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}",
+      "execution_time": 0.07802629470825195,
+      "tokens_used": 0,
+      "cost_usd": 0.0,
+      "status": "failed"
+    }
+  },
+  "dynamic_strategy": {
+    "action": "SUBSCRIBE",
+    "allocation_percentage": 5.0,
+    "entry_strategy": "Small allocation, retail only",
+    "exit_strategy": "Exit on listing if profitable",
+    "risk_level": "Moderate-High",
+    "expected_return_min": 0.0,
+    "expected_return_max": 15.0,
+    "time_horizon": "Listing day",
+    "conditions": [
+      "Strong subscription needed",
+      "Set stop loss"
+    ]
+  },
+  "strengths": [],
+  "risks": [],
+  "action_items": [
+    "Recommendation: SUBSCRIBE",
+    "Allocation: 5.0%"
+  ],
+  "control_tower": {
+    "task_id": "3c0b26ccd36ba8c6",
+    "total_agents": 6,
+    "active_agents": 0,
+    "completed_agents": 6,
+    "failed_agents": 0,
+    "overall_progress": 100.0,
+    "agent_states": [
+      {
+        "agent_id": "sub_crew",
+        "agent_name": "Subscription Analysis (CrewAI)",
+        "framework": "CrewAI",
+        "status": "failed",
+        "progress": 25.0,
+        "start_time": "2026-10-26T19:47:02.280298",
+        "end_time": "2026-10-26T19:47:02.333943",
+        "duration": 0.050633907318115234,
+        "health": "error",
+        "current_task": "Error: Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}"
+      },
+      {
+        "agent_id": "gmp_crew",
+        "agent_name": "GMP Analysis (CrewAI)",
+        "framework": "CrewAI",
+        "status": "failed",
+        "progress": 25.0,
+        "start_time": "2026-10-26T19:47:02.333943",
+        "end_time": "2026-10-26T19:47:02.374823",
+        "duration": 0.040880441665649414,
+        "health": "error",
+        "current_task": "Error: Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}"
+      },
+      {
+        "agent_id": "fin_crew",
+        "agent_name": "Financials Analysis (CrewAI)",
+        "framework": "CrewAI",
+        "status": "failed",
+        "progress": 25.0,
+        "start_time": "2026-10-26T19:47:02.375952",
+        "end_time": "2026-10-26T19:47:02.421437",
+        "duration": 0.04548454284667969,
+        "health": "error",
+        "current_task": "Error: Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}"
+      },
+      {
+        "agent_id": "list_adk",
+        "agent_name": "Listing Predictor (ADK)",
+        "framework": "ADK",
+        "status": "failed",
+        "progress": 25.0,
+        "start_time": "2026-10-26T19:47:02.421437",
+        "end_time": "2026-10-26T19:47:02.486836",
+        "duration": 0.0653996467590332,
+        "health": "error",
+        "current_task": "Error: Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}"
+      },
+      {
+        "agent_id": "post_adk",
+        "agent_name": "Post-Listing Tracker (ADK)",
+        "framework": "ADK",
+        "status": "failed",
+        "progress": 25.0,
+        "start_time": "2026-10-26T19:47:02.486836",
+        "end_time": "2026-10-26T19:47:02.555536",
+        "duration": 0.06870031356811523,
+        "health": "error",
+        "current_task": "Error: Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}"
+      },
+      {
+        "agent_id": "risk_adk",
+        "agent_name": "Risk Assessment (ADK)",
+        "framework": "ADK",
+        "status": "failed",
+        "progress": 25.0,
+        "start_time": "2026-10-26T19:47:02.555536",
+        "end_time": "2026-10-26T19:47:02.633563",
+        "duration": 0.07802629470825195,
+        "health": "error",
+        "current_task": "Error: Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'code': 'model_not_found'}}"
+      }
+    ],
+    "total_cost": 0.0,
+    "total_duration": 0.3565516471862793,
+    "anomalies": []
+  },
+  "context_sharing": {
+    "shares": 6,
+    "flow": "CrewAI -> ADK"
+  },
+  "tools_used": [
+    {
+      "tool": "Groq AI",
+      "type": "LLM"
+    }
+  ],
+  "monitoring_events": [
+    {
+      "event": "task_complete",
+      "time": "2026-10-26T19:47:02.633563"
+    }
+  ],
+  "security_validation": {
+    "status": "passed"
+  },
+  "performance_metrics": {
+    "duration": 0.3565516471862793,
+    "cost": 0.0
+  }
+}

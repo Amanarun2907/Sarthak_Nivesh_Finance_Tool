@@ -75,6 +75,7 @@ export const agenticAI = {
 export const ipoMultiAgent = {
   status:  ()     => api.get('/api/ipo_multiagent/status'),
   analyze: (data) => api.post('/api/ipo_multiagent/analyze', data, { timeout: 300000 }),
+  exitStrategy: (data) => api.post('/api/ipo_multiagent/exit_strategy', data, { timeout: 120000 }),
 };
 
 export default api;

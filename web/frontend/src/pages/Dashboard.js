@@ -10,6 +10,16 @@ const C_SEC    = 'var(--text-secondary)';
 
 function IndexCard({ label, data }) {
   if (!data) return null;
+  if (data.live === false) {
+    return (
+      <div className="kpi-card" style={{ borderLeftColor: C_ORANGE }}>
+        <div className="kpi-label">{label}</div>
+        <div className="kpi-value" style={{ color: C_SEC, fontSize: '1.1rem' }}>
+          Market data unavailable
+        </div>
+      </div>
+    );
+  }
   const up    = data.change_pct >= 0;
   const color = up ? C_GREEN : C_RED;
   return (
@@ -64,9 +74,13 @@ export default function Dashboard() {
   const [movers,      setMovers]      = useState(null);
   const [breadth,     setBreadth]     = useState(null);
   const [loading,     setLoading]     = useState(true);
+  const [refreshing,  setRefreshing]  = useState(false);
+  const [error,       setError]       = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
 
-  const load = useCallback(() => {
+  const load = useCallback((isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
+    setError(null);
     Promise.all([dashboard.indices(), dashboard.movers(), dashboard.breadth()])
       .then(([i, m, b]) => {
         setIndices(i.data);
@@ -74,8 +88,8 @@ export default function Dashboard() {
         setBreadth(b.data);
         setLastUpdated(new Date());
       })
-      .catch(console.error)
-      .finally(() => setLoading(false));
+      .catch((e) => setError(e.message || 'Failed to fetch market data'))
+      .finally(() => { setLoading(false); setRefreshing(false); });
   }, []);
 
   useEffect(() => { load(); }, [load]);
@@ -88,6 +102,22 @@ export default function Dashboard() {
       </div>
     );
   }
+
+  if (error && !indices && !movers && !breadth) {
+    return (
+      <div className="loading">
+        <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>⚠️</div>
+        <div className="loading-text" style={{ marginBottom: '1rem' }}>
+          Could not load market data: {error}
+        </div>
+        <button className="btn btn-primary" onClick={() => load()}>Retry</button>
+      </div>
+    );
+  }
+
+  const isLive = indices?.nifty?.live !== false &&
+                 movers?.live !== false &&
+                 breadth?.live !== false;
 
   const nifty   = indices?.nifty;
   const sensex  = indices?.sensex;
@@ -132,18 +162,28 @@ export default function Dashboard() {
       <div className="page-header">
         <div className="section-title">🏠 Live Market Dashboard</div>
         <div className="section-subtitle">
-          <span className="pulse-dot" />
-          <span>All data live · NSE + Yahoo Finance</span>
+          <span className="pulse-dot" style={{ background: isLive ? undefined : C_ORANGE }} />
+          <span>{isLive ? 'All data live · NSE + Yahoo Finance' : 'Market data unavailable · showing last cached data'}</span>
           <span style={{ marginLeft: 'auto', color: C_SEC, fontSize: '0.75rem' }}>
             Updated: {lastUpdated?.toLocaleTimeString('en-IN')}
           </span>
           <button className="btn btn-secondary"
             style={{ padding: '5px 12px', fontSize: '0.75rem' }}
-            onClick={load}>
-            🔄 Refresh
+            disabled={refreshing}
+            onClick={() => load(true)}>
+            {refreshing ? '⏳ Refreshing…' : '🔄 Refresh'}
           </button>
         </div>
       </div>
+
+      {error && (
+        <div className="card" style={{
+          borderLeft: '3px solid ' + C_ORANGE, marginBottom: '1rem',
+          color: C_ORANGE, fontSize: '0.85rem',
+        }}>
+          ⚠️ Partial data failure: {error}
+        </div>
+      )}
 
       {/* Index KPIs */}
       <div className="grid-4" style={{ marginBottom: '1.5rem' }}>
@@ -179,9 +219,13 @@ export default function Dashboard() {
             <span className="badge badge-green">{movers?.gainers?.length || 0}</span>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
-            {movers?.gainers?.map((g, i) => (
-              <MoverRow key={g.symbol} item={g} type="gainer" rank={i + 1} />
-            ))}
+            {movers?.gainers?.length
+              ? movers.gainers.map((g, i) => (
+                  <MoverRow key={g.symbol} item={g} type="gainer" rank={i + 1} />
+                ))
+              : <div style={{ color: C_SEC, fontSize: '0.82rem', padding: '0.5rem 0' }}>
+                  No stocks advanced in the tracked universe.
+                </div>}
           </div>
         </div>
         <div className="card">
@@ -191,9 +235,13 @@ export default function Dashboard() {
             <span className="badge badge-red">{movers?.losers?.length || 0}</span>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
-            {movers?.losers?.map((l, i) => (
-              <MoverRow key={l.symbol} item={l} type="loser" rank={i + 1} />
-            ))}
+            {movers?.losers?.length
+              ? movers.losers.map((l, i) => (
+                  <MoverRow key={l.symbol} item={l} type="loser" rank={i + 1} />
+                ))
+              : <div style={{ color: C_SEC, fontSize: '0.82rem', padding: '0.5rem 0' }}>
+                  No stocks declined in the tracked universe.
+                </div>}
           </div>
         </div>
       </div>
