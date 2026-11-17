@@ -23,6 +23,9 @@ for _p in [str(_AGENT_DIR), str(_CORE_DIR)]:
 
 router = APIRouter()
 
+# Global memory cache for latest live telemetry (Req 5 & 10)
+_LATEST_IPO_TELEMETRY = {}
+
 
 # ── Safe serialiser — replaces NaN/Inf so JSON doesn't break ─────────────────
 def _safe(obj):
@@ -179,6 +182,20 @@ def analyze_ipo(data: dict = Body(...)):
         # ── Per-agent scores ──────────────────────────────────────────────────
         "agent_scores": result.agent_scores,
 
+        # ── Task Monitoring & Logging (Req 5) ─────────────────────────────────
+        "monitoring_summary":   getattr(result, "monitoring_summary", {}),
+        "execution_log":        getattr(result, "execution_log", []),
+        "intermediate_outputs": getattr(result, "intermediate_outputs", {}),
+
+        # ── End-to-End Performance Evaluation & Cost (Req 10) ─────────────────
+        "agent_telemetry":      getattr(result, "agent_telemetry", {}),
+        "performance_metrics":  getattr(result, "performance_metrics", {}),
+        "total_duration_s":     getattr(result, "total_duration_s", 0.0),
+        "total_tokens":         getattr(result, "total_tokens", 0),
+        "total_cost_usd":       getattr(result, "total_cost_usd", 0.0),
+        "trace_id":             getattr(result, "trace_id", None),
+        "guardrail_stats":      getattr(result, "guardrail_stats", {}),
+
         # ── Decision colour for UI ────────────────────────────────────────────
         "decision_color": (
             "#00ff88" if result.final_decision in ("INVEST",)
@@ -206,7 +223,36 @@ def analyze_ipo(data: dict = Body(...)):
         },
     })
 
+    global _LATEST_IPO_TELEMETRY
+    _LATEST_IPO_TELEMETRY = payload
+
     return JSONResponse(content=payload)
+
+
+# ── Telemetry & Performance Evaluation Endpoints (Req 5 & 10) ─────────────────
+@router.get("/telemetry/latest")
+def get_latest_telemetry():
+    """Return the telemetry from the most recent 6-agent IPO analysis run."""
+    if not _LATEST_IPO_TELEMETRY:
+        return {"has_data": False, "message": "No active trace yet. Run an IPO analysis to record telemetry."}
+    return {"has_data": True, "telemetry": _LATEST_IPO_TELEMETRY}
+
+
+@router.post("/telemetry/benchmark")
+def run_benchmark(data: dict = Body(default={})):
+    """Trigger a benchmark 6-agent run using sample data and return telemetry."""
+    sample = {
+        "ipo_name": data.get("ipo_name", "Hyundai Motor India"),
+        "symbol": data.get("symbol", "HYUNDAI.NS"),
+        "issue_price": float(data.get("issue_price", 1960.0)),
+        "listing_price": float(data.get("listing_price", 1934.0)),
+        "current_price": float(data.get("current_price", 1850.0)),
+        "sub_total": float(data.get("sub_total", 17.4)),
+        "sub_qib": float(data.get("sub_qib", 36.5)),
+        "sub_retail": float(data.get("sub_retail", 6.8)),
+        "listing_date_str": data.get("listing_date_str", "2024-10-22"),
+    }
+    return analyze_ipo(sample)
 
 
 # ── Standalone Exit Strategy endpoint ────────────────────────────────────────

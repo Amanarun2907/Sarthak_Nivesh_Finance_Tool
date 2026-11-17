@@ -318,6 +318,11 @@ export default function IPOMultiAgent() {
       setProgress(100);
       setProgMsg('✅ 6-agent analysis complete!');
       setResult(r.data);
+      try {
+        localStorage.setItem('sarthak_latest_ipo_telemetry', JSON.stringify(r.data));
+      } catch (err) {
+        console.warn('Could not save telemetry to localStorage:', err);
+      }
       setStep('done');
       setTab('overview');
       toast.success(`Analysis complete! Decision: ${r.data.final_decision}`);

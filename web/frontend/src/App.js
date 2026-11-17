@@ -14,21 +14,23 @@ import AIAssistant from './pages/AIAssistant';
 import AdvancedAnalytics from './pages/AdvancedAnalytics';
 import AgenticAI from './pages/AgenticAI';
 import IPOMultiAgent from './pages/IPOMultiAgent';
+import AgentMonitoring from './pages/AgentMonitoring';
 
 const PAGES = {
-  dashboard:      Dashboard,
-  stocks:         StockIntelligence,
-  mf:             MutualFunds,
-  sip:            SIPGoalPlanner,
-  ipo:            IPOIntelligence,
-  smartmoney:     SmartMoney,
-  portfolio:      PortfolioManager,
-  coach:          AIFinanceCoach,
-  news:           NewsAndSentiment,
-  assistant:      AIAssistant,
-  analytics:      AdvancedAnalytics,
-  agentic:        AgenticAI,
-  ipo_multiagent: IPOMultiAgent,
+  dashboard:        Dashboard,
+  stocks:           StockIntelligence,
+  mf:               MutualFunds,
+  sip:              SIPGoalPlanner,
+  ipo:              IPOIntelligence,
+  smartmoney:       SmartMoney,
+  portfolio:        PortfolioManager,
+  coach:            AIFinanceCoach,
+  news:             NewsAndSentiment,
+  assistant:        AIAssistant,
+  analytics:        AdvancedAnalytics,
+  agentic:          AgenticAI,
+  ipo_multiagent:   IPOMultiAgent,
+  agent_monitoring: AgentMonitoring,
 };
 
 export default function App() {

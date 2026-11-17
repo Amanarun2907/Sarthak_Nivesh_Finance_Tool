@@ -76,9 +76,11 @@ export const agenticAI = {
 };
 
 export const ipoMultiAgent = {
-  status:  ()     => api.get('/api/ipo_multiagent/status'),
-  analyze: (data) => api.post('/api/ipo_multiagent/analyze', data, { timeout: 300000 }),
-  exitStrategy: (data) => api.post('/api/ipo_multiagent/exit_strategy', data, { timeout: 120000 }),
+  status:          ()     => api.get('/api/ipo_multiagent/status'),
+  analyze:         (data) => api.post('/api/ipo_multiagent/analyze', data, { timeout: 300000 }),
+  exitStrategy:    (data) => api.post('/api/ipo_multiagent/exit_strategy', data, { timeout: 120000 }),
+  latestTelemetry: ()     => api.get('/api/ipo_multiagent/telemetry/latest'),
+  runBenchmark:    (data) => api.post('/api/ipo_multiagent/telemetry/benchmark', data || {}, { timeout: 300000 }),
 };
 
 export default api;
