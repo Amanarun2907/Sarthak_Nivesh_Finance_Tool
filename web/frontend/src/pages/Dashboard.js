@@ -77,24 +77,64 @@ export default function Dashboard() {
   const [refreshing,  setRefreshing]  = useState(false);
   const [error,       setError]       = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
+  const [warmingUp,   setWarmingUp]   = useState(false);
+  const [retryCount,  setRetryCount]  = useState(0);
+  const MAX_RETRIES = 3;
 
-  const load = useCallback((isRefresh = false) => {
+  const load = useCallback((isRefresh = false, attempt = 0) => {
     if (isRefresh) setRefreshing(true); else setLoading(true);
     setError(null);
+    if (attempt > 0) setWarmingUp(true);
+
     Promise.all([dashboard.indices(), dashboard.movers(), dashboard.breadth()])
       .then(([i, m, b]) => {
         setIndices(i.data);
         setMovers(m.data);
         setBreadth(b.data);
         setLastUpdated(new Date());
+        setWarmingUp(false);
       })
-      .catch((e) => setError(e.message || 'Failed to fetch market data'))
-      .finally(() => { setLoading(false); setRefreshing(false); });
+      .catch((e) => {
+        if (attempt < MAX_RETRIES) {
+          // Auto-retry: 1st retry after 5s, 2nd after 10s, 3rd after 15s
+          const delay = (attempt + 1) * 5000;
+          setRetryCount(attempt + 1);
+          setLoading(false);
+          setTimeout(() => load(false, attempt + 1), delay);
+        } else {
+          setError(e.message || 'Failed to fetch market data');
+          setWarmingUp(false);
+        }
+      })
+      .finally(() => {
+        if (!warmingUp || attempt >= MAX_RETRIES) {
+          setLoading(false);
+          setRefreshing(false);
+        }
+      });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => { load(); }, [load]);
 
-  if (loading) {
+  // Warm-up screen: shown during auto-retries (server cold-start on Render)
+  if (warmingUp || (loading && retryCount > 0)) {
+    return (
+      <div className="loading">
+        <div className="spinner" />
+        <div style={{ fontSize: '2rem', margin: '0.5rem 0' }}>☕</div>
+        <div className="loading-text" style={{ marginBottom: '0.5rem' }}>
+          Server is warming up... ({retryCount}/{MAX_RETRIES})
+        </div>
+        <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
+          Our backend server starts fresh after a period of inactivity.<br />
+          This takes ~30–60 seconds on first load. Please wait!
+        </div>
+      </div>
+    );
+  }
+
+  if (loading && retryCount === 0) {
     return (
       <div className="loading">
         <div className="spinner" />
@@ -107,10 +147,15 @@ export default function Dashboard() {
     return (
       <div className="loading">
         <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>⚠️</div>
-        <div className="loading-text" style={{ marginBottom: '1rem' }}>
-          Could not load market data: {error}
+        <div className="loading-text" style={{ marginBottom: '0.5rem' }}>
+          Could not connect to the data server.
         </div>
-        <button className="btn btn-primary" onClick={() => load()}>Retry</button>
+        <div style={{ color: 'var(--text-secondary)', fontSize: '0.82rem', marginBottom: '1.2rem' }}>
+          The server may still be starting up. Please try again in a moment.
+        </div>
+        <button className="btn btn-primary" onClick={() => { setRetryCount(0); setWarmingUp(false); load(); }}>
+          🔄 Retry
+        </button>
       </div>
     );
   }

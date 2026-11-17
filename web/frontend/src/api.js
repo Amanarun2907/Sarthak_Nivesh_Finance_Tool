@@ -4,10 +4,13 @@ const BASE = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
 const api = axios.create({ baseURL: BASE, timeout: 60000 });
 
+// Dashboard uses a longer timeout (120s) to survive Render cold-start wake-up
+const dashApi = axios.create({ baseURL: BASE, timeout: 120000 });
+
 export const dashboard = {
-  indices:  () => api.get('/api/dashboard/indices'),
-  movers:   () => api.get('/api/dashboard/movers'),
-  breadth:  () => api.get('/api/dashboard/breadth'),
+  indices:  () => dashApi.get('/api/dashboard/indices'),
+  movers:   () => dashApi.get('/api/dashboard/movers'),
+  breadth:  () => dashApi.get('/api/dashboard/breadth'),
 };
 
 export const stocks = {
