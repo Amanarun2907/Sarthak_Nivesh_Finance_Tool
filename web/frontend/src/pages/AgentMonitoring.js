@@ -277,7 +277,7 @@ export default function AgentMonitoring() {
             Agent Monitoring & Performance Telemetry
           </h2>
           <div style={{ display: 'inline-flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center', marginBottom: '1.5rem' }}>
-            <span className="badge badge-accent">Req #5: Callbacks & Logging</span>
+            <span className="badge badge-blue">Req #5: Callbacks & Logging</span>
             <span className="badge badge-green">Req #10: E2E Performance & Cost</span>
             <span className="badge badge-blue">6 Specialized IPO Agents</span>
             <span className="badge badge-purple">CrewAI + Google ADK</span>
@@ -595,7 +595,7 @@ export default function AgentMonitoring() {
                         {agent.name}
                       </td>
                       <td style={{ padding: '0.75rem 1rem' }}>
-                        <span className={`badge ${agent.framework?.includes('ADK') ? 'badge-purple' : 'badge-accent'}`}>
+                        <span className={`badge ${agent.framework?.includes('ADK') ? 'badge-purple' : 'badge-blue'}`}>
                           {agent.framework}
                         </span>
                       </td>
@@ -703,7 +703,7 @@ export default function AgentMonitoring() {
                             {evt.event?.toUpperCase()}
                           </span>
                           {evt.agent && (
-                            <span className="badge badge-accent" style={{ fontSize: '0.72rem' }}>
+                            <span className="badge badge-blue" style={{ fontSize: '0.72rem' }}>
                               {evt.agent}
                             </span>
                           )}
@@ -792,7 +792,7 @@ export default function AgentMonitoring() {
                     <h4 style={{ margin: 0, fontSize: '0.95rem', color: '#f0f6fc', fontWeight: 700 }}>
                       {agent.name}
                     </h4>
-                    <span className={`badge ${agent.framework?.includes('ADK') ? 'badge-purple' : 'badge-accent'}`}>
+                    <span className={`badge ${agent.framework?.includes('ADK') ? 'badge-purple' : 'badge-blue'}`}>
                       {agent.framework}
                     </span>
                   </div>
