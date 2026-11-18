@@ -96,19 +96,32 @@ try:
     _GROQ_KEY    = os.environ.get("GROQ_API_KEY", "")
     _GROQ_BASE   = "https://api.groq.com/openai/v1"
     _GROQ_MODEL  = "openai/gpt-oss-120b"
+    # Every model NOT in the verified available set gets remapped to _GROQ_MODEL.
+    # Verified available on this account: openai/gpt-oss-120b, openai/gpt-oss-20b,
+    # qwen/qwen3.8-27b, allam-2-7b (and whisper/safeguard which are not chat models).
     _UNSUPPORTED_MODELS = {
         "llama-3.3-70b-versatile", "llama-3.1-70b-versatile",
         "llama3-70b-8192", "llama3-groq-70b-8192-tool-use-preview",
         "llama-3.1-8b-instant", "llama3-8b-8192",
         "mixtral-8x7b-32768", "gemma2-9b-it", "gemma-7b-it",
+        "claude-3-sonnet", "claude-3-opus", "claude-3-haiku",
+        "claude-3-5-sonnet-20241022", "claude-3-5-haiku-20241022",
+        "gpt-4o", "gpt-4", "gpt-3.5-turbo",
     }
 
     _orig_litellm_completion = _litellm_module.completion
 
     def _groq_safe_completion(*args, **kwargs):
-        """Intercepts ALL litellm.completion calls and remaps unsupported Groq models."""
+        """Intercepts ALL litellm.completion calls and remaps any model not
+        verified available on this Groq account to openai/gpt-oss-120b."""
         # Update key in case it changed
         _key = os.environ.get("GROQ_API_KEY", _GROQ_KEY)
+
+        # Verified available chat models on this Groq account
+        _KNOWN_GOOD = {
+            "openai/gpt-oss-120b", "openai/gpt-oss-20b",
+            "qwen/qwen3.8-27b", "allam-2-7b",
+        }
 
         # Check positional model arg
         model_arg = args[0] if args else None
@@ -117,9 +130,12 @@ try:
 
         # Strip provider prefix to get bare model name
         bare = raw_model.replace("groq/", "").replace("openai/", "").strip()
+        full_stripped = raw_model  # keep for known-good check
 
-        if bare in _UNSUPPORTED_MODELS:
-            # Replace with available model + correct endpoint
+        # Remap if explicitly unsupported OR not in verified good set
+        needs_remap = (bare in _UNSUPPORTED_MODELS) or (raw_model not in _KNOWN_GOOD and bare not in _KNOWN_GOOD)
+
+        if needs_remap:
             if args:
                 args = (_GROQ_MODEL,) + args[1:]
             kwargs["model"]    = _GROQ_MODEL
@@ -163,6 +179,9 @@ try:
             "llama-3.3-70b-versatile", "llama-3.1-70b-versatile", "llama3-70b-8192",
             "llama-3.1-8b-instant", "llama3-8b-8192", "mixtral-8x7b-32768",
             "gemma2-9b-it", "gemma-7b-it", "llama-guard-3-8b",
+            "claude-3-sonnet", "claude-3-opus", "claude-3-haiku",
+            "claude-3-5-sonnet-20241022", "claude-3-5-haiku-20241022",
+            "gpt-4o", "gpt-4", "gpt-3.5-turbo",
         }
 
         # Find call_llm_and_parse in the flow runtime module and patch it
@@ -261,12 +280,13 @@ except Exception:
                     agent = task.agent or (self.agents[0] if self.agents else None)
                     sys_msg = f"You are a {agent.role}. Goal: {agent.goal}. Backstory: {agent.backstory}" if agent else "You are an expert investment agent."
                     headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+                    _KNOWN_GOOD_CREW = {"openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.8-27b", "allam-2-7b"}
                     model_name = "openai/gpt-oss-120b"
                     if agent and agent.llm and hasattr(agent.llm, "model"):
                         m = str(agent.llm.model).replace("groq/", "").strip()
-                        # Keep openai/ prefix as-is — Groq API accepts it directly
-                        if m and m != "openai/gpt-oss-120b":
-                            model_name = m.replace("groq/", "")
+                        # Only use the agent's model if it's verified available
+                        if m in _KNOWN_GOOD_CREW or f"openai/{m}" in _KNOWN_GOOD_CREW:
+                            model_name = m if m in _KNOWN_GOOD_CREW else f"openai/{m}"
                     payload = {
                         "model": model_name,
                         "messages": [
@@ -376,28 +396,41 @@ class ADKClient:
         for m in messages:
             groq_messages.append({"role": m["role"], "content": m["content"]})
 
-        payload = {
-            "model": "llama-3.3-70b-versatile",
-            "messages": groq_messages,
-            "temperature": 0.2,
-            "max_tokens": max_tokens,
-        }
+        # Only models verified available on this Groq account.
+        # Ordered by capability: gpt-oss-120b first, then fallbacks.
+        candidate_models = [
+            "openai/gpt-oss-120b",
+            "qwen/qwen3.8-27b",
+            "openai/gpt-oss-20b",
+        ]
+        last_err = ""
+        for mod in candidate_models:
+            try:
+                payload = {
+                    "model": mod,
+                    "messages": groq_messages,
+                    "temperature": 0.2,
+                    "max_tokens": max_tokens,
+                }
+                r = requests.post(
+                    "https://api.groq.com/openai/v1/chat/completions",
+                    headers=headers,
+                    json=payload,
+                    timeout=60
+                )
+                if r.status_code == 200:
+                    res_json = r.json()
+                    text = res_json["choices"][0]["message"]["content"]
+                    usage_data = res_json.get("usage", {})
+                    in_tok = usage_data.get("prompt_tokens", 400)
+                    out_tok = usage_data.get("completion_tokens", 800)
+                    return ADKResponse(text, in_tok, out_tok)
+                last_err = f"{r.status_code} {r.text}"
+            except Exception as e:
+                last_err = str(e)
+                continue
 
-        r = requests.post(
-            "https://api.groq.com/openai/v1/chat/completions",
-            headers=headers,
-            json=payload,
-            timeout=120
-        )
-        if r.status_code == 200:
-            res_json = r.json()
-            text = res_json["choices"][0]["message"]["content"]
-            usage_data = res_json.get("usage", {})
-            in_tok = usage_data.get("prompt_tokens", 400)
-            out_tok = usage_data.get("completion_tokens", 800)
-            return ADKResponse(text, in_tok, out_tok)
-        else:
-            raise RuntimeError(f"ADK Execution error: {r.status_code} {r.text}")
+        raise RuntimeError(f"ADK Execution error: all candidate models failed. Last error: {last_err}")
 
 
 def get_adk_client(api_key: typing.Optional[str] = None) -> ADKClient:
