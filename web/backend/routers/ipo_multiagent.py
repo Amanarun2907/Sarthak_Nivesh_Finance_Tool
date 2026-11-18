@@ -47,7 +47,7 @@ def status():
         "status":  "online",
         "service": "IPO Multi-Agent Framework",
         "agents":  6,
-        "model":   "Groq Llama 3.3 70B",
+        "model":   "Groq openai/gpt-oss-120b",
         "paper":   "Hierarchical Multi-Agentic AI for IPO Investment & Exit Strategy",
     }
 
@@ -218,7 +218,7 @@ def analyze_ipo(data: dict = Body(...)):
                 "Risk Agent":             "20%",
                 "IPO Intelligence Agent": "25%",
             },
-            "model":    "Groq Llama 3.3 70B",
+            "model":    "Groq openai/gpt-oss-120b",
             "keywords": ["Agentic AI", "Investment", "IPO", "Prediction"],
         },
     })

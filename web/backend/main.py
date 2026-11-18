@@ -45,6 +45,88 @@ from dotenv import load_dotenv
 load_dotenv(_ROOT / ".env")
 import agentic_runtime
 
+# ── ADKClient hard patch — applied immediately after agentic_runtime loads ────
+# Verified available Groq chat models for this account (checked 2025-11-16):
+#   openai/gpt-oss-120b, openai/gpt-oss-20b, qwen/qwen3.8-27b, allam-2-7b
+# Every other model (llama-*, claude-*, gpt-4*, mixtral-*) is NOT available and
+# returns a 404 model_not_found error. This patch makes ADKClient.create() ONLY
+# try the three verified models, regardless of what `model` argument is passed.
+try:
+    import requests as _req_mod
+    _GROQ_CANDIDATES = [
+        "openai/gpt-oss-120b",
+        "qwen/qwen3.8-27b",
+        "openai/gpt-oss-20b",
+    ]
+
+    def _patched_adk_create(self, model: str, max_tokens: int, system: str, messages: list):
+        """
+        Patched ADKClient.create() that ignores the `model` argument and only
+        tries verified available Groq models. The `model` arg is intentionally
+        ignored because callers may pass claude-3-sonnet or other unavailable names.
+        """
+        # Try native Anthropic if available
+        if getattr(self, "use_native", False):
+            try:
+                return self.native_client.messages.create(
+                    model=model, max_tokens=max_tokens,
+                    system=system, messages=messages
+                )
+            except Exception as e:
+                print(f"⚠️ Native Anthropic call failed ({e}), using Groq bridge...")
+
+        groq_key = os.environ.get("GROQ_API_KEY", getattr(self, "groq_key", ""))
+        if not groq_key:
+            raise RuntimeError("ADK bridge: GROQ_API_KEY not set")
+
+        headers = {
+            "Authorization": f"Bearer {groq_key}",
+            "Content-Type": "application/json",
+        }
+        groq_messages = [{"role": "system", "content": system}]
+        for m in messages:
+            groq_messages.append({"role": m["role"], "content": m["content"]})
+
+        last_err = ""
+        for candidate in _GROQ_CANDIDATES:
+            try:
+                payload = {
+                    "model": candidate,
+                    "messages": groq_messages,
+                    "temperature": 0.2,
+                    "max_tokens": max_tokens,
+                }
+                r = _req_mod.post(
+                    "https://api.groq.com/openai/v1/chat/completions",
+                    headers=headers, json=payload, timeout=60
+                )
+                if r.status_code == 200:
+                    res = r.json()
+                    text = res["choices"][0]["message"]["content"]
+                    usage = res.get("usage", {})
+                    in_tok = usage.get("prompt_tokens", 400)
+                    out_tok = usage.get("completion_tokens", 800)
+                    # Return an ADKResponse-compatible object
+                    from agentic_runtime import ADKResponse
+                    return ADKResponse(text, in_tok, out_tok)
+                last_err = f"{r.status_code}: {r.text[:200]}"
+            except Exception as exc:
+                last_err = str(exc)
+                continue
+
+        raise RuntimeError(
+            f"ADK bridge: all candidate models failed. Last error: {last_err}"
+        )
+
+    # Monkey-patch the ADKClient class so ALL instances (including ones already
+    # created in routers) use this method.
+    agentic_runtime.ADKClient.create = _patched_adk_create
+    # Also patch the messages attribute (ADKClient sets self.messages = self)
+    # so adk.messages.create(...) also hits the patched method.
+    print("✅ ADKClient.create() patched: only verified Groq models will be used")
+except Exception as _patch_err:
+    print(f"⚠️ ADKClient patch failed (non-fatal): {_patch_err}")
+
 import importlib
 
 _ROUTER_SPECS = [
