@@ -4,9 +4,6 @@
   Multi-Agent Agentic System (CrewAI + ADK) with MCP, Guardrails & Observability
 ================================================================================
 
-Author / Team : Aman Jain (B.Tech 2023–27), 6th Semester Project (2026)
-Repository    : https://github.com/Amanarun2907/Sarthak_Nivesh_Finance_Tool
-Project Type  : Academic Agentic-AI capstone (finance / investment intelligence)
 
 --------------------------------------------------------------------------------
 HOW TO READ THIS DOCUMENT
